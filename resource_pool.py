@@ -19,6 +19,7 @@ from itertools import chain
 from coh.tools import senter, word_tokenize,\
     pos_tagger
 from coh.utils import is_valid_id
+from coh.database import create_engine, create_session, Helper
 
 
 class ResourcePool(object):
@@ -47,7 +48,7 @@ class ResourcePool(object):
         """
         self._res[suffix] = hook
         if is_valid_id(suffix):
-            setattr(self, suffix, hook)
+            setattr(self, suffix, lambda *args: self.get(suffix, *args))
 
     def get(self, suffix, *args):
         """Get a resource.
@@ -74,12 +75,23 @@ class DefaultResourcePool(ResourcePool):
         """Registers the default resources."""
         super(DefaultResourcePool, self).__init__(debug)
 
+        self.register('db_helper', self._db_helper)
+
         self.register('paragraphs', lambda t: t.paragraphs)
         self.register('sentences', self._sentences)
         self.register('words', self._words)
         self.register('all_words', self._all_words)
         self.register('tagged_sentences', self._tagged_sentences)
         self.register('tagged_words', self._tagged_words)
+
+    def _db_helper(self):
+        """Creates a database session and returns a Helper associated with it.
+        """
+        engine = create_engine()
+        session = create_session(engine)
+        helper = Helper(session)
+
+        return helper
 
     def _sentences(self, text):
         """Return a list of strings, each one being a sentence of the text.
