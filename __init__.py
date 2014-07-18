@@ -15,7 +15,9 @@ from coh.resource_pool import (
 from coh.metrics import *
 from coh.tools import *
 
-all_metrics = MetricsSet([BasicCounts(), LogicOperators()])
+all_metrics = MetricsSet([BasicCounts()
+                          , LogicOperators()
+                          , Frequencies()])
 
 
 rp = DefaultResourcePool()
