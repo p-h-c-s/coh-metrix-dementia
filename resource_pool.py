@@ -75,14 +75,21 @@ class DefaultResourcePool(ResourcePool):
         """Registers the default resources."""
         super(DefaultResourcePool, self).__init__(debug)
 
+        # Tools and helpers.
+        self.register('pos_tagger', lambda: pos_tagger)
         self.register('db_helper', self._db_helper)
 
+        # Basic text info.
         self.register('paragraphs', lambda t: t.paragraphs)
         self.register('sentences', self._sentences)
         self.register('words', self._words)
         self.register('all_words', self._all_words)
         self.register('tagged_sentences', self._tagged_sentences)
         self.register('tagged_words', self._tagged_words)
+
+        # Derived text info.
+        self.register('content_words', self._content_words)
+        self.register('cw_freq', self._cw_freq)
 
     def _db_helper(self):
         """Creates a database session and returns a Helper associated with it.
@@ -127,5 +134,40 @@ class DefaultResourcePool(ResourcePool):
         """
         tagged_sentences = self.get('tagged_sentences', text)
         return list(chain.from_iterable(tagged_sentences))
+
+    def _content_words(self, text):
+        """Return the content words of the texts, separated by sentences.
+
+        :text: @todo
+        :returns: @todo
+
+        """
+        tagged_sents = self.get('tagged_sentences', text)
+        content_words = tagged_sents
+        for i in range(len(tagged_sents)):
+            content_words[i] = [word for (word, tag) in tagged_sents[i]
+                                if pos_tagger.tagset.is_content_word(
+                                    (word, tag))]
+        return content_words
+
+    def _cw_freq(self, text):
+        """Return the frequency of each content word in the text, separated
+        by sentences.
+
+        :text: @todo
+        :returns: @todo
+
+        """
+        content_words = self.get('content_words', text)
+        frequencies = content_words
+
+        for i in range(len(frequencies)):
+            frequencies[i] = [self.get('db_helper').get_frequency(word)
+                              for word in content_words[i]]
+            frequencies[i] = [f.freq if f is not None else 0
+                              for f in frequencies[i]]
+
+        return frequencies
+
 
 rp = DefaultResourcePool()
