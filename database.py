@@ -46,7 +46,6 @@ def create_session(engine):
 
 
 class Frequency(Base):
-    # TODO: fix the primary key.
     __tablename__ = 'frequencies'
 
     id = Column(Integer, primary_key=True)
@@ -60,6 +59,20 @@ class Frequency(Base):
         return '<Frequency: word=%s, freq=%s, freq_perc=%s, texts=%s, texts_perc=%s>'\
             % (self.word, str(self.freq), str(self.freq_perc), str(self.texts),
                str(self.texts_perc))
+
+
+class Hypernym(Base):
+    __tablename__ = 'hypernyms_verbs'
+
+    word = Column(String, primary_key=True)
+    category = Column(String, primary_key=True)
+    grammar_attrs = Column(String)
+    hyper_levels = Column(Integer)
+
+    def __str__(self):
+        return '<Hypernym: word={0}, cat={1}, attrs={2}, levels={3}>'\
+            .format(self.word, self.category, self.grammar_attrs,
+                    self.hyper_levels)
 
 
 class Helper(object):
@@ -76,6 +89,15 @@ class Helper(object):
     def get_frequency(self, word):
         return self._session.query(Frequency).filter_by(word=word).first()
 
+    def get_hypernyms(self, verb):
+        """@todo: Docstring for get_hypernyms.
+
+        :verb: @todo
+        :returns: @todo
+
+        """
+        return self._session.query(Hypernym).filter_by(word=verb).first()
+
 
 if __name__ == '__main__':
     engine = create_engine()
@@ -84,3 +106,5 @@ if __name__ == '__main__':
 
     print(helper.get_frequency('abacaxi'))
     print(helper.get_frequency('maçã'))
+    print(helper.get_hypernyms('dar'))
+    print(helper.get_hypernyms('abalançar'))
