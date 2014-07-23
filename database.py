@@ -24,13 +24,13 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 DEFAULT_OPTIONS = {
-    'dialect': 'mysql',
-    'driver': 'pymysql',
+    'dialect': 'postgresql',
+    'driver': 'psycopg2',
     'username': 'cohmetrix',
-    'password': 'coh-metrix',
+    'password': 'cohmetrix',
     'host': 'localhost',
-    'port': '3306',
-    'database': 'cohmetrix_pt_BR',
+    'port': '5432',
+    'database': 'cohmetrix_pt_br',
 }
 
 
