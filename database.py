@@ -45,6 +45,19 @@ def create_session(engine):
     return sessionmaker(bind=engine)()
 
 
+class DelafVerb(Base):
+    __tablename__ = 'delaf_verbs'
+
+    word = Column(String, primary_key=True)
+    lemma = Column(String, primary_key=True)
+    tense = Column(String, primary_key=True)
+    person = Column(String, primary_key=True)
+
+    def __str__(self):
+        return '<DelafVerb: word={0}, lemma={1}, tense={2}, person={3}>'\
+            .format(self.word, self.lemma, self.tense, self.person)
+
+
 class Frequency(Base):
     __tablename__ = 'frequencies'
 
@@ -98,6 +111,14 @@ class Helper(object):
         """
         return self._session.query(Hypernym).filter_by(word=verb).first()
 
+    def get_verb(self, verb):
+        """@todo: Docstring for get_verb.
+
+        :verb: @todo
+        :returns: @todo
+
+        """
+        return self._session.query(DelafVerb).filter_by(word=verb).first()
 
 if __name__ == '__main__':
     engine = create_engine()
@@ -108,3 +129,5 @@ if __name__ == '__main__':
     print(helper.get_frequency('maçã'))
     print(helper.get_hypernyms('dar'))
     print(helper.get_hypernyms('abalançar'))
+    print(helper.get_verb('apareceu'))
+    print(helper.get_verb('abraçarão'))
