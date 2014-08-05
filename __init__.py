@@ -17,7 +17,8 @@ from coh.tools import *
 
 all_metrics = MetricsSet([BasicCounts()
                           , LogicOperators()
-                          , Frequencies()])
+                          , Frequencies()
+                          , Hypernyms()])
 
 
 rp = DefaultResourcePool()
