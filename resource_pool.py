@@ -17,7 +17,7 @@
 
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
-    pos_tagger
+    pos_tagger, stemmer
 from coh.utils import is_valid_id
 from coh.database import create_engine, create_session, Helper
 
@@ -77,6 +77,7 @@ class DefaultResourcePool(ResourcePool):
 
         # Tools and helpers.
         self.register('pos_tagger', lambda: pos_tagger)
+        self.register('stemmer', lambda: stemmer)
         self.register('db_helper', self._db_helper)
 
         # Basic text info.
