@@ -17,8 +17,6 @@ class HypernymsVerbs(base.Metric):
         hyper = [rp.db_helper().get_hypernyms(lemma) for lemma in lemmas]
         hyper_levels = [lemma.hyper_levels for lemma in hyper
                         if lemma is not None]
-        print(lemmas)
-        print(hyper_levels)
         return sum(hyper_levels) / len(hyper_levels)
 
 
