@@ -15,10 +15,11 @@ from coh.resource_pool import (
 from coh.metrics import *
 from coh.tools import *
 
-all_metrics = MetricsSet([BasicCounts()
-                          , LogicOperators()
-                          , Frequencies()
-                          , Hypernyms()])
+all_metrics = MetricsSet([BasicCounts(),
+                          LogicOperators(),
+                          Frequencies(),
+                          Hypernyms(),
+                          Tokens()])
 
 
 rp = DefaultResourcePool()
