@@ -32,13 +32,13 @@ class PronounsPerNounPhrase(base.Metric):
         raise NotImplementedError('Waiting for syntactic parser')
 
 
-class TypeTokenRation(base.Metric):
+class TypeTokenRatio(base.Metric):
 
-    """Docstring for TypeTokenRation. """
+    """Docstring for TypeTokenRatio. """
 
-    def __init__(self, name='Type to token ration',
+    def __init__(self, name='Type to token ratio',
                  column_name='ttr'):
-        super(TypeTokenRation, self).__init__(name, column_name)
+        super(TypeTokenRatio, self).__init__(name, column_name)
 
     def value_for_text(self, t, rp=default_rp):
         words = [word.lower() for word in rp.all_words(t)]
