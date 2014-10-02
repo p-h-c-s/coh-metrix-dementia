@@ -17,7 +17,7 @@
 
 from sqlalchemy import create_engine as _create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, Boolean
 from sqlalchemy.orm import sessionmaker
 
 
@@ -88,6 +88,42 @@ class Hypernym(Base):
                     self.hyper_levels)
 
 
+class Connective(Base):
+    __tablename__ = 'connectives'
+
+    connective = Column(String, primary_key=True)
+    additive_pos = Column(Boolean)
+    additive_neg = Column(Boolean)
+    temporal_pos = Column(Boolean)
+    temporal_neg = Column(Boolean)
+    causal_pos = Column(Boolean)
+    causal_neg = Column(Boolean)
+    logic_pos = Column(Boolean)
+    logic_neg = Column(Boolean)
+
+    def __str__(self):
+        attrs = []
+        if self.additive_pos:
+            attrs.append('add pos')
+        if self.additive_neg:
+            attrs.append('add neg')
+        if self.temporal_pos:
+            attrs.append('tmp pos')
+        if self.temporal_neg:
+            attrs.append('tmp neg')
+        if self.causal_pos:
+            attrs.append('cau pos')
+        if self.causal_neg:
+            attrs.append('cau neg')
+        if self.logic_pos:
+            attrs.append('log pos')
+        if self.logic_neg:
+            attrs.append('log neg')
+
+        return '<Connective: conn={0}, {1}>'.format(self.connective,
+                                                    ', '.join(attrs))
+
+
 class Helper(object):
 
     def __init__(self, session):
@@ -120,6 +156,17 @@ class Helper(object):
         """
         return self._session.query(DelafVerb).filter_by(word=verb).first()
 
+    def get_connective(self, connective):
+        """TODO: Docstring for get_connective.
+
+        :connective: TODO
+        :returns: TODO
+
+        """
+        return self._session.query(Connective).filter_by(connective=connective)\
+            .first()
+
+
 if __name__ == '__main__':
     engine = create_engine()
     session = create_session(engine)
@@ -131,3 +178,5 @@ if __name__ == '__main__':
     print(helper.get_hypernyms('abalançar'))
     print(helper.get_verb('apareceu'))
     print(helper.get_verb('abraçarão'))
+    print(helper.get_connective('na realidade'))
+    print(helper.get_connective('além disso'))
