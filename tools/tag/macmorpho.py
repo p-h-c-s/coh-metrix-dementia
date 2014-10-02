@@ -62,6 +62,49 @@ class MacMorphoTagSet(TagSet):
 
     punctuation_tags = ['PU']
 
+    # Operators.
+    LOGIC_OPERATORS = [
+        [('e', 'KC')],
+        [('ou', 'KC')],
+        [('se', 'KS')],
+        [('não', 'ADV')],
+        [('nem', 'KC')],
+        [('nenhum', ('PROAJD', 'PROSUB'))],
+        [('nenhuma', ('PROADJ', 'PROSUB'))],
+        [('nada', ('PROADJ', 'PROSUB'))],
+        [('nunca', 'ADV')],
+        [('jamais', 'ADV')],
+        [('caso', 'KS')],
+        [('desde', 'KS'), ('que', 'KS')],
+        [('contanto', 'KS'), ('que', 'KS')],
+        [('uma', 'KS'), ('vez', 'KS'), ('que', 'KS')],
+        [('a', 'KS'), ('menos', 'KS'), ('que', 'KS')],
+        [('sem', 'KS'), ('que', 'KS')],
+        [('a', 'KS'), ('não', 'KS'), ('ser', 'KS'), ('que', 'KS')],
+        [('salvo', 'KS'), ('se', 'KS')],
+        [('exceto', 'KS'), ('se', 'KS')],
+        [('então', 'KS'), ('é', 'KS'), ('porque', 'KS')],
+        [('fosse...fosse', '??')],  # TODO: check how to handle this.
+        [('vai', 'KS'), ('que', 'KS')],
+        [('va', 'KS'), ('que', 'KS')],
+    ]
+
+    NEGATIONS = [
+        [('não', 'ADV')],
+        [('nem', 'KC')],
+        [('nenhum', ('PROAJD', 'PROSUB'))],
+        [('nenhuma', ('PROADJ', 'PROSUB'))],
+        [('nada', ('PROADJ', 'PROSUB'))],
+        [('nunca', 'ADV')],
+        [('jamais', 'ADV')],
+    ]
+
+    AND = [('e', 'KC')]
+
+    OR = [('ou', 'KC')]
+
+    IF = [('se', 'KS')]
+
     def is_denotative_word(self, token):
         """Check if a token represents a denotative word.
 

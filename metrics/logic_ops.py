@@ -1,112 +1,7 @@
 # -*- coding: utf-8 -*-
 from coh import base
 from coh.resource_pool import rp as default_rp
-from coh.utils import base_path
-
-
-LOGIC_OPERATORS = [
-    [('e', 'KC')],
-    [('ou', 'KC')],
-    [('se', 'KS')],
-    [('não', 'ADV')],
-    [('nem', 'KC')],
-    [('nenhum', ('PROAJD', 'PROSUB'))],
-    [('nenhuma', ('PROADJ', 'PROSUB'))],
-    [('nada', ('PROADJ', 'PROSUB'))],
-    [('nunca', 'ADV')],
-    [('jamais', 'ADV')],
-    [('caso', 'KS')],
-    [('desde', 'KS'), ('que', 'KS')],
-    [('contanto', 'KS'), ('que', 'KS')],
-    [('uma', 'KS'), ('vez', 'KS'), ('que', 'KS')],
-    [('a', 'KS'), ('menos', 'KS'), ('que', 'KS')],
-    [('sem', 'KS'), ('que', 'KS')],
-    [('a', 'KS'), ('não', 'KS'), ('ser', 'KS'), ('que', 'KS')],
-    [('salvo', 'KS'), ('se', 'KS')],
-    [('exceto', 'KS'), ('se', 'KS')],
-    [('então', 'KS'), ('é', 'KS'), ('porque', 'KS')],
-    [('fosse...fosse', '??')],  # TODO: check how to handle this.
-    [('vai', 'KS'), ('que', 'KS')],
-    [('va', 'KS'), ('que', 'KS')],
-]
-
-NEGATIONS = [
-    [('não', 'ADV')],
-    [('nem', 'KC')],
-    [('nenhum', ('PROAJD', 'PROSUB'))],
-    [('nenhuma', ('PROADJ', 'PROSUB'))],
-    [('nada', ('PROADJ', 'PROSUB'))],
-    [('nunca', 'ADV')],
-    [('jamais', 'ADV')],
-]
-
-AND = [('e', 'KC')]
-
-OR = [('ou', 'KC')]
-
-IF = [('se', 'KS')]
-
-
-def matches(candidate, operator, ignore_pos=False):
-    """Check if candidate matches operator.
-
-    :candidate: a token.
-    :operator: an operator.
-    :ignore_pos: whether or not to ignore the PoS tags.
-
-    :returns: True if candidate matches operator; False otherwise.
-    """
-    if ignore_pos:
-        return [w for w, _ in candidate] == [w for w, _ in operator]
-    else:
-        for token, oper in zip(candidate, operator):
-            if type(oper[1]) is str:
-                if token != oper:
-                    return False
-            elif type(oper[1]) is tuple:
-                if token[0] != oper[0] or token[1] not in oper[1]:
-                    return False
-        return True
-
-
-def count_occurrences(tagged_sent, operator, ignore_pos=False):
-    """Count the number of occurrences of an operator in a tagged sentence.
-
-    :tagged_sent: a tagged sentence.
-    :operator: an operator.
-    :ignore_pos: whether or not to ignore the PoS tags.
-
-    :returns: The number of times the operator occurs in the sentence.
-    """
-    # 'tagged_sent' is like
-    # [('O', 'ART'), ('gato', 'N'), ('sumiu', 'V'), ('.', 'PU')]
-    # 'operator' is like
-    # (('e', 'KC'))
-
-    occurrences = 0
-    for i, token in enumerate(tagged_sent):
-        if token[0].lower() == operator[0][0]:
-            candidate = [(w.lower(), t)
-                         for w, t in tagged_sent[i:(i + len(operator))]]
-            # print('can  ', candidate)
-            if matches(candidate, operator, ignore_pos):
-                occurrences += 1
-
-    return occurrences
-
-
-def count_occurrences_for_all(tagged_sent, operators, ignore_pos=False):
-    """Count the total number of occurrences of a list of operators in a
-    sentence.
-
-    :tagged_sent: a tagged sentence.
-    :operators: a list of operators.
-    :ignore_pos: whether or not to ignore the PoS tags.
-
-    :returns: The sum of the occurrences of each operator in the sentence.
-    """
-    return sum([count_occurrences(tagged_sent, operator, ignore_pos)
-                for operator in operators])
+from coh.utils import base_path, count_occurrences, count_occurrences_for_all
 
 
 class LogicOperatorsIncidence(base.Metric):
@@ -116,7 +11,8 @@ class LogicOperatorsIncidence(base.Metric):
         super(LogicOperatorsIncidence, self).__init__(name, column_name)
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
-        occurrences = [count_occurrences_for_all(sent, LOGIC_OPERATORS,
+        logic_operators = rp.pos_tagger().tagset.LOGIC_OPERATORS
+        occurrences = [count_occurrences_for_all(sent, logic_operators,
                                                  ignore_pos)
                        for sent in rp.tagged_sentences(t)]
         return sum(occurrences) / len(rp.all_words(t))
@@ -128,7 +24,8 @@ class AndIncidence(base.Metric):
         super(AndIncidence, self).__init__(name, column_name)
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
-        occurrences = [count_occurrences(sent, AND, ignore_pos)
+        _and = rp.pos_tagger().tagset.AND
+        occurrences = [count_occurrences(sent, _and, ignore_pos)
                        for sent in rp.tagged_sentences(t)]
         return sum(occurrences) / len(rp.all_words(t))
 
@@ -139,7 +36,8 @@ class OrIncidence(base.Metric):
         super(OrIncidence, self).__init__(name, column_name)
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
-        occurrences = [count_occurrences(sent, OR, ignore_pos)
+        _or = rp.pos_tagger().tagset.OR
+        occurrences = [count_occurrences(sent, _or, ignore_pos)
                        for sent in rp.tagged_sentences(t)]
         return sum(occurrences) / len(rp.all_words(t))
 
@@ -150,7 +48,8 @@ class IfIncidence(base.Metric):
         super(IfIncidence, self).__init__(name, column_name)
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
-        occurrences = [count_occurrences(sent, IF, ignore_pos)
+        _if = rp.pos_tagger().tagset.IF
+        occurrences = [count_occurrences(sent, _if, ignore_pos)
                        for sent in rp.tagged_sentences(t)]
         return sum(occurrences) / len(rp.all_words(t))
 
@@ -162,7 +61,8 @@ class NegationIncidence(base.Metric):
         super(NegationIncidence, self).__init__(name, column_name)
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
-        occurrences = [count_occurrences_for_all(sent, NEGATIONS,
+        negations = rp.pos_tagger().tagset.NEGATIONS
+        occurrences = [count_occurrences_for_all(sent, negations,
                                                  ignore_pos)
                        for sent in rp.tagged_sentences(t)]
         return sum(occurrences) / len(rp.all_words(t))
@@ -183,19 +83,20 @@ class LogicOperators(base.Category):
 
 
 def test():
+    logic_operators = default_rp.pos_tagger().tagset.LOGIC_OPERATORS
     print(count_occurrences([('O', 'ART'), ('gato', 'N'), ('correu', 'V'),
                              ('e', 'KC'), ('sumiu', 'V'), ('.', 'PU')],
-                            LOGIC_OPERATORS[0]))
+                            logic_operators[0]))
     print(count_occurrences([('Ele', 'PROPESS'), ('entra', 'V'), (',', 'PU'),
                              ('contanto', 'KS'), ('que', 'KS'),
                              ('saia', 'V'), ('.', 'PU')],
-                            LOGIC_OPERATORS[12]))
+                            logic_operators[12]))
     print(count_occurrences_for_all([('Ele', 'PROPESS'), ('entra', 'V'),
                                      (',', 'PU'), ('contanto', 'KS'),
                                      ('que', 'KS'), ('saia', 'V'), ('e', 'KC'),
                                      ('feche', 'V'), ('a', 'ART'),
                                      ('porta', 'N'), ('.', 'PU')],
-                                    LOGIC_OPERATORS))
+                                    logic_operators))
     lo = LogicOperators()
     t = base.Text(base_path + '/corpora/folha/folha0.txt')
     results = lo.values_for_text(t)
