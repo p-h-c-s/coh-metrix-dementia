@@ -3,3 +3,4 @@ from coh.metrics.logic_ops import *
 from coh.metrics.freq import *
 from coh.metrics.hypernyms import *
 from coh.metrics.tokens import *
+from coh.metrics.connectives import *

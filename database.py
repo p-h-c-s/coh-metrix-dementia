@@ -189,4 +189,4 @@ if __name__ == '__main__':
     print(helper.get_verb('abraçarão'))
     print(helper.get_connective('na realidade'))
     print(helper.get_connective('além disso'))
-    #print(helper.get_all_connectives())
+    # print(helper.get_all_connectives())

@@ -19,7 +19,9 @@ all_metrics = MetricsSet([BasicCounts(),
                           LogicOperators(),
                           Frequencies(),
                           Hypernyms(),
-                          Tokens()])
+                          Tokens(),
+                          Connectives(),
+                          ])
 
 
 rp = DefaultResourcePool()
