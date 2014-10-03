@@ -166,6 +166,15 @@ class Helper(object):
         return self._session.query(Connective).filter_by(connective=connective)\
             .first()
 
+    def get_all_connectives(self):
+        """TODO: Docstring for get_connective.
+
+        :connective: TODO
+        :returns: TODO
+
+        """
+        return self._session.query(Connective).all()
+
 
 if __name__ == '__main__':
     engine = create_engine()
@@ -180,3 +189,4 @@ if __name__ == '__main__':
     print(helper.get_verb('abraçarão'))
     print(helper.get_connective('na realidade'))
     print(helper.get_connective('além disso'))
+    #print(helper.get_all_connectives())
