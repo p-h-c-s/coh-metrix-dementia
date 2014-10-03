@@ -16,8 +16,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from coh.utils import is_valid_id
-from coh.resource_pool import ResourcePool,\
-    DefaultResourcePool, rp as default_rp
+from coh.resource_pool import rp as default_rp
 import codecs
 import collections
 
@@ -118,11 +117,11 @@ class Category(object):
 
         Returns: a ResultSet containing the calculated metrics.
         """
-        #metrics_values = ResultSet([m.value_for_text(text).items()[0]
-        #                            for m in self.metrics])
+        # metrics_values = ResultSet([m.value_for_text(text).items()[0]
+        #                             for m in self.metrics])
         metrics_values = ResultSet([(m, m.value_for_text(text))
                                     for m in self.metrics])
-        #return ResultSet([(self, metrics_values)])
+        # return ResultSet([(self, metrics_values)])
         return metrics_values
 
     def __str__(self):
@@ -218,7 +217,7 @@ class ResultSet(object):
         a set of metrics extracted from a text.
     """
     def __init__(self, *args, **kwargs):
-        #TODO: To improve performance, replace OrderedDict by namedtuple.
+        # TODO: To improve performance, replace OrderedDict by namedtuple.
         self._store = collections.OrderedDict(*args, **kwargs)
 
     def items(self):
@@ -268,5 +267,3 @@ class ResultSet(object):
             string = table.get_string()
 
         return string.rstrip()
-
-
