@@ -144,7 +144,7 @@ class DefaultResourcePool(ResourcePool):
 
         """
         tagged_sents = self.get('tagged_sentences', text)
-        content_words = tagged_sents
+        content_words = list(tagged_sents)
         for i in range(len(tagged_sents)):
             content_words[i] = [word for (word, tag) in tagged_sents[i]
                                 if pos_tagger.tagset.is_content_word(
@@ -160,10 +160,11 @@ class DefaultResourcePool(ResourcePool):
 
         """
         content_words = self.get('content_words', text)
-        frequencies = content_words
+        db_helper = self.get('db_helper')
+        frequencies = list(content_words)
 
         for i in range(len(frequencies)):
-            frequencies[i] = [self.get('db_helper').get_frequency(word)
+            frequencies[i] = [db_helper.get_frequency(word.lower())
                               for word in content_words[i]]
             frequencies[i] = [f.freq if f is not None else 0
                               for f in frequencies[i]]
