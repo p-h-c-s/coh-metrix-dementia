@@ -21,6 +21,7 @@ all_metrics = MetricsSet([BasicCounts(),
                           Hypernyms(),
                           Tokens(),
                           Connectives(),
+                          Ambiguity(),
                           ])
 
 

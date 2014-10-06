@@ -256,6 +256,23 @@ class Helper(object):
 
         return result
 
+    def get_tep_words_count(self, word, pos=None):
+        """@todo: Docstring for get_tep_words_count.
+
+        :word: @todo
+        :pos: @todo
+        :returns: @todo
+
+        """
+        if pos is None:
+            # Ignore PoS
+            result = self._session.query(TepWord).filter_by(word=word).count()
+        else:
+            result = self._session.query(TepWord)\
+                .filter_by(word=word, pos=pos).count()
+
+        return result
+
     def get_connective(self, connective):
         """TODO: Docstring for get_connective.
 
@@ -297,7 +314,9 @@ if __name__ == '__main__':
     print(helper.get_tep_word('cantar', pos='Substantivo'))
     print(helper.get_tep_word('cantar', pos='Verbo'))
     print(helper.get_all_tep_words('cantar'))
+    print(helper.get_tep_words_count('cantar'))
     print(helper.get_all_tep_words('cantar', pos='Verbo'))
+    print(helper.get_tep_words_count('cantar', pos='Verbo'))
     print(helper.get_connective('na realidade'))
     print(helper.get_connective('além disso'))
     # print(helper.get_all_connectives())
