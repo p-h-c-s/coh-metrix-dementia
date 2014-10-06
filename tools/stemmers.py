@@ -10,6 +10,6 @@ class DelafStemmer(object):
         """@todo: to be defined1. """
         pass
 
-    def get_lemma(self, verb):
-        verb = coh.resource_pool.rp.db_helper().get_verb(verb)
-        return verb.lemma if verb is not None else None
+    def get_lemma(self, word, pos=None):
+        word = coh.resource_pool.rp.db_helper().get_delaf_word(word, pos)
+        return word.lemma if word is not None else None
