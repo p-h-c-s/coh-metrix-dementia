@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import warnings
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
     pos_tagger, stemmer
@@ -46,6 +47,9 @@ class ResourcePool(object):
         :returns: None.
 
         """
+        if suffix in self._res:
+            warnings.warn("Resource \"{0}\" already registered.".format(suffix))
+
         self._res[suffix] = hook
         if is_valid_id(suffix):
             setattr(self, suffix, lambda *args: self.get(suffix, *args))
@@ -59,6 +63,10 @@ class ResourcePool(object):
 
         """
         res_id = (suffix, ) + args
+
+        if suffix not in self._res:
+            raise ValueError('Resource \"{0}\" not registered.'.format(suffix))
+
         if res_id not in self._cache:
             self._cache[res_id] = self._res[suffix](*args)
 
