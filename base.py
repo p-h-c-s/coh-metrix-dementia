@@ -78,6 +78,15 @@ class Category(object):
             If no value is passed, the docstring of the class is used.
             (default None)
         """
+        if name is None and hasattr(self.__class__, 'name'):
+            name = self.__class__.name
+
+        if table_name is None and hasattr(self.__class__, 'table_name'):
+            table_name = self.__class__.table_name
+
+        if desc is None and hasattr(self.__class__, 'desc'):
+            desc = self.__class__.desc
+
         if name is None:
             name = self.__class__.__name__
         self.name = name
@@ -162,6 +171,15 @@ class Metric(object):
         desc -- A longer description of the metric. Used for UI purposes.
             (default None)
         """
+        if name is None and hasattr(self.__class__, 'name'):
+            name = self.__class__.name
+
+        if column_name is None and hasattr(self.__class__, 'column_name'):
+            column_name = self.__class__.column_name
+
+        if desc is None and hasattr(self.__class__, 'desc'):
+            desc = self.__class__.desc
+
         if name is None:
             name = self.__class__.__name__
         self.name = name
