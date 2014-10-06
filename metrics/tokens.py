@@ -6,12 +6,14 @@ from coh.resource_pool import rp as default_rp
 class PersonalPronounsIncidence(base.Metric):
     """
     """
+    name = 'Personal pronouns incidence'
+    column_name = 'personal_pronouns'
+
     personal_pronouns = ['eu', 'tu', 'ele', 'ela', 'nós', 'vós', 'eles', 'elas',
                          'você', 'vocês']
 
-    def __init__(self, name='Personal pronouns incidence',
-                 column_name='personal_pronouns'):
-        super(PersonalPronounsIncidence, self).__init__(name, column_name)
+    def __init__(self):
+        super(PersonalPronounsIncidence, self).__init__()
 
     def value_for_text(self, t, rp=default_rp):
         words = [word.lower() for word in rp.all_words(t)]
@@ -36,9 +38,11 @@ class TypeTokenRatio(base.Metric):
 
     """Docstring for TypeTokenRatio. """
 
-    def __init__(self, name='Type to token ratio',
-                 column_name='ttr'):
-        super(TypeTokenRatio, self).__init__(name, column_name)
+    name = 'Type to token ratio'
+    column_name = 'ttr'
+
+    def __init__(self):
+        super(TypeTokenRatio, self).__init__()
 
     def value_for_text(self, t, rp=default_rp):
         words = [word.lower() for word in rp.all_words(t)]
@@ -46,10 +50,11 @@ class TypeTokenRatio(base.Metric):
 
 
 class Tokens(base.Category):
+    name = 'Pronouns, Types and Tokens'
+    table_name = 'tokens'
 
-    def __init__(self, name='Pronouns, Types and Tokens',
-                 table_name='tokens'):
-        super(Tokens, self).__init__(name, table_name)
+    def __init__(self):
+        super(Tokens, self).__init__()
         self._set_metrics_from_module(__name__)
         self.metrics.sort(key=lambda m: m.name)
         # TODO: remove when PronounsPerNounPhrase is ready.
