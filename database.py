@@ -50,12 +50,52 @@ class DelafVerb(Base):
 
     word = Column(String, primary_key=True)
     lemma = Column(String, primary_key=True)
+    pos = Column(String, primary_key=True)
     tense = Column(String, primary_key=True)
     person = Column(String, primary_key=True)
 
-    def __str__(self):
-        return '<DelafVerb: word={0}, lemma={1}, tense={2}, person={3}>'\
-            .format(self.word, self.lemma, self.tense, self.person)
+    def __repr__(self):
+        return ('<DelafVerb: word={0}, lemma={1}, pos={2}, tense={3},' +
+                ' person={4}>')\
+            .format(self.word, self.lemma, self.pos, self.tense, self.person)
+
+
+class DelafNoun(Base):
+    __tablename__ = 'delaf_nouns'
+
+    word = Column(String, primary_key=True)
+    lemma = Column(String, primary_key=True)
+    pos = Column(String, primary_key=True)
+    morf = Column(String, primary_key=True)
+
+    def __repr__(self):
+        return '<DelafNoun: word={0}, lemma={1}, pos={2}, morf={3}>'\
+            .format(self.word, self.lemma, self.pos, self.morf)
+
+
+class DelafWord(Base):
+    __tablename__ = 'delaf_words'
+
+    word = Column(String, primary_key=True)
+    lemma = Column(String, primary_key=True)
+    pos = Column(String, primary_key=True)
+
+    def __repr__(self):
+        return '<DelafWord: word={0}, lemma={1}, pos={2}>'\
+            .format(self.word, self.lemma, self.pos)
+
+
+class TepWord(Base):
+    __tablename__ = 'tep_words'
+
+    group = Column(Integer, primary_key=True)
+    word = Column(String, primary_key=True)
+    pos = Column(String)
+    antonym = Column(Integer)
+
+    def __repr__(self):
+        return '<TepWord: group={0}, word={1}, pos={2}, antonym={3}>'\
+            .format(self.group, self.word, self.pos, self.antonym)
 
 
 class Frequency(Base):
@@ -68,7 +108,7 @@ class Frequency(Base):
     texts = Column(Integer)
     texts_perc = Column(Float)
 
-    def __str__(self):
+    def __repr__(self):
         return '<Frequency: word=%s, freq=%s, freq_perc=%s, texts=%s, texts_perc=%s>'\
             % (self.word, str(self.freq), str(self.freq_perc), str(self.texts),
                str(self.texts_perc))
@@ -82,7 +122,7 @@ class Hypernym(Base):
     grammar_attrs = Column(String)
     hyper_levels = Column(Integer)
 
-    def __str__(self):
+    def __repr__(self):
         return '<Hypernym: word={0}, cat={1}, attrs={2}, levels={3}>'\
             .format(self.word, self.category, self.grammar_attrs,
                     self.hyper_levels)
@@ -101,7 +141,7 @@ class Connective(Base):
     logic_pos = Column(Boolean)
     logic_neg = Column(Boolean)
 
-    def __str__(self):
+    def __repr__(self):
         attrs = []
         if self.additive_pos:
             attrs.append('add pos')
@@ -147,7 +187,7 @@ class Helper(object):
         """
         return self._session.query(Hypernym).filter_by(word=verb).first()
 
-    def get_verb(self, verb):
+    def get_delaf_verb(self, verb):
         """@todo: Docstring for get_verb.
 
         :verb: @todo
@@ -155,6 +195,66 @@ class Helper(object):
 
         """
         return self._session.query(DelafVerb).filter_by(word=verb).first()
+
+    def get_delaf_noun(self, noun):
+        """@todo: Docstring for get_noun.
+
+        :noun: @todo
+        :returns: @todo
+
+        """
+        return self._session.query(DelafNoun).filter_by(word=noun).first()
+
+    def get_delaf_word(self, word, pos=None):
+        """@todo: Docstring for get_word.
+
+        :word: @todo
+        :pos: @todo
+        :returns: @todo
+
+        """
+        if pos is None:
+            # Ignore PoS
+            result = self._session.query(DelafWord).filter_by(word=word).first()
+        else:
+            result = self._session.query(DelafWord)\
+                .filter_by(word=word, pos=pos).first()
+
+        return result
+
+    def get_tep_word(self, word, pos=None):
+        """@todo: Docstring for get_tep_word.
+
+        :word: @todo
+        :pos: @todo
+        :returns: @todo
+
+        """
+        if pos is None:
+            # Ignore PoS
+            result = self._session.query(TepWord).filter_by(word=word).first()
+        else:
+            result = self._session.query(TepWord)\
+                .filter_by(word=word, pos=pos).first()
+
+        return result
+
+    def get_all_tep_words(self, word, pos=None):
+        """@todo: Docstring for get_all_tep_words.
+
+        :word: @todo
+        :pos: @todo
+        :returns: @todo
+
+        """
+        if pos is None:
+            # Ignore PoS
+            result = self._session.query(TepWord).filter_by(word=word).all()
+        else:
+            result = self._session.query(TepWord)\
+                .filter_by(word=word, pos=pos).all()
+
+        return result
 
     def get_connective(self, connective):
         """TODO: Docstring for get_connective.
@@ -185,8 +285,19 @@ if __name__ == '__main__':
     print(helper.get_frequency('maçã'))
     print(helper.get_hypernyms('dar'))
     print(helper.get_hypernyms('abalançar'))
-    print(helper.get_verb('apareceu'))
-    print(helper.get_verb('abraçarão'))
+    print(helper.get_delaf_verb('apareceu'))
+    print(helper.get_delaf_verb('abraçarão'))
+    print(helper.get_delaf_noun('abraço'))
+    print(helper.get_delaf_noun('carrinho'))
+    print(helper.get_delaf_noun('carrão'))
+    print(helper.get_delaf_word('bonito'))
+    print(helper.get_delaf_word('finalmente'))
+    print(helper.get_delaf_word('canto', pos='N'))
+    print(helper.get_delaf_word('canto', pos='V'))
+    print(helper.get_tep_word('cantar', pos='Substantivo'))
+    print(helper.get_tep_word('cantar', pos='Verbo'))
+    print(helper.get_all_tep_words('cantar'))
+    print(helper.get_all_tep_words('cantar', pos='Verbo'))
     print(helper.get_connective('na realidade'))
     print(helper.get_connective('além disso'))
     # print(helper.get_all_connectives())
