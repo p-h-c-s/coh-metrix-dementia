@@ -4,10 +4,10 @@ from coh.resource_pool import rp as default_rp
 
 
 class HypernymsVerbs(base.Metric):
-    """"""
-    def __init__(self, name='Mean hypernyms per verb',
-                 column_name='hypernyms_verbs'):
-        super(HypernymsVerbs, self).__init__(name, column_name)
+    """
+    """
+    name='Mean hypernyms per verb'
+    column_name='hypernyms_verbs'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         verb_tokens = [token[0] for token in rp.tagged_words(t)
@@ -23,8 +23,11 @@ class HypernymsVerbs(base.Metric):
 class Hypernyms(base.Category):
     """
     """
-    def __init__(self, name='Hypernyms', table_name='hypernyms'):
-        super(Hypernyms, self).__init__(name, table_name)
+    name='Hypernyms'
+    table_name='hypernyms'
+    
+    def __init__(self):
+        super(Hypernyms, self).__init__()
         self._set_metrics_from_module(__name__)
         self.metrics.sort(key=lambda m: m.name)
 

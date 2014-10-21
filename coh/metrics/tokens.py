@@ -23,21 +23,18 @@ class PersonalPronounsIncidence(base.Metric):
 
 
 class PronounsPerNounPhrase(base.Metric):
-
-    """Docstring for PronounsPerNounPhrase. """
-
-    def __init__(self, name='Mean pronouns per noun phrase',
-                 column_name='pronouns_per_np'):
-        super(PronounsPerNounPhrase, self).__init__(name, column_name)
+    """
+    """
+    name='Mean pronouns per noun phrase'
+    column_name='pronouns_per_np'
 
     def value_for_text(self, t, rp=default_rp):
         raise NotImplementedError('Waiting for syntactic parser')
 
 
 class TypeTokenRatio(base.Metric):
-
-    """Docstring for TypeTokenRatio. """
-
+    """
+    """
     name = 'Type to token ratio'
     column_name = 'ttr'
 
