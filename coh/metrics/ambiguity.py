@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
 

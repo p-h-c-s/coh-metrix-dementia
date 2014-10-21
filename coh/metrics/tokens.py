@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
 
@@ -9,8 +10,8 @@ class PersonalPronounsIncidence(base.Metric):
     name = 'Personal pronouns incidence'
     column_name = 'personal_pronouns'
 
-    personal_pronouns = ['eu', 'tu', 'ele', 'ela', 'nós', 'vós', 'eles', 'elas',
-                         'você', 'vocês']
+    personal_pronouns = ['eu', 'tu', 'ele', 'ela', 'nós', 'vós', 'eles',
+                         'elas', 'você', 'vocês']
 
     def __init__(self):
         super(PersonalPronounsIncidence, self).__init__()
@@ -23,21 +24,18 @@ class PersonalPronounsIncidence(base.Metric):
 
 
 class PronounsPerNounPhrase(base.Metric):
-
-    """Docstring for PronounsPerNounPhrase. """
-
-    def __init__(self, name='Mean pronouns per noun phrase',
-                 column_name='pronouns_per_np'):
-        super(PronounsPerNounPhrase, self).__init__(name, column_name)
+    """
+    """
+    name = 'Mean pronouns per noun phrase'
+    column_name = 'pronouns_per_np'
 
     def value_for_text(self, t, rp=default_rp):
         raise NotImplementedError('Waiting for syntactic parser')
 
 
 class TypeTokenRatio(base.Metric):
-
-    """Docstring for TypeTokenRatio. """
-
+    """
+    """
     name = 'Type to token ratio'
     column_name = 'ttr'
 

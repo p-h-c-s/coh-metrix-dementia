@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
 from coh.utils import base_path, count_occurrences, count_occurrences_for_all
 
 
 class LogicOperatorsIncidence(base.Metric):
-    """"""
-    def __init__(self, name='Logic operators incidence',
-                 column_name='logic_operators'):
-        super(LogicOperatorsIncidence, self).__init__(name, column_name)
+    """
+    """
+    name = 'Logic operators incidence'
+    column_name = 'logic_operators'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         logic_operators = rp.pos_tagger().tagset.LOGIC_OPERATORS
@@ -19,9 +20,10 @@ class LogicOperatorsIncidence(base.Metric):
 
 
 class AndIncidence(base.Metric):
-    """Docstring for AndIncidence. """
-    def __init__(self, name='Incidence of ANDs.', column_name='and_incidence'):
-        super(AndIncidence, self).__init__(name, column_name)
+    """
+    """
+    name = 'Incidence of ANDs.'
+    column_name = 'and_incidence'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         _and = rp.pos_tagger().tagset.AND
@@ -31,9 +33,10 @@ class AndIncidence(base.Metric):
 
 
 class OrIncidence(base.Metric):
-    """Docstring for OrIncidence. """
-    def __init__(self, name='Incidence of ORs.', column_name='or_incidence'):
-        super(OrIncidence, self).__init__(name, column_name)
+    """
+    """
+    name = 'Incidence of ORs.'
+    column_name = 'or_incidence'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         _or = rp.pos_tagger().tagset.OR
@@ -43,9 +46,10 @@ class OrIncidence(base.Metric):
 
 
 class IfIncidence(base.Metric):
-    """Docstring for IfIncidence. """
-    def __init__(self, name='Incidence of IFs.', column_name='if_incidence'):
-        super(IfIncidence, self).__init__(name, column_name)
+    """
+    """
+    name = 'Incidence of IFs.'
+    column_name = 'if_incidence'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         _if = rp.pos_tagger().tagset.IF
@@ -55,10 +59,10 @@ class IfIncidence(base.Metric):
 
 
 class NegationIncidence(base.Metric):
-    """Docstring for NegationIncidence. """
-    def __init__(self, name='Incidence of negations',
-                 column_name='negation_incidence'):
-        super(NegationIncidence, self).__init__(name, column_name)
+    """
+    """
+    name = 'Incidence of negations'
+    column_name = 'negation_incidence'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         negations = rp.pos_tagger().tagset.NEGATIONS
@@ -71,8 +75,11 @@ class NegationIncidence(base.Metric):
 class LogicOperators(base.Category):
     """
     """
-    def __init__(self, name='Logic operators', table_name='logic_operators'):
-        super(LogicOperators, self).__init__(name, table_name)
+    name = 'Logic operators'
+    table_name = 'logic_operators'
+
+    def __init__(self):
+        super(LogicOperators, self).__init__()
         self._set_metrics_from_module(__name__)
         self.metrics.sort(key=lambda m: m.name)
 

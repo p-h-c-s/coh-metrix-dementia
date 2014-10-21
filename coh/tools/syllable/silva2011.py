@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 #-*- encoding:utf-8 -*-
-
 # silva2011.py - Syllable separation using the algorithm described in Silva
 # [2011].
 # Copyright (C) 2014  Alessandro Bokan
@@ -21,7 +19,7 @@
 # Authors:  Alessandro Bokan <alessandro.bokan@gmail.com>
 #           Andre Cunha      <andre.lv.cunha@gmail.com> (minor modifications)
 
-
+from __future__ import unicode_literals, print_function, division
 from .cases import case1, case2, case3, case4, case5, case6, case7, case8
 from .tonic import tonic_vowel
 from .api import SyllableSeparator
