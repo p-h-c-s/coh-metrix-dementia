@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # cases.py - Auxiliary file for silva2011.py
 # Copyright (C) 2014  Alessandro Bokan
 #
@@ -15,7 +16,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # Authors:  Alessandro Bokan <alessandro.bokan@gmail.com>
-
+from __future__ import unicode_literals, print_function, division
 
 def case1(w, p, p0, pVt, k, c):
     w = w[:p[k] + 1] + '-' + w[p[k] + 1:]

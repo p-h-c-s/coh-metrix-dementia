@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 #-*- encoding:utf-8 -*-
-
 # tonic.py - Tonic vowel finding using the algorithm described in Silva [2011].
 # Copyright (C) 2014  Alessandro Bokan
 #
@@ -19,6 +17,7 @@
 #
 # Authors:  Alessandro Bokan <alessandro.bokan@gmail.com>
 
+from __future__ import unicode_literals, print_function, division
 import re
 import codecs
 from sys import argv

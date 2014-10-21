@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, division
+
 class SyllableSeparator(object):
     """This class defines the basic interface for syllable separators.
     """

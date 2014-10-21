@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
 
@@ -6,8 +7,8 @@ from coh.resource_pool import rp as default_rp
 class HypernymsVerbs(base.Metric):
     """
     """
-    name='Mean hypernyms per verb'
-    column_name='hypernyms_verbs'
+    name = 'Mean hypernyms per verb'
+    column_name = 'hypernyms_verbs'
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         verb_tokens = [token[0] for token in rp.tagged_words(t)
@@ -23,9 +24,9 @@ class HypernymsVerbs(base.Metric):
 class Hypernyms(base.Category):
     """
     """
-    name='Hypernyms'
-    table_name='hypernyms'
-    
+    name = 'Hypernyms'
+    table_name = 'hypernyms'
+
     def __init__(self):
         super(Hypernyms, self).__init__()
         self._set_metrics_from_module(__name__)

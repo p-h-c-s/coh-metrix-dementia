@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import unicode_literals, print_function, division
 from coh.utils import is_valid_id
 from coh.resource_pool import rp as default_rp
 import codecs
