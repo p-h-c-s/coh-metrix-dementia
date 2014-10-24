@@ -35,8 +35,7 @@ class Words(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         # return ilen(filterfalse(pos_tagger.tagset.is_punctuation,
         #                         rp.tagged_words(t)))
-        return len([w for w in rp.tagged_words(t)
-                    if not pos_tagger.tagset.is_punctuation(w)])
+        return len(rp.tagged_words(t))
 
 
 class Sentences(base.Metric):
