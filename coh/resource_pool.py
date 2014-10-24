@@ -92,9 +92,11 @@ class DefaultResourcePool(ResourcePool):
         # Basic text info.
         self.register('paragraphs', lambda t: t.paragraphs)
         self.register('sentences', self._sentences)
-        self.register('words', self._words)
+        self.register('tokens', self._tokens)
+        self.register('all_tokens', self._all_tokens)
         self.register('all_words', self._all_words)
         self.register('tagged_sentences', self._tagged_sentences)
+        self.register('tagged_tokens', self._tagged_tokens)
         self.register('tagged_words', self._tagged_words)
 
         # Derived text info.
@@ -118,32 +120,48 @@ class DefaultResourcePool(ResourcePool):
             [senter.tokenize(p) for p in paragraphs])
         return list(sentences)
 
-    def _words(self, text):
+    def _tokens(self, text):
         """Return a list of lists of strings, where each list of strings
-            corresponds to a sentence, and each string in the list is a word.
+            corresponds to a sentence, and each string in the list is a token.
         """
         sentences = self.get('sentences', text)
         return list([word_tokenize(sent) for sent in sentences])
 
-    def _all_words(self, text):
-        """Return all words of the text in a single list.
+    def _all_tokens(self, text):
+        """Return all tokens of the text in a single list.
         """
-        words = self.get('words', text)
-        return list(chain.from_iterable(words))
+        tokens = self.get('tokens', text)
+        return list(chain.from_iterable(tokens))
+
+    def _all_words(self, text):
+        """Return all non-punctuation tokens of the text in a single list.
+        """
+        tagged_words = self.get('tagged_words', text)
+        return [word[0] for word in tagged_words]
 
     def _tagged_sentences(self, text):
         """Return a list of lists of pairs (string, string), representing
-            the sentences with tagged words.
+            the sentences with tagged tokens.
         """
-        words = self.get('words', text)
-        return pos_tagger.tag_sents(words)
+        tokens = self.get('tokens', text)
+        return pos_tagger.tag_sents(tokens)
 
-    def _tagged_words(self, text):
+    def _tagged_tokens(self, text):
         """Return a list of pair (string, string), representing the tokens
             not separated in sentences.
         """
         tagged_sentences = self.get('tagged_sentences', text)
         return list(chain.from_iterable(tagged_sentences))
+
+    def _tagged_words(self, text):
+        """Return a list of pair (string, string), representing the
+            non-punctuation tokens not separated in sentences.
+        """
+        tagged_tokens = self.get('tagged_tokens', text)
+        tagset = self.get('pos_tagger').tagset
+        tagged_words = [token for token in tagged_tokens
+                        if not tagset.is_punctuation(token)]
+        return tagged_words
 
     def _content_words(self, text):
         """Return the content words of the texts, separated by sentences.
