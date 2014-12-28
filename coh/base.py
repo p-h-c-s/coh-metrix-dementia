@@ -245,7 +245,21 @@ class ResultSet(object):
     def __getitem__(self, key):
         if isinstance(key, int):
             key = list(self._store.items())[key][0]
-        return self._store[key]
+            return self._store[key]
+        elif isinstance(key, str):
+            for k, v in self._store.items():
+                if isinstance(k, Category):
+                    _k = k.table_name
+                elif isinstance(k, Metric):
+                    _k = k.column_name
+                else:
+                    _k = k
+
+                if _k == key:
+                    return v
+            raise KeyError(key)
+        else:
+            return self._store[key]
 
     def __setitem__(self, key, value):
         self._store[key] = value
