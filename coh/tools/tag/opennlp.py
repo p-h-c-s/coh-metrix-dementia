@@ -1,4 +1,4 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 # opennlp.py - An OpenNLP tagger trained using the MacMorpho corpus.
 # Copyright (C) 2014  Andre Luiz Verucci da Cunha
 #
@@ -18,17 +18,21 @@
 from __future__ import unicode_literals, print_function, division
 from coh.tools.tag.api import Tagger
 from coh.tools.tag.macmorpho import MacMorphoTagSet
-from coh.utils import base_path
 from nltk.tag.util import str2tuple
 import codecs
 import subprocess
 import tempfile
+from os import environ
 
 
 class OpenNLPTagger(Tagger):
     """Represents an OpenNLP tagger trained on the MacMorpho corpus.
     """
     def __init__(self):
+        if 'CMD_DATA_DIR' not in environ:
+            raise 'CMD_DATA_DIR variable not set.'
+
+        base_path = environ['CMD_DATA_DIR']
         self._path = base_path + '/vendor/apache-opennlp-1.5.3/bin/opennlp'
         self._model = base_path + '/models/opennlp/pt-pos-maxent.bin'
         self._encoding = 'utf-8'
