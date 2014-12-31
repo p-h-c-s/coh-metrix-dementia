@@ -17,6 +17,7 @@ from coh.resource_pool import (
 
 from coh.metrics import *
 from coh.tools import *
+from coh.conf import config
 
 all_metrics = MetricsSet([BasicCounts(),
                           LogicOperators(),

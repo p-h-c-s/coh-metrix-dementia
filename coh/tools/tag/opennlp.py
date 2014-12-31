@@ -18,23 +18,19 @@
 from __future__ import unicode_literals, print_function, division
 from coh.tools.tag.api import Tagger
 from coh.tools.tag.macmorpho import MacMorphoTagSet
+from coh.conf import config
 from nltk.tag.util import str2tuple
 import codecs
 import subprocess
 import tempfile
-from os import environ
 
 
 class OpenNLPTagger(Tagger):
     """Represents an OpenNLP tagger trained on the MacMorpho corpus.
     """
     def __init__(self):
-        if 'CMD_DATA_DIR' not in environ:
-            raise 'CMD_DATA_DIR variable not set.'
-
-        base_path = environ['CMD_DATA_DIR']
-        self._path = base_path + '/vendor/apache-opennlp-1.5.3/bin/opennlp'
-        self._model = base_path + '/models/opennlp/pt-pos-maxent.bin'
+        # self._path = base_path + '/vendor/apache-opennlp-1.5.3/bin/opennlp'
+        # self._model = base_path + '/models/opennlp/pt-pos-maxent.bin'
         self._encoding = 'utf-8'
 
         self.tagset = MacMorphoTagSet()
@@ -62,7 +58,7 @@ class OpenNLPTagger(Tagger):
 
     @property
     def _cmd(self):
-        return [self._path, 'POSTagger', self._model]
+        return [config['OPENNLP_BIN'], 'POSTagger', config['OPENNLP_MODEL']]
 
     def _process_output(self, out):
         # Ignore the first line, containing:
@@ -72,7 +68,10 @@ class OpenNLPTagger(Tagger):
         #        Total: x sents
         #        Runtime: xs"
         # and empty lines
+
         lines = [line for line in out.split('\n') if line.strip()][1:-3]
-        as_tuples = lambda line: [str2tuple(token, sep='_')
-                                  for token in line.split(' ')]
+
+        def as_tuples(line):
+            return [str2tuple(token, sep='_') for token in line.split(' ')]
+
         return [as_tuples(line) for line in lines]
