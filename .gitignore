@@ -46,3 +46,6 @@ nosetests.xml
 
 # Temp. files
 *~
+
+TODO.txt
+run.py
