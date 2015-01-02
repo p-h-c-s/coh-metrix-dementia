@@ -28,8 +28,8 @@ class Text(object):
     A text has several (optional) attributes: title, author,
     source, publication data and genre.
     """
-    def __init__(self, filepath, encoding='utf-8', title='', author='',
-                 source='', publication_date='', genre=''):
+    def __init__(self, filepath='', encoding='utf-8', title='', author='',
+                 source='', publication_date='', genre='', content=''):
         """Form a text.
 
         Required arguments:
@@ -51,12 +51,13 @@ class Text(object):
         self.publication_date = publication_date
         self.genre = genre
 
-        with codecs.open(filepath, mode='r', encoding=encoding)\
-                as input_file:
-            content = input_file.readlines()
+        if filepath:
+            with codecs.open(filepath, mode='r', encoding=encoding)\
+                    as input_file:
+                content = input_file.readlines()
 
-            self.paragraphs = [line.strip() for line in content
-                               if not line.isspace()]
+        self.paragraphs = [line.strip() for line in content
+                           if not line.isspace()]
 
     def __str__(self):
         return '<Text: "%s...">' % (self.paragraphs[0][:70])
