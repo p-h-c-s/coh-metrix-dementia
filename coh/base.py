@@ -28,8 +28,8 @@ class Text(object):
     A text has several (optional) attributes: title, author,
     source, publication data and genre.
     """
-    def __init__(self, filepath='', encoding='utf-8', title='', author='',
-                 source='', publication_date='', genre='', content=''):
+    def __init__(self, content='', title='', author='', source='',
+                 publication_date='', genre='', filepath='', encoding='utf-8'):
         """Form a text.
 
         Required arguments:
@@ -55,9 +55,11 @@ class Text(object):
             with codecs.open(filepath, mode='r', encoding=encoding)\
                     as input_file:
                 content = input_file.readlines()
+        else:
+            content = content.split('\n')
 
         self.paragraphs = [line.strip() for line in content
-                           if not line.isspace()]
+                           if line and not line.isspace()]
 
     def __str__(self):
         return '<Text: "%s...">' % (self.paragraphs[0][:70])
@@ -128,11 +130,17 @@ class Category(object):
 
         Returns: a ResultSet containing the calculated metrics.
         """
-        # metrics_values = ResultSet([m.value_for_text(text).items()[0]
+        values = []
+        for m in self.metrics:
+            try:
+                values.append((m, m.value_for_text(text)))
+            except ZeroDivisionError:
+                values.append((m, 0))
+
+        # metrics_values = ResultSet([(m, m.value_for_text(text))
         #                             for m in self.metrics])
-        metrics_values = ResultSet([(m, m.value_for_text(text))
-                                    for m in self.metrics])
-        # return ResultSet([(self, metrics_values)])
+        metrics_values = ResultSet(values)
+
         return metrics_values
 
     def __str__(self):
