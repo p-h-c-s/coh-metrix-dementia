@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# base.py - Basic classes for accessing Coh-Metrix-Port's functionality.
+# Coh-Metrix-Dementia - Automatic text analysis and classification for dementia.
 # Copyright (C) 2014  Andre Luiz Verucci da Cunha
 #
 # This program is free software: you can redistribute it and/or modify it

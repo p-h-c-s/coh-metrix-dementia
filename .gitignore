@@ -24,7 +24,6 @@ coh/vendor
 coh/corpora/test
 coh/sql
 coh/test
-coh/tools/syllable/ceci.py
 
 .ropeproject
 

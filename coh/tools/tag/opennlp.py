@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# opennlp.py - An OpenNLP tagger trained using the MacMorpho corpus.
+# Coh-Metrix-Dementia - Automatic text analysis and classification for dementia.
 # Copyright (C) 2014  Andre Luiz Verucci da Cunha
 #
 # This program is free software: you can redistribute it and/or modify it
