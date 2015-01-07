@@ -20,7 +20,7 @@ class PersonalPronounsIncidence(base.Metric):
         words = [word.lower() for word in rp.all_words(t)]
         n_personal_pronouns = sum([word in self.personal_pronouns
                                    for word in words])
-        return n_personal_pronouns / len(words)
+        return n_personal_pronouns / (len(words) / 1000)
 
 
 class PronounsPerNounPhrase(base.Metric):

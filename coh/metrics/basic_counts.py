@@ -20,7 +20,7 @@ class Flesch(base.Metric):
             map(syllable_separator.separate, rp.all_words(t)))
         mean_syllables_per_word = ilen(syllables) / ilen(rp.all_words(t))
 
-        flesch = 164.835 - 1.015 * mean_words_per_sentence\
+        flesch = 248.835 - 1.015 * mean_words_per_sentence\
             - 84.6 * mean_syllables_per_word
 
         return flesch
@@ -108,7 +108,7 @@ class VerbIncidence(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         verbs = filter(pos_tagger.tagset.is_verb, rp.tagged_words(t))
-        return ilen(verbs) / ilen(rp.all_words(t))
+        return ilen(verbs) / (ilen(rp.all_words(t)) / 1000)
 
 
 class NounIncidence(base.Metric):
@@ -119,7 +119,7 @@ class NounIncidence(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         nouns = filter(pos_tagger.tagset.is_noun, rp.tagged_words(t))
-        return ilen(nouns) / ilen(rp.all_words(t))
+        return ilen(nouns) / (ilen(rp.all_words(t)) / 1000)
 
 
 class AdjectiveIncidence(base.Metric):
@@ -130,7 +130,7 @@ class AdjectiveIncidence(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         adjectives = filter(pos_tagger.tagset.is_adjective, rp.tagged_words(t))
-        return ilen(adjectives) / ilen(rp.all_words(t))
+        return ilen(adjectives) / (ilen(rp.all_words(t)) / 1000)
 
 
 class AdverbIncidence(base.Metric):
@@ -141,7 +141,7 @@ class AdverbIncidence(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         adverbs = filter(pos_tagger.tagset.is_adverb, rp.tagged_words(t))
-        return ilen(adverbs) / ilen(rp.all_words(t))
+        return ilen(adverbs) / (ilen(rp.all_words(t)) / 1000)
 
 
 class PronounIncidence(base.Metric):
@@ -152,7 +152,7 @@ class PronounIncidence(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         pronouns = filter(pos_tagger.tagset.is_pronoun, rp.tagged_words(t))
-        return ilen(pronouns) / ilen(rp.all_words(t))
+        return ilen(pronouns) / (ilen(rp.all_words(t)) / 1000)
 
 
 class ContentWordIncidence(base.Metric):
@@ -164,7 +164,7 @@ class ContentWordIncidence(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         content_words = filter(pos_tagger.tagset.is_content_word,
                                rp.tagged_words(t))
-        return ilen(content_words) / ilen(rp.all_words(t))
+        return ilen(content_words) / (ilen(rp.all_words(t)) / 1000)
 
 
 class FunctionWordIncidence(base.Metric):
@@ -176,7 +176,7 @@ class FunctionWordIncidence(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         function_words = filter(pos_tagger.tagset.is_function_word,
                                 rp.tagged_words(t))
-        return ilen(function_words) / ilen(rp.all_words(t))
+        return ilen(function_words) / (ilen(rp.all_words(t)) / 1000)
 
 
 class BasicCounts(base.Category):

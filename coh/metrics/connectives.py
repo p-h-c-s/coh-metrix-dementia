@@ -97,7 +97,7 @@ class ConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class AddPosConnectivesIncidence(base.Metric):
@@ -112,7 +112,7 @@ class AddPosConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class AddNegConnectivesIncidence(base.Metric):
@@ -127,7 +127,7 @@ class AddNegConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class TmpPosConnectivesIncidence(base.Metric):
@@ -142,7 +142,7 @@ class TmpPosConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class TmpNegConnectivesIncidence(base.Metric):
@@ -157,7 +157,7 @@ class TmpNegConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class CauPosConnectivesIncidence(base.Metric):
@@ -172,7 +172,7 @@ class CauPosConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class CauNegConnectivesIncidence(base.Metric):
@@ -187,7 +187,7 @@ class CauNegConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class LogPosConnectivesIncidence(base.Metric):
@@ -202,7 +202,7 @@ class LogPosConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class LogNegConnectivesIncidence(base.Metric):
@@ -217,7 +217,7 @@ class LogNegConnectivesIncidence(base.Metric):
                                                  ignore_pos=True)
                        for sent in rp.tagged_sentences(t)]
 
-        return sum(occurrences) / len(rp.all_words(t))
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
 
 
 class Connectives(base.Category):
