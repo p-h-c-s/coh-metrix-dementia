@@ -20,10 +20,10 @@ lib64
 include
 share
 
-coh/vendor
-coh/corpora/test
-coh/sql
-coh/test
+vendor
+corpora/test
+sql
+test
 
 .ropeproject
 
