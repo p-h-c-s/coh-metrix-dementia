@@ -19,7 +19,7 @@ from __future__ import unicode_literals, print_function, division
 import warnings
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
-    pos_tagger, stemmer
+    pos_tagger, stemmer, parser
 from coh.utils import is_valid_id
 from coh.database import create_engine, create_session, Helper
 
@@ -86,6 +86,7 @@ class DefaultResourcePool(ResourcePool):
 
         # Tools and helpers.
         self.register('pos_tagger', lambda: pos_tagger)
+        self.register('parser', lambda: parser)
         self.register('stemmer', lambda: stemmer)
         self.register('db_helper', self._db_helper)
 
@@ -102,6 +103,10 @@ class DefaultResourcePool(ResourcePool):
         # Derived text info.
         self.register('content_words', self._content_words)
         self.register('cw_freq', self._cw_freq)
+
+        # Parse structures.
+        self.register('parse_trees', self._parse_trees)
+        self.register('dep_trees', self._dep_trees)
 
     def _db_helper(self):
         """Creates a database session and returns a Helper associated with it.
@@ -197,6 +202,22 @@ class DefaultResourcePool(ResourcePool):
                               for f in frequencies[i]]
 
         return frequencies
+
+    def _parse_trees(self, text):
+        """Return the parse tree of each sentence in the text.
+
+        :text: TODO
+        :returns: TODO
+        """
+        return parser.parse_sents(self.get('sentences', text))
+
+    def _dep_trees(self, text):
+        """Return the dependency tree of each sentence in the text.
+
+        :text: TODO
+        :returns: TODO
+        """
+        pass
 
 
 rp = DefaultResourcePool()

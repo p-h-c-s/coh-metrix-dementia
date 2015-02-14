@@ -23,10 +23,6 @@ class Config(dict):
 
     """A class for storing configuration parameters. """
 
-    EXPECTED_VARS = ['OPENNLP_BIN',
-                     'OPENNLP_MODEL',
-                     ]
-
     def from_object(self, module_name):
         """Load a configuration from a module name.
 
@@ -34,8 +30,8 @@ class Config(dict):
         """
         m = import_module(module_name)
 
-        for var in self.EXPECTED_VARS:
-            if hasattr(m, var):
+        for var in dir(m):
+            if var.isupper():
                 self[var] = getattr(m, var)
 
 

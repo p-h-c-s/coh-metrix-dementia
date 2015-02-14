@@ -21,6 +21,7 @@ from coh.tools.tag import *
 from coh.tools.parse import *
 
 pos_tagger = OpenNLPTagger()
+parser = LxParser()
 
 from coh.tools.tokenizers import senter, word_tokenize
 from coh.tools.syllable import *

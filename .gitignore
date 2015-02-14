@@ -45,6 +45,7 @@ nosetests.xml
 
 # Temp. files
 *~
+*.swp
 
 TODO.txt
 run.py
