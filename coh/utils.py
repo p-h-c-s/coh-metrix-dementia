@@ -18,6 +18,7 @@
 from __future__ import unicode_literals, print_function, division
 from os.path import dirname, abspath
 from sys import modules
+from nltk.tree import Tree
 
 
 base_path = abspath(dirname(modules[__name__].__file__))
@@ -46,6 +47,18 @@ def is_valid_id(string):
 
     return re.match("^[_A-Za-z][_a-zA-Z0-9]*$", string) is not None
 
+
+def reverse_tree(tree):
+    """Reverses (in place) a syntax tree.
+
+    :tree: The tree to be reversed.
+    :returns: None (the tree is reversed in place.)
+
+    """
+    if isinstance(tree, Tree):
+        tree.reverse()
+        for child in tree:
+            reverse_tree(child)
 
 # The following functions are used for counting the occurrences of operators
 #   and connectives in a text.
