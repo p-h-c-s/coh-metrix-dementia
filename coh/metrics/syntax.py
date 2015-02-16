@@ -19,6 +19,7 @@ from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
 from coh.utils import reverse_tree
+from nltk.util import trigrams
 
 
 class YngveComplexity(base.Metric):
@@ -56,7 +57,43 @@ class FrazierComplexity(base.Metric):
     column_name = 'frazier'
 
     def value_for_text(self, t, rp=default_rp):
-        pass
+        syntax_trees = rp.parse_trees(t)
+
+        sentence_indices = []
+        for tree in syntax_trees:
+            if tree.label() == 'ROOT':
+                tree = tree[0]
+
+            leaves = tree.leaves()
+
+            word_indices = [0] * len(leaves)
+            for i in range(len(leaves)):
+                ref_vector = tree.leaf_treeposition(i)
+
+                j = -2
+                while j >= -len(ref_vector) and ref_vector[j] == 0:
+                    parent_index = len(ref_vector) + j
+                    parent_node = tree[ref_vector[:parent_index]]
+
+                    if rp.parser().tagset.is_sentence_node(parent_node):
+                        word_indices[i] += 1.5
+                    else:
+                        word_indices[i] += 1
+
+                    j -= 1
+
+            if len(leaves) < 3:
+                sentence_index = sum(word_indices)
+            else:
+                max_trigrams = 0
+                for trigram in trigrams(word_indices):
+                    if sum(trigram) > max_trigrams:
+                        max_trigrams = sum(trigram)
+                sentence_index = max_trigrams
+
+            sentence_indices.append(sentence_index)
+
+        return sum(sentence_indices) / len(sentence_indices)
 
 
 class DependencyDistance(base.Metric):
