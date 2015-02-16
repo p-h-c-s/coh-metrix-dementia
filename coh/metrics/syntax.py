@@ -18,6 +18,7 @@
 from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
+from coh.utils import reverse_tree
 
 
 class YngveComplexity(base.Metric):
@@ -28,7 +29,23 @@ class YngveComplexity(base.Metric):
     column_name = 'yngve'
 
     def value_for_text(self, t, rp=default_rp):
-        pass
+        syntax_trees = rp.parse_trees(t)
+
+        sentence_indices = []
+        for tree in syntax_trees:
+            reverse_tree(tree)
+
+            leaves = tree.leaves()
+
+            word_indices = []
+            for i in range(len(leaves)):
+                word_indices.append(sum(tree.leaf_treeposition(i)))
+
+            reverse_tree(tree)
+
+            sentence_indices.append((sum(word_indices) / len(word_indices)))
+
+        return sum(sentence_indices) / len(sentence_indices)
 
 
 class FrazierComplexity(base.Metric):
@@ -70,3 +87,8 @@ class SyntacticalComplexity(base.Category):
 
     name = 'Syntactical Complexity'
     table_name = 'syntax'
+
+    def __init__(self):
+        super(SyntacticalComplexity, self).__init__()
+        self._set_metrics_from_module(__name__)
+        self.metrics.sort(key=lambda m: m.name)

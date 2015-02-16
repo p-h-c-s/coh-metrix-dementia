@@ -24,3 +24,4 @@ from coh.metrics.hypernyms import *
 from coh.metrics.tokens import *
 from coh.metrics.connectives import *
 from coh.metrics.ambiguity import *
+from coh.metrics.syntax import *
