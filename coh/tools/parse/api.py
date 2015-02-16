@@ -43,9 +43,9 @@ class TagSet(object):
 
     """Represents the node labels used by a parser. """
 
-    sentence_nodes = []
+    sentence_node_labels = []
 
     def is_sentence_node(self, tree):
         """Returns true if the node's label represents a clausal structure,
             and false otherwise."""
-        return tree.label() in self.sentence_nodes
+        return tree.label() in self.sentence_node_labels
