@@ -104,7 +104,18 @@ class DependencyDistance(base.Metric):
     column_name = 'dep_distance'
 
     def value_for_text(self, t, rp=default_rp):
-        pass
+        graphs = rp.dep_trees(t)
+
+        dep_distances = []
+        for graph in graphs:
+            dep_distance = 0
+            for dep in graph.nodelist[1:]:
+                if dep['rel'] not in ('TOP', 'root', 'punct'):
+                    dep_distance += abs(dep['address'] - dep['head'])
+            print(dep_distance)
+            dep_distances.append(dep_distance)
+
+        return sum(dep_distances) / len(dep_distances)
 
 
 class CrossEntropy(base.Metric):

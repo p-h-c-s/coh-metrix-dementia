@@ -217,7 +217,8 @@ class DefaultResourcePool(ResourcePool):
         :text: TODO
         :returns: TODO
         """
-        pass
+        # XXX: not implemented yet.
+        return []
 
 
 rp = DefaultResourcePool()
