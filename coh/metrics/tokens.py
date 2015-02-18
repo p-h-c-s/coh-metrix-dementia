@@ -18,6 +18,8 @@
 from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
+from collections import Counter
+from math import log
 
 
 class PersonalPronounsIncidence(base.Metric):
@@ -59,8 +61,48 @@ class TypeTokenRatio(base.Metric):
         super(TypeTokenRatio, self).__init__()
 
     def value_for_text(self, t, rp=default_rp):
-        words = [word.lower() for word in rp.all_words(t)]
-        return len(set(words)) / len(words)
+        tokens = rp.all_words(t)
+        types = rp.token_types(t)
+
+        ttr = len(types) / len(tokens)
+
+        return ttr
+
+
+class BrunetIndex(base.Metric):
+
+    """Docstring for BrunetIndex. """
+
+    name = 'Brunet Index'
+    column_name = 'brunet'
+
+    def value_for_text(self, t, rp=default_rp):
+        tokens = rp.all_words(t)
+        types = rp.token_types(t)
+
+        W = len(tokens) ** len(types) ** -0.165
+
+        return W
+
+
+class HoroneStatistic(base.Metric):
+
+    """Docstring for HoroneIndex. """
+
+    name = 'Honore Statistic'
+    column_name = 'honore'
+
+    def value_for_text(self, t, rp=default_rp):
+        tokens = [word.lower() for word in rp.all_words(t)]
+        types = rp.token_types(t)
+
+        counter = Counter(tokens)
+        one_time_tokens = [word for word, count in counter.items()
+                           if count == 1]
+
+        R = 100 * log(len(tokens), 10) / (1 - len(one_time_tokens) / len(types))
+
+        return R
 
 
 class Tokens(base.Category):
@@ -69,10 +111,12 @@ class Tokens(base.Category):
 
     def __init__(self):
         super(Tokens, self).__init__()
-        self._set_metrics_from_module(__name__)
+        # self._set_metrics_from_module(__name__)
+        self.metrics = [PersonalPronounsIncidence(),
+                        TypeTokenRatio(),
+                        BrunetIndex(),
+                        HoroneStatistic(), ]
         self.metrics.sort(key=lambda m: m.name)
-        # TODO: remove when PronounsPerNounPhrase is ready.
-        del self.metrics[0]
 
     def values_for_text(self, t, rp=default_rp):
         return super(Tokens, self).values_for_text(t, rp)

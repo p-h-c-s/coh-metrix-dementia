@@ -103,6 +103,7 @@ class DefaultResourcePool(ResourcePool):
         # Derived text info.
         self.register('content_words', self._content_words)
         self.register('cw_freq', self._cw_freq)
+        self.register('token_types', self._token_types)
 
         # Parse structures.
         self.register('parse_trees', self._parse_trees)
@@ -203,13 +204,25 @@ class DefaultResourcePool(ResourcePool):
 
         return frequencies
 
+    def _token_types(self, text):
+        """Return the token types of the text, as a set.
+
+        :text: TODO
+        :returns: TODO
+
+        """
+        words = [word.lower() for word in self.get('all_words', text)]
+        return set(words)
+
     def _parse_trees(self, text):
         """Return the parse tree of each sentence in the text.
 
         :text: TODO
         :returns: TODO
         """
-        return parser.parse_sents(self.get('sentences', text))
+        tokens = self.get('tokens', text)
+        sentences = [' '.join(sent) for sent in tokens]
+        return parser.parse_sents(sentences)
 
     def _dep_trees(self, text):
         """Return the dependency tree of each sentence in the text.

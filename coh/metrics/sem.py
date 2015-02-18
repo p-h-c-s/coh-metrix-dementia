@@ -29,11 +29,25 @@ class IdeaDensity(base.Metric):
 
 
 class ContentDensity(base.Metric):
-    name = 'Content Density'
+
+    """Docstring for HoroneIndex. """
+
+    name = 'Content density'
     column_name = 'content_density'
 
     def value_for_text(self, t, rp=default_rp):
-        pass
+        tagged_words = rp.tagged_words(t)
+        tagset = rp.pos_tagger().tagset
+
+        content_words = [word for word in tagged_words
+                         if tagset.is_content_word(word)]
+
+        function_words = [word for word in tagged_words
+                          if tagset.is_function_word(word)]
+
+        content_density = len(content_words) / len(function_words)
+
+        return content_density
 
 
 class SemanticDensity(base.Category):
@@ -42,5 +56,6 @@ class SemanticDensity(base.Category):
 
     def __init__(self):
         super(SemanticDensity, self).__init__()
-        self._set_metrics_from_module(__name__)
+        # self._set_metrics_from_module(__name__)
+        self.metrics = [ContentDensity(), ]
         self.metrics.sort(key=lambda m: m.name)
