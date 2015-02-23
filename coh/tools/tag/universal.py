@@ -37,13 +37,14 @@ class UniversalTagSet(TagSet):
     verb_tags = ['VERB']
     auxiliary_verb_tags = ['AUX']
     noun_tags = ['NOUN',
-                 'PROPN']
+                 'PNOUN']
     adjective_tags = ['ADJ']
     adverb_tags = ['ADV']
     pronoun_tags = ['PRON']
     numeral_tags = ['NUM']
     conjunction_tags = ['CONJ', 'SCONJ']
-    preposition_tags = ['ADP']
+    preposition_tags = ['ADP',
+                        'ADPPRON']
     interjection_tags = ['INTJ']
 
     content_word_tags = verb_tags\
@@ -65,6 +66,10 @@ class UniversalTagSet(TagSet):
     particle_tags = ['PART']
     symbol_tags = ['SYM']
     unknown_tags = ['X']
+
+    fine_to_coarse = {'ADPPRON': 'ADP',
+                      'AUX': 'VERB',
+                      'PNOUN': 'NOUN'}
 
     # Operators.
     # TODO: add operators, if future use is intended.

@@ -86,6 +86,8 @@ class TagSet(object):
 
     punctuation_tags = []
 
+    fine_to_coarse = {}
+
     def __init__(self):
         """Form a TagSet.
 
@@ -106,3 +108,12 @@ class TagSet(object):
                 else:
                     setattr(self, 'is_' + attr[:-n],
                             lambda tag: tag in getattr(self, attr))
+
+    def get_coarse_tag(self, tag):
+        """Get the coarse tag corresponding to a fine tag.
+
+        :tag: the fine tag.
+        :returns: the corresponding coarse tag, or the tag itself if there is
+            no corresponding coarse tag in the mapping.
+        """
+        return self.fine_to_coarse[tag] if tag in self.fine_to_coarse else tag
