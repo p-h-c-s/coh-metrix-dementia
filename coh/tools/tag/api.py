@@ -16,7 +16,6 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
-import warnings
 
 
 class Tagger(object):
@@ -87,153 +86,23 @@ class TagSet(object):
 
     punctuation_tags = []
 
-    def _is_in(self, token, _list):
-        """Return true if the token's tag is in the list, and false otherwise.
+    def __init__(self):
+        """Form a TagSet.
+
+            This function will look at the attributes ending with '_tags' and
+            generate proper helping methods, that return True if the given tag
+            is in the list, and False otherwise. If an attribute is of the form
+            'functions_as_foo_tags', __init__ will generate a method called
+            'functions_as_foo(tag)'; otherwise, if it's of the form 'foo_tags',
+            it will generate a method called 'is_foo(tag)'.
         """
-        if not _list:
-            warnings.warn('Empty list')
-        return token[1] in _list
+        n = len('_tags')
 
-    def is_article(self, token):
-        """Check if a token represents an article.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.article_tags)
-
-    def is_verb(self, token):
-        """Check if a token represents a verb.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.verb_tags)
-
-    def is_auxiliary_verb(self, token):
-        """Check if a token represents an auxiliary verb.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.auxiliary_verb_tags)
-
-    def is_participle(self, token):
-        """Check if a token represents a verb in the participle.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.participle_tags)
-
-    def is_noun(self, token):
-        """Check if a token represents a noun.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.noun_tags)
-
-    def is_adjective(self, token):
-        """Check if a token represents an adjective.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.adjective_tags)
-
-    def is_adverb(self, token):
-        """Check if a token represents an adverb.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.adverb_tags)
-
-    def is_pronoun(self, token):
-        """Check if a token represents a pronoun.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.pronoun_tags)
-
-    def is_numeral(self, token):
-        """Check if a token represents a numeral.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.numeral_tags)
-
-    def is_conjunction(self, token):
-        """Check if a token represents a conjunction.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.conjunction_tags)
-
-    def is_preposition(self, token):
-        """Check if a token represents a preposition.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.preposition_tags)
-
-    def is_interjection(self, token):
-        """Check if a token represents an interjection.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.interjection_tags)
-
-    def is_currency(self, token):
-        """Check if a token represents a currency value.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.currency_tags)
-
-    def is_content_word(self, token):
-        """Check if a token represents a content word.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.content_word_tags)
-
-    def is_function_word(self, token):
-        """Check if a token represents a function word.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.function_word_tags)
-
-    def functions_as_noun(self, token):
-        """Check if a token represents a word that functions as a noun.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.functions_as_noun_tags)
-
-    def functions_as_adjective(self, token):
-        """Check if a token represents a word that functions as an adjective.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.functions_as_adjective_tags)
-
-    def is_punctuation(self, token):
-        """Check if a token represents a punctuation mark.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.punctuation_tags)
+        for attr in dir(self):
+            if attr.endswith('_tags'):
+                if attr.startswith('functions_as'):
+                    setattr(self, attr[:-n],
+                            lambda tag: tag in getattr(self, attr))
+                else:
+                    setattr(self, 'is_' + attr[:-n],
+                            lambda tag: tag in getattr(self, attr))
