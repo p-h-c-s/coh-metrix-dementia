@@ -16,6 +16,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+from functools import partial
 
 
 class Tagger(object):
@@ -64,6 +65,7 @@ class TagSet(object):
 
     Subclasses must, at least, define the *_tags lists.
     """
+
     article_tags = []
     verb_tags = []
     auxiliary_verb_tags = []
@@ -100,14 +102,19 @@ class TagSet(object):
         """
         n = len('_tags')
 
+        def is_in(lst, token):
+            return token[1] in lst
+
         for attr in dir(self):
             if attr.endswith('_tags'):
                 if attr.startswith('functions_as'):
-                    setattr(self, attr[:-n],
-                            lambda tag: tag in getattr(self, attr))
+                    attr_name = attr[:-n]
                 else:
-                    setattr(self, 'is_' + attr[:-n],
-                            lambda tag: tag in getattr(self, attr))
+                    attr_name = 'is_' + attr[:-n]
+
+                lst = getattr(self, attr)
+
+                setattr(self, attr_name, partial(is_in, lst))
 
     def get_coarse_tag(self, tag):
         """Get the coarse tag corresponding to a fine tag.

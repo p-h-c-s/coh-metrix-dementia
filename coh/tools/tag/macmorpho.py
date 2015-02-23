@@ -40,7 +40,7 @@ class MacMorphoTagSet(TagSet):
                  'NPROP']
     adjective_tags = ['ADJ']
     adverb_tags = ['ADV',
-                   'ADV-KS'
+                   'ADV-KS',
                    'ADV-KS-REL']
     pronoun_tags = ['PROPESS',
                     'PROSUB',
@@ -116,10 +116,5 @@ class MacMorphoTagSet(TagSet):
 
     IF = [('se', 'KS')]
 
-    def is_denotative_word(self, token):
-        """Check if a token represents a denotative word.
-
-        Required parameters:
-        token -- a tokenized word (a pair (string, string)).
-        """
-        return self._is_in(token, self.denotative_word_tags)
+    def __init__(self):
+        super(MacMorphoTagSet, self).__init__()
