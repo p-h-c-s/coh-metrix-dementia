@@ -20,7 +20,7 @@ from __future__ import unicode_literals, print_function, division
 from coh.tools.tag import *
 from coh.tools.parse import *
 
-pos_tagger = OpenNLPTagger()
+pos_tagger = OpenNLPMacMorphoTagger()
 parser = LxParser()
 
 from coh.tools.tokenizers import senter, word_tokenize

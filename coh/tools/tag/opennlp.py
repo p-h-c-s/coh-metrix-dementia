@@ -17,23 +17,27 @@
 
 from __future__ import unicode_literals, print_function, division
 from coh.tools.tag.api import Tagger
-from coh.tools.tag.macmorpho import MacMorphoTagSet
-from coh.conf import config
 from nltk.tag.util import str2tuple
+from coh.conf import config
 import codecs
 import subprocess
 import tempfile
 
 
 class OpenNLPTagger(Tagger):
-    """Represents an OpenNLP tagger trained on the MacMorpho corpus.
-    """
-    def __init__(self):
-        # self._path = base_path + '/vendor/apache-opennlp-1.5.3/bin/opennlp'
-        # self._model = base_path + '/models/opennlp/pt-pos-maxent.bin'
-        self._encoding = 'utf-8'
+    """A general interface for running the OpenNLP tagger."""
 
-        self.tagset = MacMorphoTagSet()
+    def __init__(self, bin_conf, model_conf):
+        """Form an OpenNLPTagger.
+
+        :bin_conf: the name of the variable in coh.conf.config that contains
+            the path to the OpenNLP executable.
+        :model_conf: the name of the variable in coh.conf.config that contains
+            the path to the model to be used by the tagger.
+        """
+        self._bin_conf = bin_conf
+        self._model_conf = model_conf
+        self._encoding = 'utf-8'
 
     def tag_sents(self, sentences):
         # Create a temporary input file.
@@ -58,7 +62,7 @@ class OpenNLPTagger(Tagger):
 
     @property
     def _cmd(self):
-        return [config['OPENNLP_BIN'], 'POSTagger', config['OPENNLP_MODEL']]
+        return [config[self._bin_conf], 'POSTagger', config[self._model_conf]]
 
     def _process_output(self, out):
         # Ignore the first line, containing:

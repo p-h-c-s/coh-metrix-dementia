@@ -17,6 +17,16 @@
 
 from __future__ import unicode_literals, print_function, division
 from coh.tools.tag.api import TagSet
+from coh.tools.tag.opennlp import OpenNLPTagger
+
+
+class OpenNLPMacMorphoTagger(OpenNLPTagger):
+    """Represents an OpenNLP tagger trained on the MacMorpho corpus."""
+
+    def __init__(self):
+        super(OpenNLPMacMorphoTagger, self).__init__('OPENNLP_MACMORPHO_BIN',
+                                                     'OPENNLP_MACMORPHO_MODEL')
+        self.tagset = MacMorphoTagSet()
 
 
 class MacMorphoTagSet(TagSet):
