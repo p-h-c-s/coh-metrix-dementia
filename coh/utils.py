@@ -64,6 +64,22 @@ def reverse_tree(tree):
 #   and connectives in a text.
 
 
+def find_subtrees(tree, *labels):
+    """Return a list of the subtrees of a tree that contain the given label.
+
+    :tree: a tree.
+    :labels: a list of node label (e.g., NP, VP, etc.).
+    :returns: a list of trees.
+
+    """
+    subtrees = []
+    for label in labels:
+        for subtree in tree.subtrees():
+            if subtree.label() == label:
+                subtrees.append(subtree)
+    return subtrees
+
+
 def matches(candidate, operator, ignore_pos=False):
     """Check if candidate matches operator.
 
