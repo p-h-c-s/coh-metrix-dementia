@@ -18,6 +18,7 @@
 from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
+from coh.utils import find_subtrees
 from collections import Counter
 from math import log
 
@@ -48,7 +49,21 @@ class PronounsPerNounPhrase(base.Metric):
     column_name = 'pronouns_per_np'
 
     def value_for_text(self, t, rp=default_rp):
-        raise NotImplementedError('Waiting for syntactic parser')
+        parse_trees = rp.parse_trees(t)
+
+        sent_indices = []
+        for i, tree in enumerate(parse_trees):
+            nps = 0
+            prons = 0
+
+            for np in find_subtrees(tree, 'NP'):
+                prons += len([tt for tt in np
+                              if tt.label() in ('PRS')])
+                nps += 1
+
+            sent_indices.append(prons / nps)
+
+        return sum(sent_indices) / len(sent_indices)
 
 
 class TypeTokenRatio(base.Metric):
@@ -111,11 +126,7 @@ class Tokens(base.Category):
 
     def __init__(self):
         super(Tokens, self).__init__()
-        # self._set_metrics_from_module(__name__)
-        self.metrics = [PersonalPronounsIncidence(),
-                        TypeTokenRatio(),
-                        BrunetIndex(),
-                        HoroneStatistic(), ]
+        self._set_metrics_from_module(__name__)
         self.metrics.sort(key=lambda m: m.name)
 
     def values_for_text(self, t, rp=default_rp):
