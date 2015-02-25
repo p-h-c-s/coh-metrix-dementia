@@ -16,3 +16,40 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+from coh import base
+from coh.resource_pool import rp as default_rp
+
+
+class NounPhraseIncidence(base.Metric):
+
+    """Docstring for NounPhraseIncidence. """
+
+    name = 'Noun Phrase Incidence'
+    column_name = 'np_incidence'
+
+    def value_for_text(self, t, rp=default_rp):
+        parse_trees = rp.parse_trees(t)
+        tagged_sents = rp.tagged_sentences(t)
+
+        sent_indices = []
+        for i, tree in enumerate(parse_trees):
+            nps = sum([1 for subtree in tree.subtrees()
+                       if subtree.label() == 'NP'])
+            words = len([word for word in tagged_sents[i]
+                         if not rp.pos_tagger().tagset.is_punctuation(word)])
+
+            sent_indices.append(nps / (words / 1000))
+
+        return sum(sent_indices) / len(sent_indices)
+
+
+class Constituents(base.Category):
+    """
+    """
+    name = 'Constituents'
+    table_name = 'constituents'
+
+    def __init__(self):
+        super(Constituents, self).__init__()
+        self._set_metrics_from_module(__name__)
+        self.metrics.sort(key=lambda m: m.name)

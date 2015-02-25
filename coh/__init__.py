@@ -44,6 +44,7 @@ all_metrics = MetricsSet([BasicCounts(),
                           Ambiguity(),
                           SyntacticalComplexity(),
                           SemanticDensity(),
+                          Constituents(),
                           ])
 
 

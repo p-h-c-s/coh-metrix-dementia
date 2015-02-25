@@ -26,3 +26,4 @@ from coh.metrics.connectives import *
 from coh.metrics.ambiguity import *
 from coh.metrics.syntax import *
 from coh.metrics.sem import *
+from coh.metrics.constituents import *
