@@ -18,6 +18,7 @@
 from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
+from coh.utils import find_subtrees
 
 
 class NounPhraseIncidence(base.Metric):
@@ -33,12 +34,36 @@ class NounPhraseIncidence(base.Metric):
 
         sent_indices = []
         for i, tree in enumerate(parse_trees):
-            nps = sum([1 for subtree in tree.subtrees()
-                       if subtree.label() == 'NP'])
+            nps = len(find_subtrees(tree, 'NP'))
             words = len([word for word in tagged_sents[i]
                          if not rp.pos_tagger().tagset.is_punctuation(word)])
 
             sent_indices.append(nps / (words / 1000))
+
+        return sum(sent_indices) / len(sent_indices)
+
+
+class ModifiersPerNounPhrase(base.Metric):
+
+    """Docstring for ModifiersPerNounPhrase. """
+
+    name = 'Modifiers per Noun Phrase'
+    column_name = 'mod_per_np'
+
+    def value_for_text(self, t, rp=default_rp):
+        parse_trees = rp.parse_trees(t)
+
+        sent_indices = []
+        for i, tree in enumerate(parse_trees):
+            nps = 0
+            mods = 0
+
+            for np in find_subtrees(tree, 'NP'):
+                mods += len([tt for tt in np
+                             if tt.label() in ('ART', 'ADJ', 'ADV')])
+                nps += 1
+
+            sent_indices.append(mods / nps)
 
         return sum(sent_indices) / len(sent_indices)
 
