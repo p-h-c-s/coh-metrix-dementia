@@ -68,7 +68,7 @@ class MacMorphoTagSet(TagSet):
         + conjunction_tags\
         + interjection_tags
 
-    functions_as_noun_tags = ['N', 'NPROP', 'PROSUB']
+    functions_as_noun_tags = ['N', 'NPROP', 'PROSUB', 'PROPESS']
     functions_as_adjective_tags = ['ADJ', 'PROADJ']
 
     punctuation_tags = ['PU']
