@@ -16,16 +16,20 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+import os
+from coh.tools.dependency.api import DependencyParser
+from coh.conf import config
+from nltk.parse.malt import MaltParser as NltkMaltParser
 
-from coh.tools.tag import *
-from coh.tools.parse import *
-from coh.tools.dependency import *
 
-pos_tagger = OpenNLPMacMorphoTagger()
-parser = LxParser()
+class MaltParser(DependencyParser):
 
-from coh.tools.tokenizers import senter, word_tokenize
-from coh.tools.syllable import *
-from coh.tools.stemmers import DelafStemmer
+    """Docstring for MaltParser. """
 
-stemmer = DelafStemmer()
+    def parse_tagged_sents(self, tagged_sents):
+        os.environ['MALT_PARSER'] = config['MALT_WORKING_DIR'] + '/malt.jar'
+        parser = NltkMaltParser(working_dir=config['MALT_WORKING_DIR'],
+                                mco=config['MALT_MCO'],
+                                additional_java_args=config['MALT_JAVA_ARGS'])
+        graphs = parser.tagged_parse_sents(tagged_sents)
+        return graphs

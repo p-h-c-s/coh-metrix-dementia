@@ -17,15 +17,25 @@
 
 from __future__ import unicode_literals, print_function, division
 
-from coh.tools.tag import *
-from coh.tools.parse import *
-from coh.tools.dependency import *
 
-pos_tagger = OpenNLPMacMorphoTagger()
-parser = LxParser()
+class DependencyParser(object):
 
-from coh.tools.tokenizers import senter, word_tokenize
-from coh.tools.syllable import *
-from coh.tools.stemmers import DelafStemmer
+    """Basic interface for a parser in the system. """
 
-stemmer = DelafStemmer()
+    def parse_tagged(self, sent):
+        """Parse a sentence.
+
+        :sent: the sentence to parse.
+        :returns: an nltk.parse.dependencygraph.DependencyGraph object,
+            representing the parse tree for the sentence.
+        """
+        return self.parse_tagged_sents([sent])[0]
+
+    def parse_tagged_sents(self, tagged_sents):
+        """Parse a list of strings.
+
+        :tagged_sents: a list of tagged sentences to parse.
+        :returns: a list of nltk.parse.dependencygraph.DependencyGraph objects,
+            one for each sentence in sents.
+        """
+        raise NotImplementedError()
