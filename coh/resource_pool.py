@@ -102,6 +102,7 @@ class DefaultResourcePool(ResourcePool):
 
         # Derived text info.
         self.register('content_words', self._content_words)
+        self.register('stemmed_content_words', self._stemmed_content_words)
         self.register('cw_freq', self._cw_freq)
         self.register('token_types', self._token_types)
 
@@ -170,7 +171,7 @@ class DefaultResourcePool(ResourcePool):
         return tagged_words
 
     def _content_words(self, text):
-        """Return the content words of the texts, separated by sentences.
+        """Return the content words of the text, separated in sentences.
 
         :text: @todo
         :returns: @todo
@@ -183,6 +184,36 @@ class DefaultResourcePool(ResourcePool):
                                 if pos_tagger.tagset.is_content_word(
                                     (word, tag))]
         return content_words
+
+    def _stemmed_content_words(self, text):
+        """Return the stem of each content word in the text, separated in
+            sentences.
+
+        :text: @todo
+        :returns: @todo
+
+        """
+        tagged_sents = self.get('tagged_sentences', text)
+        tagset = self.get('pos_tagger').tagset
+        stemmed_content_words = []
+        stemmer = self.get('stemmer')
+        for sentence in tagged_sents:
+
+            curr_sentence = []
+            for token in sentence:
+                if tagset.is_content_word(token):
+                    # TODO: add 'tag' to stemmer.get_lemma call after
+                    #   tag normalization.
+                    lemma = stemmer.get_lemma(token[0])
+                    lemma = lemma if lemma else token[0]
+                    curr_sentence.append(lemma)
+
+            stemmed_content_words.append(curr_sentence)
+            # stemmed_content_words[i] = [stemmer.get_lemma(word)
+            #                             for (word, tag) in tagged_sents[i]
+            #                             if pos_tagger.tagset.is_content_word(
+            #                             (word, tag))]
+        return stemmed_content_words
 
     def _cw_freq(self, text):
         """Return the frequency of each content word in the text, separated

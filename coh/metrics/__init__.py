@@ -28,3 +28,4 @@ from coh.metrics.syntax import *
 from coh.metrics.sem import *
 from coh.metrics.constituents import *
 from coh.metrics.anaphoras import *
+from coh.metrics.coref import *
