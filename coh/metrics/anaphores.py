@@ -109,6 +109,9 @@ class AnaphoricReferencesBase(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         tokens = rp.tagged_sentences(t)
 
+        if len(tokens) <= 1:
+            return 0
+
         ncandidates = 0
         self.computed_categories = {}
         for isent in range(1, len(tokens)):
