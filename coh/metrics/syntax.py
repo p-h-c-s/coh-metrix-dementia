@@ -140,5 +140,7 @@ class SyntacticalComplexity(base.Category):
         super(SyntacticalComplexity, self).__init__()
         # self._set_metrics_from_module(__name__)
         self.metrics = [YngveComplexity(),
-                        FrazierComplexity()]
+                        FrazierComplexity(),
+                        DependencyDistance(),
+                        ]
         self.metrics.sort(key=lambda m: m.name)

@@ -26,10 +26,14 @@ class MaltParser(DependencyParser):
 
     """Docstring for MaltParser. """
 
-    def parse_tagged_sents(self, tagged_sents):
+    def __init__(self, tagger=None):
+        self.tagger = tagger
+
+    def parse_sents(self, sents):
         os.environ['MALT_PARSER'] = config['MALT_WORKING_DIR'] + '/malt.jar'
         parser = NltkMaltParser(working_dir=config['MALT_WORKING_DIR'],
                                 mco=config['MALT_MCO'],
-                                additional_java_args=config['MALT_JAVA_ARGS'])
-        graphs = parser.tagged_parse_sents(tagged_sents)
-        return graphs
+                                additional_java_args=config['MALT_JAVA_ARGS'],
+                                tagger=self.tagger)
+        graphs = parser.parse_sents(sents)
+        return graphs[:-1]

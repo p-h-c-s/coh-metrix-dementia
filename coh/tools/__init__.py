@@ -22,7 +22,9 @@ from coh.tools.parse import *
 from coh.tools.dependency import *
 
 pos_tagger = OpenNLPMacMorphoTagger()
+univ_pos_tagger = OpenNLPUniversalTagger()
 parser = LxParser()
+dep_parser = MaltParser(tagger=univ_pos_tagger)
 
 from coh.tools.tokenizers import senter, word_tokenize
 from coh.tools.syllable import *

@@ -19,7 +19,7 @@ from __future__ import unicode_literals, print_function, division
 import warnings
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
-    pos_tagger, stemmer, parser
+    pos_tagger, stemmer, parser, dep_parser, univ_pos_tagger
 from coh.utils import is_valid_id
 from coh.database import create_engine, create_session, Helper
 
@@ -86,7 +86,9 @@ class DefaultResourcePool(ResourcePool):
 
         # Tools and helpers.
         self.register('pos_tagger', lambda: pos_tagger)
+        self.register('univ_pos_tagger', lambda: univ_pos_tagger)
         self.register('parser', lambda: parser)
+        self.register('dep_parser', lambda: dep_parser)
         self.register('stemmer', lambda: stemmer)
         self.register('db_helper', self._db_helper)
 
@@ -261,8 +263,8 @@ class DefaultResourcePool(ResourcePool):
         :text: TODO
         :returns: TODO
         """
-        # XXX: not implemented yet.
-        return []
+        sents = self.get('tokens', text)
+        return self.get('dep_parser').parse_sents(sents)
 
 
 rp = DefaultResourcePool()
