@@ -103,6 +103,9 @@ class AnaphoricReferencesBase(base.Metric):
 
         ncandidates = 0
         for isent in range(1, len(tokens)):
+            # Note: if it's necessary to speed up this code, we can store the
+            #   computed references for each sentence, in the form (isent,
+            #   cat):candidates, in computed_categories.
             computed_categories = {}
             prev_sents = tokens[max(isent - self.nsentences, 0):isent]
 
