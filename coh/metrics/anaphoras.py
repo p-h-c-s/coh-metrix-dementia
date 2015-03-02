@@ -25,9 +25,6 @@ class AnaphoricReferencesBase(base.Metric):
 
     """Docstring for AnaphoricReferencesBase. """
 
-    name = 'Adjacent anaphoric references'
-    column_name = 'adjacent_refs'
-
     referents = {r'^elas$': 'fp',
                  r'^nelas$': 'fp',
                  r'^delas$': 'fp',
@@ -128,23 +125,31 @@ class AnaphoricReferencesBase(base.Metric):
 
 
 class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
+
+    name = 'Adjacent anaphoric references'
+    column_name = 'adjacent_refs'
+
     def __init__(self):
         super(AdjacentAnaphoricReferences, self).__init__(nsentences=1)
 
 
 class AnaphoricReferences(AnaphoricReferencesBase):
+
+    name = 'Anaphoric references'
+    column_name = 'anaphoric_refs'
+
     def __init__(self):
         super(AnaphoricReferences, self).__init__(nsentences=5)
 
 
-class Anaphores(base.Category):
+class Anaphoras(base.Category):
     """
     """
     name = 'Anaphoras'
     table_name = 'anaphoras'
 
     def __init__(self):
-        super(Anaphores, self).__init__()
+        super(Anaphoras, self).__init__()
         self.metrics = [AdjacentAnaphoricReferences(),
                         AnaphoricReferences(), ]
         self.metrics.sort(key=lambda m: m.name)
