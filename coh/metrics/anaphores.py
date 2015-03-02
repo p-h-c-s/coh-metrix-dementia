@@ -68,11 +68,11 @@ class AnaphoricReferencesBase(base.Metric):
         for regex, category in self.referents.items():
             self.compiled_referents[regex] = re.compile(regex)
 
-    @staticmethod
-    def find_candidates(sentences, category, rp):
+    def find_candidates(self, sentences, indices, category, rp):
         """Find nouns of a certain gender/number in a list of sentences.
 
-        :sentences: the tagged sentences to be searched.
+        :sentences: the tagged sentences.
+        :indices: the indices of the sentences to be searched.
         :category: the category of nouns to look for (ms, mp, fs, fp, as, ap).
         :rp: the resource pool to use.
         :returns: a list of nouns matching the category.
@@ -80,21 +80,29 @@ class AnaphoricReferencesBase(base.Metric):
         db = rp.db_helper()
 
         candidates = []
-        for sentence in sentences:
-            for token in sentence:
-                if rp.pos_tagger().tagset.is_noun(token):
-                    attrs = db.get_delaf_noun(token[0].lower())
-                    if not attrs:
-                        continue
-                    if category == 'ap':
-                        if attrs.morf in ('mp', 'fp'):
-                            candidates.append(token[0])
-                    elif category == 'as':
-                        if attrs.morf in ('ms', 'fs'):
-                            candidates.append(token[0])
-                    else:
-                        if attrs.morf == category:
-                            candidates.append(token[0])
+        for i in indices:
+            if (i, category) not in self.computed_categories:
+                sentence = sentences[i]
+                curr_candidates = []
+
+                for token in sentence:
+                    if rp.pos_tagger().tagset.is_noun(token):
+                        attrs = db.get_delaf_noun(token[0].lower())
+                        if not attrs:
+                            continue
+                        if category == 'ap':
+                            if attrs.morf in ('mp', 'fp'):
+                                curr_candidates.append(token[0])
+                        elif category == 'as':
+                            if attrs.morf in ('ms', 'fs'):
+                                curr_candidates.append(token[0])
+                        else:
+                            if attrs.morf == category:
+                                curr_candidates.append(token[0])
+
+                self.computed_categories[(i, category)] = curr_candidates
+
+            candidates.extend(self.computed_categories[(i, category)])
 
         return candidates
 
@@ -102,20 +110,16 @@ class AnaphoricReferencesBase(base.Metric):
         tokens = rp.tagged_sentences(t)
 
         ncandidates = 0
+        self.computed_categories = {}
         for isent in range(1, len(tokens)):
-            # Note: if it's necessary to speed up this code, we can store the
-            #   computed references for each sentence, in the form (isent,
-            #   cat):candidates, in computed_categories.
-            computed_categories = {}
-            prev_sents = tokens[max(isent - self.nsentences, 0):isent]
+            iprev_sents = range(max(isent - self.nsentences, 0), isent)
 
             for token in tokens[isent]:
-                for ref, cat in self.referents.items():
+                for ref, category in self.referents.items():
                     if self.compiled_referents[ref].match(token[0].lower()):
-                        if cat not in computed_categories:
-                            computed_categories[cat] = \
-                                len(self.find_candidates(prev_sents, cat, rp))
-                        ncandidates += computed_categories[cat]
+                        candidates = self.find_candidates(tokens, iprev_sents,
+                                                          category, rp)
+                        ncandidates += len(candidates)
 
         return ncandidates / len(tokens)
 
