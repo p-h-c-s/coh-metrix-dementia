@@ -140,8 +140,8 @@ class AnaphoricReferences(AnaphoricReferencesBase):
 class Anaphores(base.Category):
     """
     """
-    name = 'Anaphores'
-    table_name = 'anaphores'
+    name = 'Anaphoras'
+    table_name = 'anaphoras'
 
     def __init__(self):
         super(Anaphores, self).__init__()

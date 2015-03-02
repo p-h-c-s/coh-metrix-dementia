@@ -27,4 +27,4 @@ from coh.metrics.ambiguity import *
 from coh.metrics.syntax import *
 from coh.metrics.sem import *
 from coh.metrics.constituents import *
-from coh.metrics.anaphores import *
+from coh.metrics.anaphoras import *
