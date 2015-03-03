@@ -16,6 +16,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+import re
 import warnings
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
@@ -93,6 +94,8 @@ class DefaultResourcePool(ResourcePool):
         self.register('db_helper', self._db_helper)
 
         # Basic text info.
+        self.register('raw_content', lambda t: t.raw_content)
+        self.register('raw_words', self._raw_words)
         self.register('paragraphs', lambda t: t.paragraphs)
         self.register('sentences', self._sentences)
         self.register('tokens', self._tokens)
@@ -120,6 +123,28 @@ class DefaultResourcePool(ResourcePool):
         helper = Helper(session)
 
         return helper
+
+    def _raw_words(self, text):
+        """TODO: Docstring for raw_words.
+
+        :text: TODO
+        :returns: TODO
+
+        """
+
+        clean_patterns = [re.compile(r'\(\([\w\d\s]*\)\)'),  # Metainfo
+                          re.compile(r'\.\.\.'),  # Short pauses
+                          re.compile(r'::+'),  # Vowel stretching
+                          ]
+        split_pattern = re.compile('\s+')
+
+        content = text.raw_content
+        for clean_pattern in clean_patterns:
+            content = re.sub(clean_pattern, ' ', content)
+
+        content = re.sub(split_pattern, ' ', content)
+
+        return [word for word in content.split(' ') if word]
 
     def _sentences(self, text):
         """Return a list of strings, each one being a sentence of the text.
