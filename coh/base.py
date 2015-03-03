@@ -29,7 +29,8 @@ class Text(object):
     source, publication data and genre.
     """
     def __init__(self, content='', title='', author='', source='',
-                 publication_date='', genre='', filepath='', encoding='utf-8'):
+                 publication_date='', genre='', filepath='', encoding='utf-8',
+                 revised=False, revised_content='', revised_filepath=''):
         """Form a text.
 
         Required arguments:
@@ -51,14 +52,28 @@ class Text(object):
         self.publication_date = publication_date
         self.genre = genre
 
-        if filepath:
+        if revised:
+            if revised_content:
+                self.revised_content = revised_content
+            else:
+                if not revised_filepath:
+                    revised_filepath = filepath[:-4] + '_rev.txt'\
+                        if filepath.endswith('.txt')\
+                        else filepath + '_rev'
+                with codecs.open(filepath, mode='r', encoding=encoding)\
+                        as revised_file:
+                    self.revised_content = revised_file.read()
+
+        if content:
+            self.raw_content = content
+        else:
             with codecs.open(filepath, mode='r', encoding=encoding)\
                     as input_file:
-                content = input_file.readlines()
-        else:
-            content = content.split('\n')
+                self.raw_content = input_file.read()
 
-        self.paragraphs = [line.strip() for line in content
+        _content = self.revised_content if revised else self.raw_content
+
+        self.paragraphs = [line.strip() for line in _content.split('\n')
                            if line and not line.isspace()]
 
     def __str__(self):
