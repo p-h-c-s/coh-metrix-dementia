@@ -48,7 +48,6 @@ class CoreferenceBase(base.Metric):
         """
         for w1 in s1:
             for w2 in s2:
-                print(w1, w2)
                 yield w1.lower(), w2.lower()
 
     def sentence_pairs(self, text, rp):
