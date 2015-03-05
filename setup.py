@@ -39,5 +39,6 @@ setup(
     install_requires = ['sqlalchemy >= 0.9.8',
                         'nltk >= 3.0.0',
                         'psycopg2 >= 2.5.4',
-                        'prettytable >= 0.7.2']
+                        'prettytable >= 0.7.2',
+                        'nlpnet >= 1.1.6', ]
 )

@@ -21,7 +21,7 @@ from coh.tools.tag import *
 from coh.tools.parse import *
 from coh.tools.dependency import *
 
-pos_tagger = OpenNLPMacMorphoTagger()
+pos_tagger = NLPNetTagger()
 univ_pos_tagger = OpenNLPUniversalTagger()
 parser = LxParser()
 dep_parser = MaltParser(tagger=univ_pos_tagger)

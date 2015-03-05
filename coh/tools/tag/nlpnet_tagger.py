@@ -16,9 +16,29 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+import nlpnet
+from coh.tools.tag.api import Tagger
+from coh.tools.tag.macmorpho import MacMorphoTagSet
+from coh.conf import config
 
-from coh.tools.tag.api import Tagger, TagSet
-from coh.tools.tag.opennlp import OpenNLPTagger
-from coh.tools.tag.macmorpho import OpenNLPMacMorphoTagger, MacMorphoTagSet
-from coh.tools.tag.universal import OpenNLPUniversalTagger, UniversalTagSet
-from coh.tools.tag.nlpnet_tagger import NLPNetTagger
+
+class NLPNetTagger(Tagger):
+
+    """Docstring for NLPNetTagger. """
+
+    def __init__(self, data_dir=None):
+        self.tagset = MacMorphoTagSet()
+        self._data_dir = data_dir
+        self._tagger = None
+
+    def load_tagger(self):
+        if not self._data_dir:
+            self._data_dir = config['NLPNET_DATA_DIR']
+
+        nlpnet.set_data_dir(self._data_dir)
+        self._tagger = nlpnet.POSTagger()
+
+    def tag(self, tokens):
+        if not self._tagger:
+            self.load_tagger()
+        return list(zip(tokens, self._tagger.tag_tokens(tokens)))
