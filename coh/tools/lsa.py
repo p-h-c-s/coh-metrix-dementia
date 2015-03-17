@@ -27,8 +27,13 @@ class LSASpace(object):
     between text fragments (texts, paragraphs, sentences, and so on).
     """
 
-    def __init__(self, docs, k):
-        self.terms = self.get_terms(iter(docs))
+    def __init__(self, documents, k):
+        """Form an LSA space.
+
+        :documents: an iterator that returns lists of strings.
+        :k: the number of eigenvalues to keep.
+        """
+        self.terms = self.get_terms(documents)
         self.txd = self.build_txd_matrix(self.terms, docs)
         self.apply_tf_idf(self.txd)
         self.sk_Uk = self.apply_lsa(self.txd, k)
@@ -38,7 +43,7 @@ class LSASpace(object):
         """Return an alfabetical list of the unique words present in a
         collection of documents.
 
-        :documents: an interator that returns lists of strings.
+        :documents: an iterator that returns lists of strings.
         """
         terms = set()
 
@@ -53,7 +58,7 @@ class LSASpace(object):
         """Build a term-by-document (TxD) matrix.
 
         :terms: a list of the unique terms present in the document collection.
-        :documents: an interator that returns lists of strings.
+        :documents: an iterator that returns lists of strings.
         :ndocuments: the approximate number of documents expected to be
             returned by the iterator.
 
