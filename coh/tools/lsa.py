@@ -34,7 +34,7 @@ class LSASpace(object):
         :k: the number of eigenvalues to keep.
         """
         self.terms = self.get_terms(documents)
-        self.txd = self.build_txd_matrix(self.terms, docs)
+        self.txd = self.build_txd_matrix(self.terms, documents)
         self.apply_tf_idf(self.txd)
         self.sk_Uk = self.apply_lsa(self.txd, k)
 
@@ -94,8 +94,6 @@ class LSASpace(object):
             for d in range(cols):
                 if txd[t, d] != 0.0:
                     doc_freqs[t] += 1.0
-
-        print('doc_freqs', doc_freqs, rows, cols)
 
         for t in range(rows):
             for d in range(cols):
