@@ -36,4 +36,9 @@ class MaltParser(DependencyParser):
                                 additional_java_args=config['MALT_JAVA_ARGS'],
                                 tagger=self.tagger)
         graphs = parser.parse_sents(sents)
-        return graphs[:-1]
+
+        # Sometimes, there is an empty graph at the end of the list. Delete it.
+        if len(graphs) > 0 and len(graphs[-1].nodelist) == 1:
+            del graphs[-1]
+
+        return graphs
