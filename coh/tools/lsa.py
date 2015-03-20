@@ -52,10 +52,6 @@ class LsaSpace(object):
 if __name__ == '__main__':
     from coh.conf import config
 
-    space = LsaSpace(
-        '/home/andre/Develop/corpora/lsamodel_wordids_350k.txt.bz2',
-        '/home/andre/Develop/corpora/lsamodel_lsi.model')
-
     space = LsaSpace(config['LSA_DICT_PATH'], config['LSA_MODEL_PATH'])
 
     print(space.compute_similarity('o livro está sobre a mesa'.split(' '),
