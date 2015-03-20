@@ -16,17 +16,74 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+import os
 from os.path import dirname, abspath
 from sys import modules
 from nltk.tree import Tree
+import logging
+import codecs
+from itertools import chain
 
 
+logger = logging.getLogger(__name__)
 base_path = abspath(dirname(modules[__name__].__file__))
 
 
+class CorpusIterator(object):
+
+    """An iterator that returns one document at a time. """
+
+    def __init__(self, dir_list, encoding='utf-8', chain=True,
+                 bow=False, dictionary=None):
+        self._dir_list = dir_list
+        self._build_file_list()
+        self._encoding = encoding
+        self._current = 0
+        self._chain = chain
+
+        if bow:
+            self._bow = True
+            self._chain = True
+            self._dictionary = dictionary
+        else:
+            self._bow = False
+
+    def _build_file_list(self):
+        self._file_list = []
+        for dir_name in self._dir_list:
+            for file_name in os.listdir(dir_name):
+                self._file_list.append(os.path.join(dir_name, file_name))
+
+        self._nfiles = len(self._file_list)
+
+    def __iter__(self):
+        self._current = 0
+        return self
+
+    def __next__(self):
+        if self._current < len(self._file_list):
+            logger.info('Loaded file %d/%d: %s', self._current + 1,
+                        self._nfiles, self._file_list[self._current])
+
+            with codecs.open(self._file_list[self._current],
+                             encoding=self._encoding, mode='r') as infile:
+                content_lines = [line.strip().split(' ')
+                                 for line in infile.readlines()]
+                content = list(chain.from_iterable(content_lines))\
+                    if self._chain else content_lines
+
+                content = self._dictionary.doc2bow(content)\
+                    if self._bow else content
+
+            self._current += 1
+
+            return content
+        else:
+            raise StopIteration
+
+
 def ilen(it):
-    """Calculate the number of elements in an iterable.
-    """
+    """Calculate the number of elements in an iterable."""
     if isinstance(it, list) or isinstance(it, tuple):
         return len(it)
 
@@ -41,7 +98,6 @@ def is_valid_id(string):
 
     :string: The string to be checked
     :returns: True if the string represents a valid id; false otherwise.
-
     """
     import re
 
@@ -53,15 +109,11 @@ def reverse_tree(tree):
 
     :tree: The tree to be reversed.
     :returns: None (the tree is reversed in place.)
-
     """
     if isinstance(tree, Tree):
         tree.reverse()
         for child in tree:
             reverse_tree(child)
-
-# The following functions are used for counting the occurrences of operators
-#   and connectives in a text.
 
 
 def find_subtrees(tree, *labels):
@@ -70,7 +122,6 @@ def find_subtrees(tree, *labels):
     :tree: a tree.
     :labels: a list of node label (e.g., NP, VP, etc.).
     :returns: a list of trees.
-
     """
     subtrees = []
     for label in labels:
@@ -78,6 +129,10 @@ def find_subtrees(tree, *labels):
             if subtree.label() == label:
                 subtrees.append(subtree)
     return subtrees
+
+
+# The following functions are used for counting the occurrences of operators
+#   and connectives in a text.
 
 
 def matches(candidate, operator, ignore_pos=False):
