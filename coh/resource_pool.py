@@ -17,7 +17,7 @@
 
 from __future__ import unicode_literals, print_function, division
 import re
-import warnings
+import logging
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
     pos_tagger, stemmer, parser, dep_parser, univ_pos_tagger
@@ -27,6 +27,9 @@ from coh.database import create_engine, create_session, Helper
 from coh.conf import config
 
 
+logger = logging.getLogger(__name__)
+
+
 class ResourcePool(object):
     """A resource pool is a repository of methods for producing application
     resources. It centralizes tasks like PoS-tagging and sentence splitting,
@@ -34,14 +37,13 @@ class ResourcePool(object):
     the same task (e.g., taggers). It also allows the creation and reuse of
     database connections and similar resources.
     """
-    def __init__(self, debug=False):
+    def __init__(self):
         """Form a new resource pool."""
         # The resources, in the form {<suffix> : <hook>}.
         self._res = {}
         # Resources already asked for, in the form
         # {(<text>, <suffix>) : <data>}.
         self._cache = {}
-        self._debug = debug
 
     def register(self, suffix, hook):
         """Register a new resource.
@@ -52,7 +54,7 @@ class ResourcePool(object):
 
         """
         if suffix in self._res:
-            warnings.warn("Resource \"{0}\" already registered.".format(suffix))
+            logger.warning("Resource \"%s\" already registered.", suffix)
 
         self._res[suffix] = hook
         if is_valid_id(suffix):
@@ -72,10 +74,11 @@ class ResourcePool(object):
             raise ValueError('Resource \"{0}\" not registered.'.format(suffix))
 
         if res_id not in self._cache:
+            logger.debug('Started calculating resource %s.', res_id)
+
             self._cache[res_id] = self._res[suffix](*args)
 
-            if self._debug:
-                print('ResourcePool: calculated resource', res_id)
+            logger.debug('Done.')
 
         return self._cache[res_id]
 
@@ -83,9 +86,9 @@ class ResourcePool(object):
 class DefaultResourcePool(ResourcePool):
     """A resource pool that uses the standard tools.
     """
-    def __init__(self, debug=False):
+    def __init__(self):
         """Registers the default resources."""
-        super(DefaultResourcePool, self).__init__(debug)
+        super(DefaultResourcePool, self).__init__()
 
         # Tools and helpers.
         self.register('pos_tagger', lambda: pos_tagger)

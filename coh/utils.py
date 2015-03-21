@@ -29,6 +29,29 @@ logger = logging.getLogger(__name__)
 base_path = abspath(dirname(modules[__name__].__file__))
 
 
+def adjacent_pairs(l):
+    """Yield all pairs of adjecent elements in the list.
+
+    :l: a list.
+    :returns: an iterator over the adjacent pairs of elements.
+
+    """
+    for i in range(len(l) - 1):
+        yield l[i], l[i + 1]
+
+
+def all_pairs(l):
+    """Yield all pairs of elements in the list.
+
+    :l: a list.
+    :returns: an iterator over the pairs of elements.
+
+    """
+    for i in range(len(l)):
+        for j in range(i + 1, len(l)):
+            yield l[i], l[j]
+
+
 class CorpusIterator(object):
 
     """An iterator that returns one document at a time. """

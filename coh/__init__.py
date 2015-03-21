@@ -47,6 +47,7 @@ all_metrics = MetricsSet([BasicCounts(),
                           Constituents(),
                           Anaphoras(),
                           Coreference(),
+                          Lsa(),
                           ])
 
 
