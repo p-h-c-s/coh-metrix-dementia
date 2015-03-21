@@ -20,6 +20,10 @@ from coh.utils import is_valid_id
 from coh.resource_pool import rp as default_rp
 import codecs
 import collections
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 class Text(object):
@@ -148,6 +152,7 @@ class Category(object):
         values = []
         for m in self.metrics:
             try:
+                logger.info('Calculating metric %s.', m.name)
                 values.append((m, m.value_for_text(text)))
             except ZeroDivisionError:
                 values.append((m, 0))
@@ -252,7 +257,14 @@ class MetricsSet(object):
                            and issubclass(obj, Category)]
 
     def values_for_text(self, t):
-        return ResultSet([(c, c.values_for_text(t)) for c in self.categories])
+        values = []
+
+        for cat in self.categories:
+            logger.info('Calculating category %s.', cat.name)
+            values.append((cat, cat.values_for_text(t)))
+
+        # return ResultSet([(c, c.values_for_text(t)) for c in self.categories])
+        return ResultSet(values)
 
 
 class ResultSet(object):
