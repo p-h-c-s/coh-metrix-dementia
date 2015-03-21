@@ -49,3 +49,4 @@ nosetests.xml
 
 TODO.txt
 run.py
+config.py

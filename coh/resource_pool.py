@@ -21,8 +21,10 @@ import warnings
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
     pos_tagger, stemmer, parser, dep_parser, univ_pos_tagger
+from coh.tools.lsa import LsaSpace
 from coh.utils import is_valid_id
 from coh.database import create_engine, create_session, Helper
+from coh.conf import config
 
 
 class ResourcePool(object):
@@ -114,6 +116,9 @@ class DefaultResourcePool(ResourcePool):
         # Parse structures.
         self.register('parse_trees', self._parse_trees)
         self.register('dep_trees', self._dep_trees)
+
+        # LSA spaces
+        self.register('lsa_space', self._lsa_space)
 
     def _db_helper(self):
         """Creates a database session and returns a Helper associated with it.
@@ -290,6 +295,14 @@ class DefaultResourcePool(ResourcePool):
         """
         sents = self.get('tokens', text)
         return self.get('dep_parser').parse_sents(sents)
+
+    def _lsa_space(self):
+        """Return the default LSA space.
+
+        :returns: an LsaSpace.
+        """
+        space = LsaSpace(config['LSA_DICT_PATH'], config['LSA_MODEL_PATH'])
+        return space
 
 
 rp = DefaultResourcePool()
