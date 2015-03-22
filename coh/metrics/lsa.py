@@ -228,8 +228,7 @@ class LsaSpanBase(base.Metric):
                                                  A))),
                                     A.transpose())
 
-            projection = dot(projection_matrix, curr_array)\
-                .reshape(1, num_topics).ravel()
+            projection = dot(projection_matrix, curr_array).ravel()
 
             spans[i - 1] = cossim(full2sparse(curr_vector),
                                   full2sparse(projection))
