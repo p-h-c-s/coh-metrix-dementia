@@ -200,6 +200,9 @@ class LsaSpanBase(base.Metric):
         tokens = rp.tokens(t)
         tokens = [[token.lower() for token in sentence] for sentence in tokens]
 
+        if len(token) < 2:
+            return 0
+
         spans = np.zeros(len(tokens) - 1)
         for i in range(1, len(tokens)):
             past_sentences = tokens[:i]
@@ -214,6 +217,7 @@ class LsaSpanBase(base.Metric):
 
             past_vectors = [sparse2full(space.get_vector(sent), num_topics)
                             for sent in past_sentences]
+
             curr_vector = sparse2full(space.get_vector(tokens[i]), num_topics)
             curr_array = np.array(curr_vector).reshape(num_topics, 1)
 
