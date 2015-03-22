@@ -45,6 +45,8 @@ class LsaBase(base.Metric):
         for s1, s2 in self.get_pairs(t, rp):
             similarities.append(space.compute_similarity(s1, s2))
 
+        if not similarities:
+            return 0
         return self.get_value(similarities)
 
 
@@ -145,24 +147,37 @@ class LsaParagraphAdjacentSD(LsaBase):
         return np.array(similarities).std()
 
 
-class LsaGivennessMean(base.Metric):
+class LsaGivennessBase(LsaBase):
+
+    def get_pairs(self, t, rp):
+        tokens = rp.tokens(t)
+        tokens = [[token.lower() for token in sentence] for sentence in tokens]
+
+        for i in range(1, len(tokens)):
+            past_sentences = tokens[:i]
+            past_tokens = list(chain.from_iterable(past_sentences))
+
+            yield tokens[i], past_tokens
+
+
+class LsaGivennessMean(LsaGivennessBase):
     """Docstring for LsaGivennessMean. """
 
     name = 'LSA sentence givenness mean'
     column_name = 'LSAGN'
 
-    def value_for_text(self, t, rp=default_rp):
-        return 0
+    def get_value(self, similarities):
+        return sum(similarities) / len(similarities)
 
 
-class LsaGivennessSD(base.Metric):
+class LsaGivennessSD(LsaGivennessBase):
     """Docstring for LsaGivennessMean. """
 
     name = 'LSA sentence givenness SD'
     column_name = 'LSAGNd'
 
-    def value_for_text(self, t, rp=default_rp):
-        return 0
+    def get_value(self, similarities):
+        return np.array(similarities).std()
 
 
 class Lsa(base.Category):
