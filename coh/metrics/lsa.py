@@ -200,7 +200,7 @@ class LsaSpanBase(base.Metric):
         tokens = rp.tokens(t)
         tokens = [[token.lower() for token in sentence] for sentence in tokens]
 
-        if len(token) < 2:
+        if len(tokens) < 2:
             return 0
 
         spans = np.zeros(len(tokens) - 1)
@@ -221,7 +221,7 @@ class LsaSpanBase(base.Metric):
             curr_vector = sparse2full(space.get_vector(tokens[i]), num_topics)
             curr_array = np.array(curr_vector).reshape(num_topics, 1)
 
-            A = np.vstack(tuple(past_vectors)).transpose()
+            A = np.array(past_vectors).transpose()
 
             projection_matrix = dot(dot(A,
                                         pinv(dot(A.transpose(),
