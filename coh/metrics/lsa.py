@@ -20,6 +20,9 @@ from coh import base
 from coh.resource_pool import rp as default_rp
 from coh.utils import adjacent_pairs, all_pairs
 import numpy as np
+from numpy import dot
+from scipy.linalg import pinv
+from gensim.matutils import cossim, sparse2full, full2sparse
 from coh.tools import senter, word_tokenize
 from itertools import chain
 
@@ -53,7 +56,7 @@ class LsaBase(base.Metric):
 class LsaSentenceAdjacentMean(LsaBase):
     """."""
     name = 'LSA sentence adjacent mean'
-    column_name = 'LSASS1'
+    column_name = 'adj_mean'
 
     def get_pairs(self, t, rp):
         tokens = rp.tokens(t)
@@ -65,10 +68,10 @@ class LsaSentenceAdjacentMean(LsaBase):
         return sum(similarities) / len(similarities)
 
 
-class LsaSentenceAdjacentSD(LsaBase):
+class LsaSentenceAdjacentStd(LsaBase):
     """."""
-    name = 'LSA sentence adjacent SD'
-    column_name = 'LSASS1d'
+    name = 'LSA sentence adjacent std'
+    column_name = 'adj_std'
 
     def get_pairs(self, t, rp):
         tokens = rp.tokens(t)
@@ -83,7 +86,7 @@ class LsaSentenceAdjacentSD(LsaBase):
 class LsaSentenceAllMean(LsaBase):
     """."""
     name = 'LSA sentence all mean'
-    column_name = 'LSASSp'
+    column_name = 'all_mean'
 
     def get_pairs(self, t, rp):
         tokens = rp.tokens(t)
@@ -95,10 +98,10 @@ class LsaSentenceAllMean(LsaBase):
         return sum(similarities) / len(similarities)
 
 
-class LsaSentenceAllSD(LsaBase):
+class LsaSentenceAllStd(LsaBase):
     """."""
-    name = 'LSA sentence all (within paragraph) SD'
-    column_name = 'LSASSpd'
+    name = 'LSA sentence all (within paragraph) std'
+    column_name = 'all_std'
 
     def get_pairs(self, t, rp):
         for paragraph in rp.paragraphs(t):
@@ -124,7 +127,7 @@ def all_tokens(paragraph):
 class LsaParagraphAdjacentMean(LsaBase):
     """."""
     name = 'LSA paragraph adjacent mean'
-    column_name = 'LSAPP1'
+    column_name = 'paragraph_mean'
 
     def get_pairs(self, t, rp):
         paragraphs = [all_tokens(par) for par in rp.paragraphs(t)]
@@ -134,10 +137,10 @@ class LsaParagraphAdjacentMean(LsaBase):
         return sum(similarities) / len(similarities)
 
 
-class LsaParagraphAdjacentSD(LsaBase):
+class LsaParagraphAdjacentStd(LsaBase):
     """."""
-    name = 'LSA paragraph adjacent SD'
-    column_name = 'LSAPP1d'
+    name = 'LSA paragraph adjacent std'
+    column_name = 'paragraph_std'
 
     def get_pairs(self, t, rp):
         paragraphs = [all_tokens(par) for par in rp.paragraphs(t)]
@@ -164,20 +167,90 @@ class LsaGivennessMean(LsaGivennessBase):
     """Docstring for LsaGivennessMean. """
 
     name = 'LSA sentence givenness mean'
-    column_name = 'LSAGN'
+    column_name = 'givenness_mean'
 
     def get_value(self, similarities):
         return sum(similarities) / len(similarities)
 
 
-class LsaGivennessSD(LsaGivennessBase):
-    """Docstring for LsaGivennessMean. """
+class LsaGivennessStd(LsaGivennessBase):
+    """Docstring for LsaGivennessStd. """
 
-    name = 'LSA sentence givenness SD'
-    column_name = 'LSAGNd'
+    name = 'LSA sentence givenness std'
+    column_name = 'givenness_std'
 
     def get_value(self, similarities):
         return np.array(similarities).std()
+
+
+class LsaSpanBase(base.Metric):
+    """A base class for LSA span metrics."""
+
+    def get_value(self, similarities):
+        """Given a list of similarities between sentences and the span of the
+        previous text, return the value of the metric.
+        """
+
+        raise NotImplementedError('Subclasses should override this method')
+
+    def value_for_text(self, t, rp=default_rp):
+        space = rp.lsa_space()
+        num_topics = space.num_topics
+
+        tokens = rp.tokens(t)
+        tokens = [[token.lower() for token in sentence] for sentence in tokens]
+
+        spans = np.zeros(len(tokens) - 1)
+        for i in range(1, len(tokens)):
+            past_sentences = tokens[:i]
+            span_dim = len(past_sentences)
+
+            if span_dim > num_topics - 1:
+                # It's not clear, from the papers I read, what should be done
+                # in this case. I did what seemed to not imply in loosing
+                # information.
+                beginning = past_sentences[0:span_dim - num_topics]
+                past_sentences[0] = list(chain.from_iterable(beginning))
+
+            past_vectors = [sparse2full(space.get_vector(sent), num_topics)
+                            for sent in past_sentences]
+            curr_vector = sparse2full(space.get_vector(tokens[i]), num_topics)
+            curr_array = np.array(curr_vector).reshape(num_topics, 1)
+
+            A = np.vstack(tuple(past_vectors)).transpose()
+
+            projection_matrix = dot(dot(A,
+                                        pinv(dot(A.transpose(),
+                                                 A))),
+                                    A.transpose())
+
+            projection = dot(projection_matrix, curr_array)\
+                .reshape(1, num_topics).ravel()
+
+            spans[i - 1] = cossim(full2sparse(curr_vector),
+                                  full2sparse(projection))
+
+        return self.get_value(spans)
+
+
+class LsaSpanMean(LsaSpanBase):
+    """Docstring for LsaSpanMean. """
+
+    name = 'LSA sentence span mean'
+    column_name = 'span_mean'
+
+    def get_value(self, spans):
+        return spans.mean()
+
+
+class LsaSpanStd(LsaSpanBase):
+    """Docstring for LsaSpanStd. """
+
+    name = 'LSA sentence span std'
+    column_name = 'span_std'
+
+    def get_value(self, spans):
+        return spans.std()
 
 
 class Lsa(base.Category):
@@ -187,11 +260,13 @@ class Lsa(base.Category):
     def __init__(self):
         super(Lsa, self).__init__()
         self.metrics = [LsaSentenceAdjacentMean(),
-                        LsaSentenceAdjacentSD(),
+                        LsaSentenceAdjacentStd(),
                         LsaSentenceAllMean(),
-                        LsaSentenceAllSD(),
+                        LsaSentenceAllStd(),
                         LsaParagraphAdjacentMean(),
-                        LsaParagraphAdjacentSD(),
+                        LsaParagraphAdjacentStd(),
                         LsaGivennessMean(),
-                        LsaGivennessSD(),
+                        LsaGivennessStd(),
+                        LsaSpanMean(),
+                        LsaSpanStd(),
                         ]

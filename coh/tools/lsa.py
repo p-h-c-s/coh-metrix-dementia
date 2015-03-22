@@ -35,6 +35,14 @@ class LsaSpace(object):
         self._dictionary = Dictionary.load_from_text(dict_path)
         self._lsi_model = LsiModel.load(model_path)
 
+    def get_vector(self, doc):
+        return self._lsi_model[self._dictionary.doc2bow(doc)]
+
+    @property
+    def num_topics(self):
+        """Return the number of topics in the model."""
+        return self._lsi_model.num_topics
+
     def compute_similarity(self, doc1, doc2):
         """Compute the cosine similarity between two documents.
 
@@ -43,10 +51,7 @@ class LsaSpace(object):
         :returns: a number between -1 and 1, representing the similarity
         between the two documents.
         """
-        doc1_lsi = self._lsi_model[self._dictionary.doc2bow(doc1)]
-        doc2_lsi = self._lsi_model[self._dictionary.doc2bow(doc2)]
-
-        return cossim(doc1_lsi, doc2_lsi)
+        return cossim(self.get_vector(doc1), self.get_vector(doc2))
 
 
 if __name__ == '__main__':
