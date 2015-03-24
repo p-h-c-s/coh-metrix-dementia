@@ -43,12 +43,12 @@ class Text(object):
             multiple sentences per paragraph. Blank lines are ignored.
 
         Keyword arguments:
-        encoding -- The encoding of the input file (default "utf-8")
-        title -- The title of the text (default "").
-        author -- The author of the text (default "").
-        source -- Where the text came from, usually a URL (default "").
-        publication_date -- When the text was released (default "").
-        genre -- The textual genre that better fits the text (default "").
+        :encoding: The encoding of the input file (default "utf-8")
+        :title: The title of the text (default "").
+        :author: The author of the text (default "").
+        :source: Where the text came from, usually a URL (default "").
+        :publication_date: When the text was released (default "").
+        :genre: The textual genre that better fits the text (default "").
         """
         self.title = title
         self.author = author
@@ -80,8 +80,10 @@ class Text(object):
         self.paragraphs = [line.strip() for line in _content.split('\n')
                            if line and not line.isspace()]
 
-    def __str__(self):
-        return '<Text: "%s...">' % (self.paragraphs[0][:70])
+    def __repr__(self):
+        return '<Text: "%s">' % ((self.paragraphs[0][:70] + '...')
+                                  if len(self.paragraphs[0][:70]) == 70
+                                  else self.paragraphs[0][:70])
 
 
 class Category(object):
@@ -91,13 +93,13 @@ class Category(object):
         """Form a category.
 
         Keyword arguments:
-        name -- A succint name of the category (e.g., 'Basic Counts'). If
+        :name: A succint name of the category (e.g., 'Basic Counts'). If
             no name is provided, the class name is used. (default None).
-        table_name -- The name of the table in coh_user_data that contains
+        :table_name: The name of the table in coh_user_data that contains
             the values of this category on the users's texts. If no value is
             specified, Coh-Metrix-Port will check whether 'name' is a valid
             table name; if so, 'name' is used as the table name. (default None)
-        desc -- A longer description of the category. Used for UI purposes.
+        :desc: A longer description of the category. Used for UI purposes.
             If no value is passed, the docstring of the class is used.
             (default None)
         """
@@ -128,10 +130,10 @@ class Category(object):
 
     def _set_metrics_from_module(self, module):
         """Set self.metrics as the list of Metric subclasses declared in
-            a module.
+        a module.
 
         Required arguments:
-        module -- the name of module that will be scanned for metrics.
+        :module: the name of module that will be scanned for metrics.
         """
         import sys
         import inspect
@@ -142,12 +144,12 @@ class Category(object):
 
     def values_for_text(self, text, rp=default_rp):
         """Calculate the value of each metric in a text and return it in a
-            ResultSet.
+        ResultSet.
 
         Required arguments:
-        text -- the text whose metrics will be extracted.
+        :text: the text whose metrics will be extracted.
 
-        Returns: a ResultSet containing the calculated metrics.
+        :returns: a ResultSet containing the calculated metrics.
         """
         values = []
         for m in self.metrics:
@@ -163,7 +165,7 @@ class Category(object):
 
         return metrics_values
 
-    def __str__(self):
+    def __repr__(self):
         return '<Category: %s: %s>' % \
             (self.name, str([m.name for m in self.metrics]))
 
@@ -192,13 +194,13 @@ class Metric(object):
         """Form a metric.
 
         Keyword arguments:
-        name -- A succint name of the metric (e.g., 'Flesch index'). If
+        :name: A succint name of the metric (e.g., 'Flesch index'). If
             no name is provided, the class name is used. (default None)
-        table_name -- The name of the column in the table corresponding to
+        :table_name: The name of the column in the table corresponding to
             the category of this metric in coh_user_data. If no value is
             specified, Coh-Metrix-Port will check whether 'name' is a valid
             table name; if so, 'name' is used as the table name. (default None)
-        desc -- A longer description of the metric. Used for UI purposes.
+        :desc: A longer description of the metric. Used for UI purposes.
             (default None)
         """
         if name is None and hasattr(self.__class__, 'name'):
@@ -227,13 +229,13 @@ class Metric(object):
         """Calculate the value of the metric in the text.
 
         Required arguments:
-        text -- The text to be analyzed.
+        :text: The text to be analyzed.
 
-        Returns: an integer value, corresponding to the metric.
+        :returns: an integer value, corresponding to the metric.
         """
         raise NotImplementedError('Subclasses should implement this method!')
 
-    def __str__(self):
+    def __repr__(self):
         return '<Metric: %s> ' % (self.name)
 
 
@@ -246,7 +248,7 @@ class MetricsSet(object):
             declared in a module.
 
         Required arguments:
-        module -- the name of module that will be scanned for categories.
+        :module: the name of module that will be scanned for categories.
         """
         import sys
         import inspect
@@ -267,72 +269,80 @@ class MetricsSet(object):
         return ResultSet(values)
 
 
-class ResultSet(object):
-    """A dictionary-like structure that represents the values of
-        a set of metrics extracted from a text.
+class ResultSet(collections.OrderedDict):
+    """A dictionary structure that represents the values of a set of metrics
+    extracted from a text.
     """
-    def __init__(self, *args, **kwargs):
-        # TODO: To improve performance, replace OrderedDict by namedtuple.
-        self._store = collections.OrderedDict(*args, **kwargs)
-
-    def items(self):
-        return self._store.items()
 
     def __getitem__(self, key):
-        if isinstance(key, int):
-            key = list(self._store.items())[key][0]
-            return self._store[key]
-        elif isinstance(key, str):
-            for k, v in self._store.items():
-                if isinstance(k, Category):
-                    _k = k.table_name
-                elif isinstance(k, Metric):
-                    _k = k.column_name
-                else:
-                    _k = k
+        # If the key is a string, use table/column name.
+        if isinstance(key, str):
+            for _key, value in self.items():
+                if isinstance(_key, Category):
+                    if _key.table_name == key:
+                        return value
+                elif isinstance(_key, Metric):
+                    if _key.column_name == key:
+                        return value
 
-                if _k == key:
-                    return v
             raise KeyError(key)
-        else:
-            return self._store[key]
 
-    def __setitem__(self, key, value):
-        self._store[key] = value
+        return super(collections.OrderedDict, self).__getitem__(key)
 
-    def __delitem__(self, key):
-        del self._store[key]
+    @property
+    def names(self):
+        """Return a list containing the name of each category/metric."""
 
-    def __iter__(self):
-        return iter(self._store)
+        return [key.name for key in self.keys()] 
 
-    def __len__(self):
-        return len(self._store)
+    def as_json(self, use_names=True):
+        """Return a JSON representation of this ResultSet."""
 
-    def __getattr__(self, attr):
-        for key in self._store.keys():
-            if (isinstance(key, Category) and key.table_name == attr) or \
-               (isinstance(key, Metric) and key.column_name == attr):
-                return self._store[key]
+        import json
+        return json.dumps(self.as_dict(use_names))
 
-    def __str__(self):
+    def as_dict(self, use_names=True):
+        """Return a dictionary representation, with the categories/metrics
+        names as keys.
+
+        :use_names: if True, use names as keys; otherwise,
+            use table/column names.
+        """
+
+        d = {}
+        for key, value in self.items():
+            if isinstance(key, Category):
+                attr = 'name' if use_names else 'table_name'
+                d[getattr(key, attr)] = value.as_dict(use_names)
+                is_metric_dict = False
+            elif isinstance(key, Metric):
+                attr = 'name' if use_names else 'column_name'
+                d[getattr(key, attr)] = value
+
+        return d
+
+    def as_table(self):
+        """Return a string representation that uses tables to facilitate
+        reading.
+        """
+
         from prettytable import PrettyTable
 
         table = PrettyTable(['Metric', 'Value'])
+
         table.align['Metric'] = 'r'
         table.align['Value'] = 'r'
         table.padding_width = 1
 
-        string = ''
-        for key, value in self._store.items():
+        for key, value in self.items():
             if isinstance(key, Category):
-                string = string + '%s:\n%s\n' % (key.name, value)
-                is_table = False
+                table.add_row(['', ''])
+                table.add_row([key.name.upper(),
+                               '------------------'])
+                table.add_row(['', ''])
+                for k, v in value.items():
+                    table.add_row([k.name, v])
             elif isinstance(key, Metric):
-                table.add_row([key.name, str(value)])
-                is_table = True
+                table.add_row([key.name, value])
 
-        if is_table:
-            string = table.get_string()
-
-        return string.rstrip()
+        return table.get_string()
