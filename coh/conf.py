@@ -23,6 +23,16 @@ class Config(dict):
 
     """A class for storing configuration parameters. """
 
+    def __init__(self, auto_load=True):
+        """Form a config object. If the current directory includes a config.py
+        file, it will be automatically loaded if auto_load is True.
+        """
+        if auto_load:
+            try:
+                self.from_object('config')
+            except ImportError:
+                pass
+
     def from_object(self, module_name):
         """Load a configuration from a module name.
 
