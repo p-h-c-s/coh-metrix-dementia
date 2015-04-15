@@ -1,5 +1,6 @@
 import os
 from setuptools import setup, find_packages
+from pip.req import parse_requirements
 
 
 def read(filename):
@@ -36,9 +37,6 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.4",
     ],
-    install_requires = ['sqlalchemy >= 0.9.8',
-                        'nltk >= 3.0.0',
-                        'psycopg2 >= 2.5.4',
-                        'prettytable >= 0.7.2',
-                        'nlpnet >= 1.1.6', ]
+    install_requires = [str(ir.req)
+                        for ir in parse_requirements('requirements.txt')]
 )
