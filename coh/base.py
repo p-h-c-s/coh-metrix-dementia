@@ -165,6 +165,17 @@ class Category(object):
 
         return metrics_values
 
+    def values_for_texts(self, texts, rp=default_rp):
+        """Calculate the value of each metric in a set of texts and return them
+        as a ResultSet.
+
+        :texts: a list of Text objects.
+        :rp: the resource pool to be used.
+        :returns: a ResultSet containing the calculated metrics for each text.
+
+        """
+        return ResultSet((t, self.values_for_text(t, rp)) for t in texts)
+
     def __repr__(self):
         return '<Category: %s: %s>' % \
             (self.name, str([m.name for m in self.metrics]))
@@ -258,15 +269,26 @@ class MetricsSet(object):
                            if inspect.isclass(obj)
                            and issubclass(obj, Category)]
 
-    def values_for_text(self, t):
+    def values_for_text(self, text, rp=default_rp):
         values = []
 
         for cat in self.categories:
             logger.info('Calculating category %s.', cat.name)
-            values.append((cat, cat.values_for_text(t)))
+            values.append((cat, cat.values_for_text(text, rp)))
 
         # return ResultSet([(c, c.values_for_text(t)) for c in self.categories])
         return ResultSet(values)
+
+    def values_for_texts(self, texts, rp=default_rp):
+        """Calculate the value of each metric in a set of texts and return them
+        as a ResultSet.
+
+        :texts: a list of Text objects.
+        :rp: the resource pool to be used.
+        :returns: a ResultSet containing the calculated metrics for each text.
+
+        """
+        return ResultSet((t, self.values_for_text(t, rp)) for t in texts)
 
 
 class ResultSet(collections.OrderedDict):
@@ -311,6 +333,8 @@ class ResultSet(collections.OrderedDict):
 
         d = {}
         for key, value in self.items():
+            if isinstance(key, Text):
+                d[key.title] = value.as_dict(use_names)
             if isinstance(key, Category):
                 attr = 'name' if use_names else 'table_name'
                 d[getattr(key, attr)] = value.as_dict(use_names)
@@ -334,18 +358,70 @@ class ResultSet(collections.OrderedDict):
         table.align['Value'] = 'r'
         table.padding_width = 1
 
+        def add_lines_for_category(cat, cvalues):
+            table.add_row(['', ''])
+            table.add_row([cat.name.upper(),
+                          '------------------'])
+            table.add_row(['', ''])
+            for m, mvalue in cvalues.items():
+                table.add_row([m.name, mvalue])
+
         for key, value in self.items():
-            if isinstance(key, Category):
+            if isinstance(key, Text):
                 table.add_row(['', ''])
-                table.add_row([key.name.upper(),
-                               '------------------'])
+                table.add_row(['~ ' + key.title.upper() + ' ~',
+                               '##################'])
                 table.add_row(['', ''])
+
                 for k, v in value.items():
-                    table.add_row([k.name, v])
+                    if isinstance(k, Category):
+                        add_lines_for_category(k, v)
+                    elif isinstance(k, Metric):
+                        table.add_row([k.name, v])
+            elif isinstance(key, Category):
+                add_lines_for_category(key, value)
             elif isinstance(key, Metric):
                 table.add_row([key.name, value])
 
         return table.get_string()
+
+    def _get_multi_text_arff_data(self):
+        d = self.as_dict(use_names=False)
+
+        attrs = [('title', 'STRING')]
+        for cat, cvalues in list(d.values())[0].items():
+            for m, mvalue in cvalues.items():
+                attrs.append((cat + ':' + m, 'NUMMERIC'))
+
+        data = []
+        for title, tvalues in d.items():
+            curr_data = [('title', '"%s"' % title)]
+
+            for cat, cvalues in tvalues.items():
+                for m, mvalue in cvalues.items():
+                    curr_data.append((cat + ':' + m, mvalue))
+
+            data.append(curr_data)
+
+        return attrs, data
+
+    def _get_single_text_arff_data(self):
+        d = self.as_dict(use_names=False)
+
+        attrs = []
+        for cat, cvalues in d.items():
+            for m in cvalues.keys():
+                attrs.append((cat + ':' + m, 'NUMMERIC'))
+
+        if isinstance(list(self.keys())[0], Category):
+            data = []
+            for cat, cvalues in d.items():
+                for m, mvalue in cvalues.items():
+                    data.append((cat + ':' + m, mvalue))
+        else:
+            data = d.items()
+
+        return attrs, [data]
 
     def as_arff(self, relation_name='corpus'):
         """Return a string representation in the Attribute-Relation File
@@ -353,29 +429,23 @@ class ResultSet(collections.OrderedDict):
 
         from datetime import datetime
 
-        d = self.as_dict(use_names=False)
-
-        # 'Flatten' the dictionary if categories are the immediate keys.
-        if isinstance(d[list(d.keys())[0]], dict):
-            data = []
-            for cat, vc in d.items():
-                for m, vm in vc.items():
-                    data.append((cat + ':' + m, vm))
+        if isinstance(list(self.keys())[0], Text):
+            attrs, data = self._get_multi_text_arff_data()
         else:
-            data = d.items()
+            attrs, data = self._get_single_text_arff_data()
 
         lines = ['%% File generated by Coh-Metrix-Dementia on %s' %
                  str(datetime.now()),
                  '@RELATION %s' % relation_name,
                  '']
 
-        for attr, _ in data:
-            lines.append('@ATTRIBUTE %s NUMMERIC' % attr)
+        for attr_name, attr_type in attrs:
+            lines.append('@ATTRIBUTE %s %s' % (attr_name, attr_type))
 
         lines.extend(['',
                       '@DATA'])
 
-        # XXX: This will change in the future, to support multiple texts.
-        lines.append(','.join([str(v) for _, v in data]))
+        for datum in data:
+            lines.append(','.join([str(v) for _, v in datum]))
 
         return '\n'.join(lines)
