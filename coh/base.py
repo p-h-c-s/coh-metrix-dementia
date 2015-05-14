@@ -18,6 +18,7 @@
 from __future__ import unicode_literals, print_function, division
 from coh.utils import is_valid_id
 from coh.resource_pool import rp as default_rp
+import numpy as np
 import codecs
 import collections
 import logging
@@ -331,7 +332,7 @@ class ResultSet(collections.OrderedDict):
             use table/column names.
         """
 
-        d = {}
+        d = collections.OrderedDict()  # was d = {}
         for key, value in self.items():
             if isinstance(key, Text):
                 d[key.title] = value.as_dict(use_names)
@@ -449,3 +450,13 @@ class ResultSet(collections.OrderedDict):
             lines.append(','.join([str(v) for _, v in datum]))
 
         return '\n'.join(lines)
+
+    def as_array(self):
+        """Return a numpy.ndarray representing the data."""
+
+        if isinstance(list(self.keys())[0], Text):
+            _, data = self._get_multi_text_arff_data()
+        else:
+            _, data = self._get_single_text_arff_data()
+
+        return np.array([[value for name, value in line[1:]] for line in data])
