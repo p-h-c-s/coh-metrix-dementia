@@ -22,6 +22,7 @@ import numpy as np
 import codecs
 import collections
 import logging
+from lxml import etree
 
 
 logger = logging.getLogger(__name__)
@@ -35,7 +36,7 @@ class Text(object):
     """
     def __init__(self, content='', title='', author='', source='',
                  publication_date='', genre='', filepath='', encoding='utf-8',
-                 revised=False, revised_content='', revised_filepath=''):
+                 revised_content='', revised_filepath=''):
         """Form a text.
 
         Required arguments:
@@ -57,17 +58,15 @@ class Text(object):
         self.publication_date = publication_date
         self.genre = genre
 
-        if revised:
-            if revised_content:
-                self.revised_content = revised_content
-            else:
-                if not revised_filepath:
-                    revised_filepath = filepath[:-4] + '_rev.txt'\
-                        if filepath.endswith('.txt')\
-                        else filepath + '_rev'
-                with codecs.open(filepath, mode='r', encoding=encoding)\
-                        as revised_file:
-                    self.revised_content = revised_file.read()
+        revised = False
+        if revised_content:
+            self.revised_content = revised_content
+            revised = True
+        elif revised_filepath:
+            with codecs.open(filepath, mode='r', encoding=encoding)\
+                    as revised_file:
+                self.revised_content = revised_file.read()
+            revised = True
 
         if content:
             self.raw_content = content
@@ -80,6 +79,36 @@ class Text(object):
 
         self.paragraphs = [line.strip() for line in _content.split('\n')
                            if line and not line.isspace()]
+
+    @staticmethod
+    def load_from_xml(filepath):
+        tree = etree.parse(filepath)
+        texts = []
+        for etext in tree.findall('text'):
+            metadata = etext.findall('meta')
+            for metadatum in metadata:
+                if metadatum.get('type') == 'subject-name':
+                    subject_name = metadatum.text
+                elif metadatum.get('type') == 'subject-group':
+                    subject_group = metadatum.text
+                elif metadatum.get('type') == 'description-time':
+                    description_time = metadatum.text
+
+            raw = etext.find('raw-content')
+            raw_content = ' '.join([phrase.strip()
+                                    for phrase in raw.itertext()]).strip()
+
+            revised = etext.find('revised-content')
+            revised_content = '\n'.join(
+                [phrase.strip() for phrase in revised.itertext()]).strip()
+
+            # TODO: add support for general kwargs in Text.__init__
+            text = Text(content=raw_content,
+                        revised_content=revised_content,
+                        author=subject_name)
+            texts.append(text)
+
+        return texts
 
     def __repr__(self):
         return '<Text: "%s">' % ((self.paragraphs[0][:70] + '...')
