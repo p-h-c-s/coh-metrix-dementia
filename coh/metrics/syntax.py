@@ -109,7 +109,7 @@ class DependencyDistance(base.Metric):
         dep_distances = []
         for graph in graphs:
             dep_distance = 0
-            for dep in graph.nodelist[1:]:
+            for dep in list(graph.nodes.values())[1:]:
                 if dep['rel'] not in ('TOP', 'root', 'punct'):
                     dep_distance += abs(dep['address'] - dep['head'])
             dep_distances.append(dep_distance)
