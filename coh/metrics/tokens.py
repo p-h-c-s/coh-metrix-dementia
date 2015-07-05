@@ -120,6 +120,29 @@ class HoroneStatistic(base.Metric):
         return R
 
 
+class MeanClauseUtterance(base.Metric):
+    """ Docstring for MeanClauseUtterance. """
+
+    name = 'Mean Clauses per Utterance'
+    column_name = 'mcu'
+
+    def value_for_text(self, t, rp=default_rp):
+        # We estimate the number of clauses by the number of S nodes in
+        # the syntax tree that have a VP node.
+        trees = rp.parse_trees(t)
+
+        clauses = []
+        for tree in trees:
+            n_clauses = 0
+            for subtree in tree.subtrees(lambda t: t.height() >= 3):
+                if subtree.label() == 'S':
+                    sub_vps = [t for t in subtree if t.label() == 'VP']
+                    n_clauses += len(sub_vps)
+            clauses.append(n_clauses)
+
+        return sum(clauses) / len(clauses)
+
+
 class Tokens(base.Category):
     name = 'Pronouns, Types and Tokens'
     table_name = 'tokens'
