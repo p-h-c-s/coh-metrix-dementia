@@ -488,4 +488,5 @@ class ResultSet(collections.OrderedDict):
         else:
             _, data = self._get_single_text_arff_data()
 
-        return np.array([[value for name, value in line[1:]] for line in data])
+        return np.array([[value for _, value in line[1:]] for line in data],
+                        dtype=np.float64)

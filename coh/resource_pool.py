@@ -17,6 +17,7 @@
 
 from __future__ import unicode_literals, print_function, division
 import re
+import kenlm
 import logging
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
@@ -122,6 +123,9 @@ class DefaultResourcePool(ResourcePool):
 
         # LSA spaces
         self.register('lsa_space', self._lsa_space)
+
+        # Language models
+        self.register('language_model', self._language_model)
 
     def _db_helper(self):
         """Creates a database session and returns a Helper associated with it.
@@ -306,6 +310,15 @@ class DefaultResourcePool(ResourcePool):
         """
         space = LsaSpace(config['LSA_DICT_PATH'], config['LSA_MODEL_PATH'])
         return space
+    
+    def _language_model(self):
+        """Return the default language model (a 3-gram model
+        generated using KenLM).
+
+        :returns: a kenlm.LanguageModel.
+        """
+        model = kenlm.LanguageModel(config['KENLM_LANGUAGE_MODEL'])
+        return model
 
 
 rp = DefaultResourcePool()

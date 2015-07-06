@@ -125,7 +125,12 @@ class CrossEntropy(base.Metric):
     column_name = 'cross_entropy'
 
     def value_for_text(self, t, rp=default_rp):
-        pass
+        lm = rp.language_model()
+
+        # TODO: pre-process text.
+        scores = [lm.score(sent) for sent in rp.sentences(t)]
+
+        return sum(scores) / len(scores)
 
 
 class SyntacticalComplexity(base.Category):
@@ -137,9 +142,5 @@ class SyntacticalComplexity(base.Category):
 
     def __init__(self):
         super(SyntacticalComplexity, self).__init__()
-        # self._set_metrics_from_module(__name__)
-        self.metrics = [YngveComplexity(),
-                        FrazierComplexity(),
-                        DependencyDistance(),
-                        ]
+        self._set_metrics_from_module(__name__)
         self.metrics.sort(key=lambda m: m.name)
