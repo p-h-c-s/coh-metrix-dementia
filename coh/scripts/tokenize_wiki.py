@@ -29,16 +29,8 @@ from nltk.data import load
 coh.config.from_object('config')
 logger = logging.getLogger(__name__)
 
-stopwords = nltk.corpus.stopwords.words('portuguese')
 senter = load('tokenizers/punkt/portuguese.pickle')
 word_tokenize = nltk.word_tokenize
-
-subs = [[r'``', '"'],
-        [r'\d+([,\.]\d*)?', '<NUM>'],
-        ]
-
-for i in range(len(subs)):
-    subs[i][0] = re.compile(subs[i][0])
 
 
 def process_file(args):
@@ -56,9 +48,6 @@ def process_file(args):
 
     joined_sentences = '\n'.join([' '.join(sentence)
                                   for sentence in tokens])
-
-    for regex, sub in subs:
-        joined_sentences = re.sub(regex, sub, joined_sentences)
 
     out_file.write(joined_sentences + '\n')
 

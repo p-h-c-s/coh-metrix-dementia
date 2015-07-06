@@ -24,8 +24,8 @@ import re
 from itertools import chain
 import nltk
 from nltk.data import load
+import multiprocessing
 import codecs
-from subprocess import call
 
 
 coh.config.from_object('config')
@@ -40,20 +40,16 @@ def process_file(args):
 
     logger.info('Will process file %s (%d/%d)', in_file, i + 1, nfiles)
 
-    t = coh.Text(filepath=in_file, encoding='utf-16le')
-
-    first = 1
-    while not t.paragraphs[first].startswith('{'):
-        first += 1
+    t = coh.Text(filepath=in_file, encoding='iso-8859-1')
 
     deleted = 0
     try:
-        while t.paragraphs[first].startswith('{'):
-            del t.paragraphs[first]
+        while not t.paragraphs[0][-1] in ('.', ':', '?', '!'):
+            del t.paragraphs[0]
             deleted += 1
     except IndexError:
         logger.fatal('Ignored file %s', in_file)
-        return 1
+        return
 
     logger.info('Deleted %d lines', deleted)
 
@@ -62,13 +58,10 @@ def process_file(args):
 
     tokens = [[word.lower() for word in word_tokenize(sent)]
               for sent in sentences]
-
+    
     joined_sentences = '\n'.join([' '.join(sentence)
                                   for sentence in tokens])
-
-    out_file.write(joined_sentences + '\n')
-
-    return 0
+    out_file.write(joined_sentences)
 
 
 def main(in_dir, out_file):
@@ -82,25 +75,21 @@ def main(in_dir, out_file):
 
     logger.info('Found %d files in %s.', len(in_files), in_dir)
 
-    working_list = [(in_file, i, len(in_files), out_file)
+    out = open(out_file, mode='w')
+    working_list = [(in_file, i, len(in_files), out)
                     for i, in_file in enumerate(in_files)]
 
-    ignored = 0
-    for elem in working_list:
-        ignored += process_file(elem)
+    list(map(process_file, working_list))
 
+    out.close()
     logger.info('Done processing directory %s.', in_dir)
-    logger.info('Ignored %d files.', ignored)
 
 
 if __name__ == '__main__':
     FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
-    logging.basicConfig(format=FORMAT, level=logging.INFO)
+    logging.basicConfig(format=FORMAT, level=logging.FATAL)
 
     if len(argv) != 3:
         print('Usage: python', argv[0], '<in_dir>', '<out_file>')
     else:
-        with codecs.open(argv[2], mode='a', encoding='utf-8') as out_file:
-            main(argv[1], out_file)
-
-        call(['perl', '-pi~', '-CSD', '-e', 's/^\\x{feff}//', argv[2]])
+        main(argv[1], argv[2])
