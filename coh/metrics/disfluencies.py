@@ -23,11 +23,11 @@ from coh.resource_pool import rp as default_rp
 
 class MeanPauseDuration(base.Metric):
     """ """
+
     name = 'Mean pause duration'
     column_name = 'mean_pause'
 
-    def __init__(self):
-        self.pause_pattern = re.compile(r'\(\(pausa\s+(\d+)\s*\w*\)\)')
+    pause_pattern = re.compile(r'\(\(pausa\s+(\d+)\s*\w*\)\)')
 
     def value_for_text(self, t, rp=default_rp):
         content = rp.raw_content(t)
@@ -36,8 +36,24 @@ class MeanPauseDuration(base.Metric):
         pauses = [int(duration)
                   for duration in self.pause_pattern.findall(content)]
 
-        print(words, pauses)
-        return sum(pauses) / len(words)
+        return sum(pauses) / len(words) if words else 0
+
+
+class MeanShortPauses(base.Metric):
+    """"""
+
+    name = "Mean # of short pauses"
+    column_name = 'mean_short_pauses'
+
+    short_pause_pattern = re.compile(r'\.\.\.')
+
+    def value_for_text(self, t, rp=default_rp):
+        content = rp.raw_content(t)
+        words = rp.raw_words(t)
+
+        pauses = self.short_pause_pattern.findall(content)
+
+        return len(pauses) / len(words) if words else 0
 
 
 class MeanVowelStretchings(base.Metric):
@@ -45,8 +61,7 @@ class MeanVowelStretchings(base.Metric):
     name = 'Mean # of vowel stretchings'
     column_name = 'mean_vowel'
 
-    def __init__(self):
-        self.stretching_pattern = re.compile(r'::+')
+    stretching_pattern = re.compile(r'::+')
 
     def value_for_text(self, t, rp=default_rp):
         content = rp.raw_content(t)
@@ -54,8 +69,7 @@ class MeanVowelStretchings(base.Metric):
 
         stretchings = self.stretching_pattern.findall(content)
 
-        print(words, stretchings)
-        return len(stretchings) / len(words)
+        return len(stretchings) / len(words) if words else 0
 
 
 class Disfluencies(base.Category):
