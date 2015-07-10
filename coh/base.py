@@ -29,35 +29,63 @@ logger = logging.getLogger(__name__)
 
 
 class Text(object):
-    """Represents a text: its content and metadata.
+    """Represents a text: its content and metadata."""
 
-    A text has several (optional) attributes: title, author,
-    source, publication data and genre.
-    """
-    def __init__(self, content='', title='', author='', source='',
-                 publication_date='', genre='', filepath='', encoding='utf-8',
-                 revised_content='', revised_filepath=''):
-        """Form a text.
+    def __init__(self, content='', revised_content='',
+             filepath='', revised_filepath='', encoding='utf-8', **meta):
+        """Form a text. The text's content can be informed via a string or a
+        file path to be read. A text can also be revised.
 
-        Required arguments:
-        filepath -- a path to the file containing the text. The text is
-            supposed to be formatted as one paragraph per line, with
-            multiple sentences per paragraph. Blank lines are ignored.
+        To create a Text object from a string, use the attribute 'content'.
+        
+        > t = Text(content='The book is on the table.')
 
-        Keyword arguments:
-        :encoding: The encoding of the input file (default "utf-8")
-        :title: The title of the text (default "").
-        :author: The author of the text (default "").
-        :source: Where the text came from, usually a URL (default "").
-        :publication_date: When the text was released (default "").
-        :genre: The textual genre that better fits the text (default "").
+        Or simply:
+
+        > t = Text('The book is on the table.')
+
+        To create a Text from the contents of a file, use 'filepath'.
+
+        > t = Text(filepath='./text.txt')
+
+        If the file is not encoded in UTF-8, use 'encoding':
+
+        > t = Text(filepath='./text.txt', encoding='ISO-8859-1')
+
+        If the text is revised, the revised content can be informed both
+        as a string or as a file path. For the first case, use
+        'revised_content'; for the second one, 'revised_filepath'.
+
+        Examples:
+
+        > t = Text('the book is on the table',
+                   revised_content='The book is on the table.')
+
+        > t = Text(filepath='./text.txt',
+                   revised_filepath='./text_rev.txt')
+
+        It's possible to inform the raw content as a string and the
+        revised content as a file path, and vice-versa.
+
+        It's possible to inform as many keyword arguments as wanted. Their
+        values will be stored in the 'meta' attribute:
+
+        > t = Text('...', author='John Doe', date='today')
+        > t.meta
+            {'author': 'John Doe', 'date': 'today'}
         """
-        self.title = title
-        self.author = author
-        self.source = source
-        self.publication_date = publication_date
-        self.genre = genre
 
+        self.meta = meta
+
+        # Set raw content.
+        if not filepath:
+            self.raw_content = content
+        else:
+            with codecs.open(filepath, mode='r', encoding=encoding)\
+                    as input_file:
+                self.raw_content = input_file.read()
+        
+        # Set revised content.
         revised = False
         if revised_content:
             self.revised_content = revised_content
@@ -68,31 +96,22 @@ class Text(object):
                 self.revised_content = revised_file.read()
             revised = True
 
-        if content:
-            self.raw_content = content
-        else:
-            with codecs.open(filepath, mode='r', encoding=encoding)\
-                    as input_file:
-                self.raw_content = input_file.read()
-
         _content = self.revised_content if revised else self.raw_content
 
         self.paragraphs = [line.strip() for line in _content.split('\n')
                            if line and not line.isspace()]
 
     @staticmethod
-    def load_from_xml(filepath):
+    def load_xml(filepath):
+        """Load a file in Coh-Metrix-Dementia's XML format."""
+
         tree = etree.parse(filepath)
         texts = []
         for etext in tree.findall('text'):
-            metadata = etext.findall('meta')
-            for metadatum in metadata:
-                if metadatum.get('type') == 'subject-name':
-                    subject_name = metadatum.text
-                elif metadatum.get('type') == 'subject-group':
-                    subject_group = metadatum.text
-                elif metadatum.get('type') == 'description-time':
-                    description_time = metadatum.text
+            metadata = {}
+            xml_metadata = etext.findall('meta')
+            for metadatum in xml_metadata:
+                metadata[metadatum.get('type')] = metadatum.text
 
             raw = etext.find('raw-content')
             raw_content = ' '.join([phrase.strip()
@@ -102,10 +121,9 @@ class Text(object):
             revised_content = '\n'.join(
                 [phrase.strip() for phrase in revised.itertext()]).strip()
 
-            # TODO: add support for general kwargs in Text.__init__
             text = Text(content=raw_content,
                         revised_content=revised_content,
-                        author=subject_name)
+                        **metadata)
             texts.append(text)
 
         return texts
