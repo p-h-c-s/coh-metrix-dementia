@@ -72,6 +72,47 @@ class MeanVowelStretchings(base.Metric):
         return len(stretchings) / len(words) if words else 0
 
 
+class MeanEmpty(base.Metric):
+    """ """
+
+    name = "Mean # of empty words"
+    column_name = 'mean_empty'
+
+    def value_for_text(self, t, rp=default_rp):
+        words = rp.raw_words(t)
+
+        empty_length = []
+        for e in t.meta['empty']:
+            text = re.sub(r"\.\.\.", ' ', e.text, re.U)
+            text = re.sub(r'::', ' ', text, re.U)
+
+            empty_words = [w for w in text.split(' ') if w]
+            empty_length.append(len(empty_words))
+
+        return sum(empty_length) / len(words) if words else 0
+
+
+class MeanDisf(base.Metric):
+    """ """
+
+    name = "Mean # of disfluent words"
+    column_name = 'mean_disf'
+
+    def value_for_text(self, t, rp=default_rp):
+        words = rp.raw_words(t)
+
+        disf_length = []
+        for e in t.meta['disf']:
+            text = re.sub(r"\.\.\.", ' ', e.text, re.U)
+            text = re.sub(r'::', ' ', text, re.U)
+
+            disf_words = [w for w in text.split(' ') if w]
+            print(disf_words)
+            disf_length.append(len(disf_words))
+
+        return sum(disf_length) / len(words) if words else 0
+
+
 class Disfluencies(base.Category):
     name = 'Disfluencies'
     table_name = 'disfluencies'

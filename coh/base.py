@@ -113,6 +113,12 @@ class Text(object):
             for metadatum in xml_metadata:
                 metadata[metadatum.get('type')] = metadatum.text
 
+            empty_utterances = etext.find('raw-content').findall('empty')
+            disf_utterances = etext.find('raw-content').findall('disf')
+            
+            metadata['empty'] = empty_utterances
+            metadata['disf'] = disf_utterances
+            
             raw = etext.find('raw-content')
             raw_content = ' '.join([phrase.strip()
                                     for phrase in raw.itertext()]).strip()
