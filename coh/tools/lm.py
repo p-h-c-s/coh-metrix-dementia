@@ -19,7 +19,10 @@
 
 from __future__ import unicode_literals, print_function, division
 
+import re
 import kenlm
+import unicodedata
+from sys import maxunicode
 
 
 class KenLmLanguageModel(object):
@@ -37,4 +40,44 @@ class KenLmLanguageModel(object):
         """Clean a sentence, so that it can be run
         through the model."""
 
-        return raw_sent
+        sent = self._apply_subs(raw_sent)
+        sent = self._remove_punct(sent)
+        sent = self._remove_multiple_spaces(sent)
+
+        return sent.strip()
+
+    # Auxiliary routines and data for text cleaning.
+
+    SUBS = [[r'``', '"'],  # Fix quotation marks
+            [r'\d+([,\.]\d*)?', '<NUM>'],  # Remove numbers
+            [r'\(.*?\)', ' '],  # Remove parenthetical clauses
+            [r'[^\u0000-\u00FF]', ' ']  # Remove invalid chars
+           ]
+
+    # All unicode characters categorized as punctuation.
+    EXCEPTIONS = ('%')
+
+    PUNCT_TABLE = dict.fromkeys(
+        (i for i in range(maxunicode)
+         if unicodedata.category(chr(i)).startswith('P')\
+                 and chr(i) not in EXCEPTIONS),
+        " ")
+
+    MULTISPACES = re.compile(r'[ \t]+')
+
+    def _apply_subs(self, string):
+        """Apply substitutions on a string."""
+
+        for left, right in self.SUBS:
+            string = re.sub(left, right, string)
+        return string
+
+    def _remove_punct(self, string):
+        """Remove punctuation marks."""
+
+        return string.translate(self.PUNCT_TABLE)
+
+    def _remove_multiple_spaces(self, string):
+        """Remove multiple spaces from a string."""
+
+        return self.MULTISPACES.sub(' ', string)
