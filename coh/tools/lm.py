@@ -29,6 +29,13 @@ class KenLmLanguageModel(object):
     """A class for interfacing with the KenLM toolkit."""
 
     def __init__(self, model_path):
+        # All unicode characters categorized as punctuation.
+        self._punct_table = dict.fromkeys(
+            (i for i in range(maxunicode)
+             if unicodedata.category(chr(i)).startswith('P')\
+                     and chr(i) not in self.EXCEPTIONS),
+            " ")
+
         self.model = kenlm.LanguageModel(model_path)
 
     def score(self, sent):
@@ -54,14 +61,9 @@ class KenLmLanguageModel(object):
             [r'[^\u0000-\u00FF]', ' ']  # Remove invalid chars
            ]
 
-    # All unicode characters categorized as punctuation.
+    # Unicode consider these characters as punctuation, but we don't
+    #   want to remove them.
     EXCEPTIONS = ('%')
-
-    PUNCT_TABLE = dict.fromkeys(
-        (i for i in range(maxunicode)
-         if unicodedata.category(chr(i)).startswith('P')\
-                 and chr(i) not in EXCEPTIONS),
-        " ")
 
     MULTISPACES = re.compile(r'[ \t]+')
 
@@ -75,7 +77,7 @@ class KenLmLanguageModel(object):
     def _remove_punct(self, string):
         """Remove punctuation marks."""
 
-        return string.translate(self.PUNCT_TABLE)
+        return string.translate(self._punct_table)
 
     def _remove_multiple_spaces(self, string):
         """Remove multiple spaces from a string."""
