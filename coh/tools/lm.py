@@ -61,7 +61,7 @@ class KenLmLanguageModel(object):
             [r'[^\u0000-\u00FF]', ' ']  # Remove invalid chars
            ]
 
-    # Unicode consider these characters as punctuation, but we don't
+    # Unicode considers these characters as punctuation, but we don't
     #   want to remove them.
     EXCEPTIONS = ('%')
 
