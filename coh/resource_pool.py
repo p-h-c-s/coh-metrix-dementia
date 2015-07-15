@@ -17,12 +17,12 @@
 
 from __future__ import unicode_literals, print_function, division
 import re
-import kenlm
 import logging
 from itertools import chain
 from coh.tools import senter, word_tokenize,\
     pos_tagger, stemmer, parser, dep_parser, univ_pos_tagger
 from coh.tools.lsa import LsaSpace
+from coh.tools.lm import KenLmLanguageModel
 from coh.utils import is_valid_id
 from coh.database import create_engine, create_session, Helper
 from coh.conf import config
@@ -317,7 +317,7 @@ class DefaultResourcePool(ResourcePool):
 
         :returns: a kenlm.LanguageModel.
         """
-        model = kenlm.LanguageModel(config['KENLM_LANGUAGE_MODEL'])
+        model = KenLmLanguageModel(config['KENLM_LANGUAGE_MODEL'])
         return model
 
 

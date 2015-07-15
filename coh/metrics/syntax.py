@@ -46,7 +46,8 @@ class YngveComplexity(base.Metric):
 
             sentence_indices.append((sum(word_indices) / len(word_indices)))
 
-        return sum(sentence_indices) / len(sentence_indices)
+        return sum(sentence_indices) / len(sentence_indices) \
+                if sentence_indices else 0
 
 
 class FrazierComplexity(base.Metric):
@@ -93,7 +94,8 @@ class FrazierComplexity(base.Metric):
 
             sentence_indices.append(sentence_index)
 
-        return sum(sentence_indices) / len(sentence_indices)
+        return sum(sentence_indices) / len(sentence_indices) \
+                if sentence_indices else 0
 
 
 class DependencyDistance(base.Metric):
@@ -114,7 +116,8 @@ class DependencyDistance(base.Metric):
                     dep_distance += abs(dep['address'] - dep['head'])
             dep_distances.append(dep_distance)
 
-        return sum(dep_distances) / len(dep_distances)
+        return sum(dep_distances) / len(dep_distances) \
+                if dep_distances else 0
 
 
 class CrossEntropy(base.Metric):
@@ -127,10 +130,10 @@ class CrossEntropy(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         lm = rp.language_model()
 
-        # TODO: pre-process text.
-        scores = [lm.score(sent) for sent in rp.sentences(t)]
+        sents = [lm.clean(sent) for sent in rp.sentences(t)]
+        scores = [lm.score(sent) for sent in sents]
 
-        return sum(scores) / len(scores)
+        return sum(scores) / len(scores) if scores else 0
 
 
 class SyntacticalComplexity(base.Category):
