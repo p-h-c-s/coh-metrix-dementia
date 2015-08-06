@@ -39,7 +39,8 @@ class PersonalPronounsIncidence(base.Metric):
         words = [word.lower() for word in rp.all_words(t)]
         n_personal_pronouns = sum([word in self.personal_pronouns
                                    for word in words])
-        return n_personal_pronouns / (len(words) / 1000)
+        return n_personal_pronouns / (len(words) / 1000) \
+            if words else 0
 
 
 class PronounsPerNounPhrase(base.Metric):
@@ -63,7 +64,8 @@ class PronounsPerNounPhrase(base.Metric):
 
             sent_indices.append(prons / nps)
 
-        return sum(sent_indices) / len(sent_indices)
+        return sum(sent_indices) / len(sent_indices) \
+            if sent_indices else 0
 
 
 class TypeTokenRatio(base.Metric):
@@ -79,7 +81,7 @@ class TypeTokenRatio(base.Metric):
         tokens = rp.all_words(t)
         types = rp.token_types(t)
 
-        ttr = len(types) / len(tokens)
+        ttr = len(types) / len(tokens) if tokens else 0
 
         return ttr
 

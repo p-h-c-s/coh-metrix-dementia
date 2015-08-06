@@ -40,7 +40,7 @@ class NounPhraseIncidence(base.Metric):
 
             sent_indices.append(nps / (words / 1000))
 
-        return sum(sent_indices) / len(sent_indices)
+        return sum(sent_indices) / len(sent_indices) if sent_indices else 0
 
 
 class ModifiersPerNounPhrase(base.Metric):
@@ -65,7 +65,43 @@ class ModifiersPerNounPhrase(base.Metric):
 
             sent_indices.append(mods / nps)
 
-        return sum(sent_indices) / len(sent_indices)
+        return sum(sent_indices) / len(sent_indices) if sent_indices else 0
+
+
+class WordsBeforeMainVerb(base.Metric):
+
+    """Docstring for WordsBeforeMainVerb. """
+
+    name = 'Words before Main Verb'
+    column_name = 'words_before_main_verb'
+
+    def value_for_text(self, t, rp=default_rp):
+        trees = rp.dep_trees(t)
+        words = rp.tagged_words_in_sents(t)
+
+        dep_tagset = rp.dep_parser().tagger.tagset
+        tagset = rp.pos_tagger().tagset
+
+        sent_scores = []
+        for tree, tagged_sent in zip(trees, words):
+            i_main_verb = 0
+
+            i_root = [node['rel']
+                      for node in tree.nodes.values()].index('ROOT')
+
+            if dep_tagset.is_verb(('', list(tree.nodes.values())[i_root]['tag'])):
+                # If the root of the dep. tree is a verb, use it.
+                i_main_verb = i_root - 1
+            else:
+                # Otherwise, use the first verb.
+                for i, token in enumerate(tagged_sent):
+                    if tagset.is_verb(token):
+                        i_main_verb = i
+                        break
+
+            sent_scores.append(i_main_verb)
+
+        return sum(sent_scores) / len(sent_scores) if sent_scores else 0
 
 
 class Constituents(base.Category):

@@ -30,7 +30,7 @@ class ContentWordsFrequency(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         frequencies = list(chain.from_iterable(rp.cw_freq(t)))
 
-        return sum(frequencies) / len(frequencies)
+        return sum(frequencies) / len(frequencies) if frequencies else 0
 
 
 class MinimumContentWordsFrequency(base.Metric):
@@ -44,7 +44,7 @@ class MinimumContentWordsFrequency(base.Metric):
         # TODO: Check the len(f) > 0 (not a problem in Python 3!)
         min_freqs = [min(f) for f in frequencies if len(f) > 0]
 
-        return sum(min_freqs) / len(min_freqs)
+        return sum(min_freqs) / len(min_freqs) if min_freqs else 0
 
 
 class Frequencies(base.Category):

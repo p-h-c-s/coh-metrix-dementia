@@ -17,6 +17,7 @@
 
 from __future__ import unicode_literals, print_function, division
 import re
+import idd3
 from coh import base
 from coh.resource_pool import rp as default_rp
 
@@ -113,6 +114,62 @@ class MeanDisf(base.Metric):
         return sum(disf_length) / len(words) if words else 0
 
 
+class Repetition(base.Metric):
+    """ """
+
+    name = "Ratio of repeated words"
+    column_name = 'repetition'
+
+    def value_for_text(self, t, rp=default_rp):
+        raw_words = rp.raw_words(t)
+
+        n_repeated_words = 0
+        i = 0
+        while i < len(raw_words):
+            run_length = 0
+            for j in range(i + 1, len(raw_words)):
+                if raw_words[j] == raw_words[i]:
+                    run_length += 1
+                else:
+                    break
+            n_repeated_words += run_length
+
+            i += run_length + 1
+
+        return n_repeated_words / len(raw_words) if raw_words else 0
+
+
+class TotalIdeaDensity(base.Metric):
+    name = 'Total Idea Density'
+    column_name = 'total_id'
+
+    def value_for_text(self, t, rp=default_rp):
+        engine = rp.idd3_engine()
+        graphs = rp.dep_trees(t)
+        raw_words = rp.raw_words(t)
+        
+        total_nprops = 0
+        for index in range(len(graphs)):
+            relations = []
+            for relation in graphs[index].nodes.values():
+                relations.append(idd3.Relation(**relation))
+
+            # print('Propositions:')
+            try:
+                engine.analyze(relations)
+                # for i, prop in enumerate(engine.props):
+                #     print(str(i + 1) + ' ' + str(prop))
+
+                n_props = len(engine.props)
+            except Exception as e:
+                n_props = 0
+
+            # print(len(sents[index]), n_props / len(sents[index]) )
+            total_nprops += n_props
+
+        return total_nprops / len(raw_words) if raw_words else 0
+
+    
 class Disfluencies(base.Category):
     name = 'Disfluencies'
     table_name = 'disfluencies'

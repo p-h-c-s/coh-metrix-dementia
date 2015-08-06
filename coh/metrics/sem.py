@@ -16,8 +16,13 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+import idd3
+import logging
 from coh import base
 from coh.resource_pool import rp as default_rp
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 class IdeaDensity(base.Metric):
@@ -25,8 +30,32 @@ class IdeaDensity(base.Metric):
     column_name = 'idea_density'
 
     def value_for_text(self, t, rp=default_rp):
-        pass
+        engine = rp.idd3_engine()
+        graphs = rp.dep_trees(t)
+        sents = rp.tagged_words_in_sents(t)
+        
+        id_values = []
+        for index in range(len(graphs)):
+            relations = []
+            for relation in graphs[index].nodes.values():
+                relations.append(idd3.Relation(**relation))
 
+            # print('Propositions:')
+            try:
+                engine.analyze(relations)
+                # for i, prop in enumerate(engine.props):
+                #     print(str(i + 1) + ' ' + str(prop))
+
+                n_props = len(engine.props)
+            except Exception as e:
+                LOGGER.error('{0} in engine.analyze: {1}'.format(
+                    e.__class__.__name__, e))
+                n_props = 0
+
+            # print(len(sents[index]), n_props / len(sents[index]) )
+            id_values.append(n_props / len(sents[index]) if sents[index] else 0)
+
+        return sum(id_values) / len(id_values) if id_values else 0
 
 class ContentDensity(base.Metric):
 
@@ -45,7 +74,8 @@ class ContentDensity(base.Metric):
         function_words = [word for word in tagged_words
                           if tagset.is_function_word(word)]
 
-        content_density = len(content_words) / len(function_words)
+        content_density = len(content_words) / len(function_words) \
+            if function_words else 0
 
         return content_density
 
@@ -56,6 +86,5 @@ class SemanticDensity(base.Category):
 
     def __init__(self):
         super(SemanticDensity, self).__init__()
-        # self._set_metrics_from_module(__name__)
-        self.metrics = [ContentDensity(), ]
+        self._set_metrics_from_module(__name__)
         self.metrics.sort(key=lambda m: m.name)

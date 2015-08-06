@@ -65,7 +65,7 @@ class LsaSentenceAdjacentMean(LsaBase):
         return adjacent_pairs(tokens)
 
     def get_value(self, similarities):
-        return sum(similarities) / len(similarities)
+        return sum(similarities) / len(similarities) if similarities else 0
 
 
 class LsaSentenceAdjacentStd(LsaBase):
@@ -95,7 +95,7 @@ class LsaSentenceAllMean(LsaBase):
         return all_pairs(tokens)
 
     def get_value(self, similarities):
-        return sum(similarities) / len(similarities)
+        return sum(similarities) / len(similarities) if similarities else 0
 
 
 class LsaSentenceAllStd(LsaBase):
@@ -134,7 +134,7 @@ class LsaParagraphAdjacentMean(LsaBase):
         return adjacent_pairs(paragraphs)
 
     def get_value(self, similarities):
-        return sum(similarities) / len(similarities)
+        return sum(similarities) / len(similarities) if similarities else 0
 
 
 class LsaParagraphAdjacentStd(LsaBase):
@@ -170,7 +170,7 @@ class LsaGivennessMean(LsaGivennessBase):
     column_name = 'givenness_mean'
 
     def get_value(self, similarities):
-        return sum(similarities) / len(similarities)
+        return sum(similarities) / len(similarities) if similarities else 0
 
 
 class LsaGivennessStd(LsaGivennessBase):

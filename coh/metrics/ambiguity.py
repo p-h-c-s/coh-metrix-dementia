@@ -45,7 +45,7 @@ def calculate_ambiguity(rp, t, delaf_tag, tep_tag, checker):
                       for stem in word_stems]
     meanings_count = [m for m in meanings_count if m is not None]
 
-    return sum(meanings_count) / len(words)
+    return sum(meanings_count) / len(words) if words else 0
 
 
 class VerbAmbiguity(base.Metric):

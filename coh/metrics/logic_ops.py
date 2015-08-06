@@ -32,7 +32,8 @@ class LogicOperatorsIncidence(base.Metric):
         occurrences = [count_occurrences_for_all(sent, logic_operators,
                                                  ignore_pos)
                        for sent in rp.tagged_sentences(t)]
-        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000) \
+            if len(rp.all_words(t)) else 0
 
 
 class AndIncidence(base.Metric):
@@ -45,7 +46,8 @@ class AndIncidence(base.Metric):
         _and = rp.pos_tagger().tagset.AND
         occurrences = [count_occurrences(sent, _and, ignore_pos)
                        for sent in rp.tagged_sentences(t)]
-        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000) \
+            if len(rp.all_words(t)) else 0
 
 
 class OrIncidence(base.Metric):
@@ -58,7 +60,8 @@ class OrIncidence(base.Metric):
         _or = rp.pos_tagger().tagset.OR
         occurrences = [count_occurrences(sent, _or, ignore_pos)
                        for sent in rp.tagged_sentences(t)]
-        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000) \
+            if len(rp.all_words(t)) else 0
 
 
 class IfIncidence(base.Metric):
@@ -71,7 +74,8 @@ class IfIncidence(base.Metric):
         _if = rp.pos_tagger().tagset.IF
         occurrences = [count_occurrences(sent, _if, ignore_pos)
                        for sent in rp.tagged_sentences(t)]
-        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000) \
+            if len(rp.all_words(t)) else 0
 
 
 class NegationIncidence(base.Metric):
@@ -85,7 +89,8 @@ class NegationIncidence(base.Metric):
         occurrences = [count_occurrences_for_all(sent, negations,
                                                  ignore_pos)
                        for sent in rp.tagged_sentences(t)]
-        return sum(occurrences) / (len(rp.all_words(t)) / 1000)
+        return sum(occurrences) / (len(rp.all_words(t)) / 1000) \
+            if len(rp.all_words(t)) else 0
 
 
 class LogicOperators(base.Category):

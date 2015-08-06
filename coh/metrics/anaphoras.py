@@ -121,7 +121,7 @@ class AnaphoricReferencesBase(base.Metric):
                                                           category, rp)
                         ncandidates += len(candidates)
 
-        return ncandidates / (len(tokens) - 1)
+        return ncandidates / (len(tokens) - 1) if len(tokens) - 1 else 0
 
 
 class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
