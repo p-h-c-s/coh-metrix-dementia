@@ -98,8 +98,10 @@ class DefaultResourcePool(ResourcePool):
         self.register('dep_parser', lambda: dep_parser)
         self.register('stemmer', lambda: stemmer)
         self.register('db_helper', self._db_helper)
+        self.register('idd3_engine', self._idd3_engine)
 
         # Basic text info.
+        # TODO: these methods need renaming for better readability.
         self.register('raw_content', lambda t: t.raw_content)
         self.register('raw_words', self._raw_words)
         self.register('paragraphs', lambda t: t.paragraphs)
@@ -110,6 +112,7 @@ class DefaultResourcePool(ResourcePool):
         self.register('tagged_sentences', self._tagged_sentences)
         self.register('tagged_tokens', self._tagged_tokens)
         self.register('tagged_words', self._tagged_words)
+        self.register('tagged_words_in_sents', self._tagged_words_in_sents)
 
         # Derived text info.
         self.register('content_words', self._content_words)
@@ -135,6 +138,18 @@ class DefaultResourcePool(ResourcePool):
         helper = Helper(session)
 
         return helper
+    
+    def _idd3_engine(self):
+        """Create an IDD3 Engine, configure it, and return it.
+        """
+        import idd3
+        from idd3.rules import pt
+
+        idd3.use_language(pt)
+
+        engine = idd3.Engine(idd3.all_rulesets, idd3.all_transformations)
+
+        return engine
 
     def _raw_words(self, text):
         """TODO: Docstring for raw_words.
@@ -200,13 +215,25 @@ class DefaultResourcePool(ResourcePool):
         return list(chain.from_iterable(tagged_sentences))
 
     def _tagged_words(self, text):
-        """Return a list of pair (string, string), representing the
+        """Return a list of pairs (string, string), representing the
             non-punctuation tokens not separated in sentences.
         """
         tagged_tokens = self.get('tagged_tokens', text)
         tagset = self.get('pos_tagger').tagset
         tagged_words = [token for token in tagged_tokens
                         if not tagset.is_punctuation(token)]
+        return tagged_words
+
+    def _tagged_words_in_sents(self, text):
+        """Return a list of lists of pairs (string, string),
+            representing the non-punctuation tokens separated
+            in sentences.
+        """
+        tagged_sents = self.get('tagged_sentences', text)
+        tagset = self.get('pos_tagger').tagset
+        tagged_words = [[token for token in tagged_sent
+                         if not tagset.is_punctuation(token)]
+                        for tagged_sent in tagged_sents]
         return tagged_words
 
     def _content_words(self, text):
