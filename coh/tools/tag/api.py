@@ -44,7 +44,8 @@ class Tagger(object):
         A list of pairs (string, string), where the first string is the token
             and the second one is the corresponding PoS tag.
         """
-        return self.tag_sents([tokens])[0]
+        tagged_sents = self.tag_sents([tokens])
+        return tagged_sents[0] if tagged_sents else []
 
     def tag_sents(self, sentences):
         """Assign part-of-speech tags to multiple sentences at once.

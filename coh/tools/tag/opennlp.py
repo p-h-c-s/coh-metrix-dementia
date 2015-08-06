@@ -16,6 +16,7 @@
 # this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from __future__ import unicode_literals, print_function, division
+import os
 from coh.tools.tag.api import Tagger
 from nltk.tag.util import str2tuple
 from coh.conf import config
@@ -41,7 +42,8 @@ class OpenNLPTagger(Tagger):
 
     def tag_sents(self, sentences):
         # Create a temporary input file.
-        _, _input_file_path = tempfile.mkstemp(text=True)
+        fdesc, _input_file_path = tempfile.mkstemp(text=True)
+        os.close(fdesc)
 
         # Write the sentences to the temporary input file.
         with codecs.open(_input_file_path, mode='w', encoding=self._encoding)\
