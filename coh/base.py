@@ -143,7 +143,7 @@ class Text(object):
 class Category(object):
     """Represents a set of taxonomically related metrics.
     """
-    def __init__(self, name=None, table_name=None, desc=None):
+    def __init__(self, metrics=None, name=None, table_name=None, desc=None):
         """Form a category.
 
         Keyword arguments:
@@ -157,6 +157,8 @@ class Category(object):
             If no value is passed, the docstring of the class is used.
             (default None)
         """
+        self.metrics = metrics
+        
         if name is None and hasattr(self.__class__, 'name'):
             name = self.__class__.name
 
@@ -342,7 +344,14 @@ class MetricsSet(object):
         :returns: a ResultSet containing the calculated metrics for each text.
 
         """
-        return ResultSet((t, self.values_for_text(t, rp)) for t in texts)
+        
+        values = []
+        ntexts = len(texts)
+        for i, text in enumerate(texts):
+            logger.info('Analyzing text %d/%d: %s.', i + 1, ntexts, text)
+            values.append((text, self.values_for_text(text, rp)))
+        
+        return ResultSet(values)
 
 
 class ResultSet(collections.OrderedDict):
@@ -371,13 +380,13 @@ class ResultSet(collections.OrderedDict):
 
         return [key.name for key in self.keys()]
 
-    def as_json(self, use_names=True):
+    def as_json(self, use_names=True, text_key='title'):
         """Return a JSON representation of this ResultSet."""
 
         import json
-        return json.dumps(self.as_dict(use_names))
+        return json.dumps(self.as_dict(use_names, text_key))
 
-    def as_dict(self, use_names=True):
+    def as_dict(self, use_names=True, text_key='title'):
         """Return a dictionary representation, with the categories/metrics
         names as keys.
 
@@ -388,10 +397,10 @@ class ResultSet(collections.OrderedDict):
         d = collections.OrderedDict()  # was d = {}
         for key, value in self.items():
             if isinstance(key, Text):
-                d[key.title] = value.as_dict(use_names)
+                d[key.meta[text_key]] = value.as_dict(use_names, text_key)
             if isinstance(key, Category):
                 attr = 'name' if use_names else 'table_name'
-                d[getattr(key, attr)] = value.as_dict(use_names)
+                d[getattr(key, attr)] = value.as_dict(use_names, text_key)
                 # is_metric_dict = False
             elif isinstance(key, Metric):
                 attr = 'name' if use_names else 'column_name'
@@ -439,13 +448,15 @@ class ResultSet(collections.OrderedDict):
 
         return table.get_string()
 
-    def _get_multi_text_arff_data(self):
-        d = self.as_dict(use_names=False)
+    def _get_multi_text_arff_data(self, text_key='title'):
+        d = self.as_dict(use_names=False, text_key=text_key)
 
-        attrs = [('title', 'STRING')]
+        # TODO: add all metadata that are strings.
+        attrs = [(text_key, 'STRING')]
+
         for cat, cvalues in list(d.values())[0].items():
             for m, mvalue in cvalues.items():
-                attrs.append((cat + ':' + m, 'NUMMERIC'))
+                attrs.append((cat + ':' + m, 'NUMERIC'))
 
         data = []
         for title, tvalues in d.items():
@@ -459,13 +470,13 @@ class ResultSet(collections.OrderedDict):
 
         return attrs, data
 
-    def _get_single_text_arff_data(self):
-        d = self.as_dict(use_names=False)
+    def _get_single_text_arff_data(self, text_key='title'):
+        d = self.as_dict(use_names=False, text_key=text_key)
 
         attrs = []
         for cat, cvalues in d.items():
             for m in cvalues.keys():
-                attrs.append((cat + ':' + m, 'NUMMERIC'))
+                attrs.append((cat + ':' + m, 'NUMERIC'))
 
         if isinstance(list(self.keys())[0], Category):
             data = []
@@ -477,16 +488,30 @@ class ResultSet(collections.OrderedDict):
 
         return attrs, [data]
 
-    def as_arff(self, relation_name='corpus'):
+    def as_arff(self, relation_name='corpus', text_key='title', class_attr='class'):
         """Return a string representation in the Attribute-Relation File
         Format (ARFF), suitable for use in tools such as Weka."""
 
         from datetime import datetime
 
         if isinstance(list(self.keys())[0], Text):
-            attrs, data = self._get_multi_text_arff_data()
+            attrs, data = self._get_multi_text_arff_data(text_key)
+            
+            # Add class information.
+            
+            _texts = list(self.keys())
+            
+            # Attribute
+            class_values = set()
+            for _text in _texts:
+                class_values.add(_text.meta[class_attr])
+            attrs.append((class_attr, '{%s}' % ','.join(class_values)))
+            
+            # Values
+            for i, datum in enumerate(data):
+                datum.append((class_attr, _texts[i].meta[class_attr]))
         else:
-            attrs, data = self._get_single_text_arff_data()
+            attrs, data = self._get_single_text_arff_data(text_key)
 
         lines = ['%% File generated by Coh-Metrix-Dementia on %s' %
                  str(datetime.now()),
@@ -498,19 +523,19 @@ class ResultSet(collections.OrderedDict):
 
         lines.extend(['',
                       '@DATA'])
-
+        
         for datum in data:
             lines.append(','.join([str(v) for _, v in datum]))
 
         return '\n'.join(lines)
 
-    def as_array(self):
+    def as_array(self, text_key='title'):
         """Return a numpy.ndarray representing the data."""
 
         if isinstance(list(self.keys())[0], Text):
-            _, data = self._get_multi_text_arff_data()
+            _, data = self._get_multi_text_arff_data(text_key)
         else:
-            _, data = self._get_single_text_arff_data()
+            _, data = self._get_single_text_arff_data(text_key)
 
         return np.array([[value for _, value in line[1:]] for line in data],
                         dtype=np.float64)
