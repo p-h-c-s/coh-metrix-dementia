@@ -37,7 +37,7 @@ class Text(object):
         file path to be read. A text can also be revised.
 
         To create a Text object from a string, use the attribute 'content'.
-        
+
         > t = Text(content='The book is on the table.')
 
         Or simply:
@@ -84,7 +84,7 @@ class Text(object):
             with codecs.open(filepath, mode='r', encoding=encoding)\
                     as input_file:
                 self.raw_content = input_file.read()
-        
+
         # Set revised content.
         revised = False
         if revised_content:
@@ -115,10 +115,10 @@ class Text(object):
 
             empty_utterances = etext.find('raw-content').findall('empty')
             disf_utterances = etext.find('raw-content').findall('disf')
-            
+
             metadata['empty'] = empty_utterances
             metadata['disf'] = disf_utterances
-            
+
             raw = etext.find('raw-content')
             raw_content = ' '.join([phrase.strip()
                                     for phrase in raw.itertext()]).strip()
@@ -158,7 +158,7 @@ class Category(object):
             (default None)
         """
         self.metrics = metrics
-        
+
         if name is None and hasattr(self.__class__, 'name'):
             name = self.__class__.name
 
@@ -344,13 +344,13 @@ class MetricsSet(object):
         :returns: a ResultSet containing the calculated metrics for each text.
 
         """
-        
+
         values = []
         ntexts = len(texts)
         for i, text in enumerate(texts):
             logger.info('Analyzing text %d/%d: %s.', i + 1, ntexts, text)
             values.append((text, self.values_for_text(text, rp)))
-        
+
         return ResultSet(values)
 
 
@@ -416,10 +416,10 @@ class ResultSet(collections.OrderedDict):
         """
 
         d = collections.OrderedDict()  # was d = {}
-	for category in self.keys():
-		for metric in self[category].keys():
-			d[metric.column_name] = self[category][metric]
-	return d
+        for category in self.keys():
+            for metric in self[category].keys():
+                d[metric.column_name] = self[category][metric]
+        return d
 
     def as_table(self):
         """Return a string representation that uses tables to facilitate
@@ -509,17 +509,17 @@ class ResultSet(collections.OrderedDict):
 
         if isinstance(list(self.keys())[0], Text):
             attrs, data = self._get_multi_text_arff_data(text_key)
-            
+
             # Add class information.
-            
+
             _texts = list(self.keys())
-            
+
             # Attribute
             class_values = set()
             for _text in _texts:
                 class_values.add(_text.meta[class_attr])
             attrs.append((class_attr, '{%s}' % ','.join(class_values)))
-            
+
             # Values
             for i, datum in enumerate(data):
                 datum.append((class_attr, _texts[i].meta[class_attr]))
@@ -536,7 +536,7 @@ class ResultSet(collections.OrderedDict):
 
         lines.extend(['',
                       '@DATA'])
-        
+
         for datum in data:
             lines.append(','.join([str(v) for _, v in datum]))
 
