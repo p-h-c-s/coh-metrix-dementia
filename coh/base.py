@@ -408,6 +408,19 @@ class ResultSet(collections.OrderedDict):
 
         return d
 
+    def as_flat_dict(self, use_names=True, text_key='title'):
+        """Return a flat dictionary representation, with the metric values
+
+        :use_names: if True, use names as keys; otherwise,
+            use table/column names.
+        """
+
+        d = collections.OrderedDict()  # was d = {}
+	for category in self.keys():
+		for metric in self[category].keys():
+			d[metric.column_name] = self[category][metric]
+	return d
+
     def as_table(self):
         """Return a string representation that uses tables to facilitate
         reading.
