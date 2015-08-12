@@ -22,7 +22,7 @@ from __future__ import unicode_literals, print_function, division
 import re
 import kenlm
 import unicodedata
-from sys import maxunicode
+from sys import maxunicode, version_info
 
 
 class KenLmLanguageModel(object):
@@ -30,11 +30,20 @@ class KenLmLanguageModel(object):
 
     def __init__(self, model_path):
         # All unicode characters categorized as punctuation.
-        self._punct_table = dict.fromkeys(
-            (i for i in range(maxunicode)
-             if unicodedata.category(chr(i)).startswith('P')\
-                     and chr(i) not in self.EXCEPTIONS),
-            " ")
+        if version_info.major == 2:
+            self._punct_table = dict.fromkeys(
+                (i for i in range(maxunicode)
+                 if unicodedata.category(unichr(i)).startswith('P')\
+                         and unichr(i) not in self.EXCEPTIONS),
+                " ")
+        elif version_info.major == 3:
+            self._punct_table = dict.fromkeys(
+                (i for i in range(maxunicode)
+                 if unicodedata.category(chr(i)).startswith('P')\
+                         and chr(i) not in self.EXCEPTIONS),
+                " ")
+        else:
+            raise(Exception, "Python version is not supported")
 
         self.model = kenlm.LanguageModel(model_path)
 
