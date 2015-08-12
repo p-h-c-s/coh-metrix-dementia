@@ -131,7 +131,7 @@ class CrossEntropy(base.Metric):
         lm = rp.language_model()
 
         sents = [lm.clean(sent) for sent in rp.sentences(t)]
-        scores = [lm.score(sent) for sent in sents]
+        scores = [-1/len(sent) * lm.score(sent) for sent in sents]
 
         return sum(scores) / len(scores) if scores else 0
 
