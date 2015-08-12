@@ -52,7 +52,7 @@ class VerbAmbiguity(base.Metric):
     """
     """
     name = 'Ambiguity of verbs'
-    column_name = 'verbs'
+    column_name = 'verbs_ambiguity'
 
     def value_for_text(self, t, rp=default_rp):
         return calculate_ambiguity(rp, t, 'V', 'Verbo',
@@ -63,7 +63,7 @@ class NounAmbiguity(base.Metric):
     """
     """
     name = 'Ambiguity of nouns'
-    column_name = 'nouns'
+    column_name = 'nouns_ambiguity'
 
     def value_for_text(self, t, rp=default_rp):
         return calculate_ambiguity(rp, t, 'N', 'Substantivo',
@@ -74,7 +74,7 @@ class AdjectiveAmbiguity(base.Metric):
     """
     """
     name = 'Ambiguity of adjectives'
-    column_name = 'adjectives'
+    column_name = 'adjectives_ambiguity'
 
     def value_for_text(self, t, rp=default_rp):
         return calculate_ambiguity(rp, t, 'A', 'Adjetivo',
@@ -85,7 +85,7 @@ class AdverbAmbiguity(base.Metric):
     """
     """
     name = 'Ambiguity of adverbs'
-    column_name = 'adverbs'
+    column_name = 'adverbs_ambiguity'
 
     def value_for_text(self, t, rp=default_rp):
         return calculate_ambiguity(rp, t, 'ADV', 'Advérbio',
