@@ -134,7 +134,7 @@ class CrossEntropy(base.Metric):
         scores = [lm.score(sent) for sent in sents]
 
         return sum(scores) / len(scores) if scores else 0
-
+	
 
 class SyntacticalComplexity(base.Category):
 
