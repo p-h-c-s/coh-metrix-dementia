@@ -48,7 +48,7 @@ dir_list = ['/home/andre/Develop/corpora/LacioWeb/proc/exatas',
             '/home/andre/Develop/corpora/plnbr_100mil/proc/A2005',
             '/home/andre/Develop/corpora/plnbr_100mil/proc/A2004',
             '/home/andre/Develop/corpora/plnbr_100mil/proc/New',
-            '/home/andre/Develop/corpora/wikipedia/ptwiki-extracted',
+            '/home/andre/Develop/corpora/wikipedia/ptwiki-proc',
             ]
 
 
@@ -102,3 +102,14 @@ if __name__ == '__main__':
         apply_tfidf(argv[2], argv[3])
     elif argv[1] == 'build_model':
         build_model(argv[2], argv[3])
+    elif argv[1] == 'all':
+        build_dictionary()
+        build_corpus(
+            '/home/andre/Develop/corpora/new/lsamodel_wordids_filtered.txt.bz2')
+        apply_tfidf(
+            '/home/andre/Develop/corpora/new/lsamodel_wordids_filtered.txt.bz2',
+            '/home/andre/Develop/corpora/new/lsamodel_bow.mm')
+        build_model(
+            '/home/andre/Develop/corpora/new/lsamodel_wordids_filtered.txt.bz2',
+            '/home/andre/Develop/corpora/new/lsamodel_tfidf.mm')
+
