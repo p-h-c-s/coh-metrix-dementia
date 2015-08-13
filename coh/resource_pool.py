@@ -38,50 +38,93 @@ class ResourcePool(object):
     the same task (e.g., taggers). It also allows the creation and reuse of
     database connections and similar resources.
     """
-    def __init__(self):
-        """Form a new resource pool."""
-        # The resources, in the form {<suffix> : <hook>}.
-        self._res = {}
-        # Resources already asked for, in the form
-        # {(<text>, <suffix>) : <data>}.
-        self._cache = {}
 
-    def register(self, suffix, hook):
+    def __init__(self, cache_limit=300):
+        """Form a new resource pool.
+        
+        Optional arguments:
+        :cache_limit: maximum number of unpinned items in the cache.
+        """
+
+        if cache_limit < 0:
+            raise ValueError('Invalid cache limit %d. Must be >= 0.' % cache_limit)
+
+        # The resource hooks, in the form {<suffix> : <hook>}.
+        self._hooks = {}
+
+        # Resources already asked for, in the form
+        # [(<suffix>, <args>, <data>)].
+
+        self._unpinned_cache = []
+        self._pinned_cache = []
+
+        self._pinned = set()
+        self._cache_limit = cache_limit
+
+    def register(self, suffix, hook, pinned=False):
         """Register a new resource.
 
+        Required arguments:
         :suffix: A string identifying the resource type.
         :hook: The method that, when called, generates the resource data.
+
+        Optional arguments:
+        :pinned: True if the resource should be pinned in the cache.
+
         :returns: None.
-
         """
-        if suffix in self._res:
-            logger.warning("Resource \"%s\" already registered.", suffix)
 
-        self._res[suffix] = hook
+        if suffix in self._hooks:
+            logger.warning("Resource \"%s\" already registered.", suffix)
+        
+        if pinned:
+            self._pinned.add(suffix)
+
+        self._hooks[suffix] = hook
         if is_valid_id(suffix):
             setattr(self, suffix, lambda *args: self.get(suffix, *args))
+
+    @staticmethod
+    def _get_index(cache, suffix, args):
+        """Return the index of the element in the cache,
+        or None if not present."""
+
+        for i, elem in enumerate(cache):
+            if elem[0] == suffix and elem[1] == args:
+                return i
+        return None
 
     def get(self, suffix, *args):
         """Get a resource.
 
+        Required arguments:
         :suffix: The type of the resource to be extracted.
         :args: (Optional) arguments to be passed to the resource's hook.
+
         :returns: The resource data (as returned by the resource's hook.)
-
         """
-        res_id = (suffix, ) + args
 
-        if suffix not in self._res:
+        if suffix not in self._hooks:
             raise ValueError('Resource \"{0}\" not registered.'.format(suffix))
 
-        if res_id not in self._cache:
-            logger.debug('Started calculating resource %s.', res_id)
+        if suffix in self._pinned:
+            index = self._get_index(self._pinned_cache, suffix, args)
+            if index is None:
+                self._pinned_cache.append((suffix, args, self._hooks[suffix](*args)))
+                index = len(self._pinned_cache) - 1
 
-            self._cache[res_id] = self._res[suffix](*args)
+            return self._pinned_cache[index][2]
+        else:
+            index = self._get_index(self._unpinned_cache, suffix, args)
+            if index is None:
+                self._unpinned_cache.append((suffix, args, self._hooks[suffix](*args)))
+                index = len(self._unpinned_cache) - 1
+            value = self._unpinned_cache[index][2]
 
-            logger.debug('Done.')
+            if len(self._unpinned_cache) > self._cache_limit:
+                del self._unpinned_cache[0]
 
-        return self._cache[res_id]
+            return value
 
 
 class DefaultResourcePool(ResourcePool):
@@ -92,13 +135,13 @@ class DefaultResourcePool(ResourcePool):
         super(DefaultResourcePool, self).__init__()
 
         # Tools and helpers.
-        self.register('pos_tagger', lambda: pos_tagger)
-        self.register('univ_pos_tagger', lambda: univ_pos_tagger)
-        self.register('parser', lambda: parser)
-        self.register('dep_parser', lambda: dep_parser)
-        self.register('stemmer', lambda: stemmer)
-        self.register('db_helper', self._db_helper)
-        self.register('idd3_engine', self._idd3_engine)
+        self.register('pos_tagger', lambda: pos_tagger, pinned=True)
+        self.register('univ_pos_tagger', lambda: univ_pos_tagger, pinned=True)
+        self.register('parser', lambda: parser, pinned=True)
+        self.register('dep_parser', lambda: dep_parser, pinned=True)
+        self.register('stemmer', lambda: stemmer, pinned=True)
+        self.register('db_helper', self._db_helper, pinned=True)
+        self.register('idd3_engine', self._idd3_engine, pinned=True)
 
         # Basic text info.
         # TODO: these methods need renaming for better readability.
@@ -125,10 +168,10 @@ class DefaultResourcePool(ResourcePool):
         self.register('dep_trees', self._dep_trees)
 
         # LSA spaces
-        self.register('lsa_space', self._lsa_space)
+        self.register('lsa_space', self._lsa_space, pinned=True)
 
         # Language models
-        self.register('language_model', self._language_model)
+        self.register('language_model', self._language_model, pinned=True)
 
     def _db_helper(self):
         """Creates a database session and returns a Helper associated with it.
