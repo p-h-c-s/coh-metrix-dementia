@@ -25,6 +25,29 @@ from itertools import chain
 
 class Flesch(base.Metric):
     """
+    Índice Flesch:
+
+        O Índice de Legibilidade de Flesch busca uma correlação entre tamanhos
+        médios de palavras e sentenças e a facilidade de leitura.
+
+        Fórmula:
+
+            ILF = 164.835 - [1.015 x (Número de palavras por sentença)] -
+            [84.6 x (Número de sílabas do texto / Número de palavras do texto)]
+
+        Exemplo:
+
+            "Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."
+
+            Com média de 23 palavras por sentença e 2,31 sílabas por palavra,
+            o índice Flesch para o exemplo é 29,316.
+
     """
     name = 'Flesch index'
     column_name = 'flesch'
@@ -44,6 +67,16 @@ class Flesch(base.Metric):
 
 class Words(base.Metric):
     """
+    Número de Palavras:
+
+        Número de palavras do texto.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
+
+            O exemplo possui 17 palavras.
     """
     name = 'Number of Words'
     column_name = 'words'
@@ -56,6 +89,24 @@ class Words(base.Metric):
 
 class Sentences(base.Metric):
     """
+    Número de Sentenças:
+
+        Número de sentenças de um texto.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
+
+            O exemplo possui 4 sentenças.
     """
     name = 'Number of Sentences'
     column_name = 'sentences'
@@ -66,6 +117,27 @@ class Sentences(base.Metric):
 
 class Paragraphs(base.Metric):
     """
+    Número de Parágrafos:
+
+        Número de parágrafos de um texto. Consideramos como parágrafos somente
+        a quebra de linha (não identações).
+
+        Exemplo:
+
+            "No caso do Jeca Tatu, o verme que o deixou doente foi outro: o
+            Ancylostoma. A larva desse verme vive no solo e penetra diretamente
+            na pele. Só o contrai quem anda descalço na terra contaminada por
+            fezes humanas. Se não se tratar, a pessoa fica fraca, sem ânimo e
+            com a pele amarelada. Daí a doença ser também conhecida como
+            amarelão.
+
+            Os vermes – também chamados de helmintos – são parasitos, animais
+            que, em geral, dependem da relação com outros seres para viver.
+            Eles podem se hospedar no organismo de diversos animais, como bois,
+            aves e peixes. Por isso, podemos também contraí-los comendo carnes
+            cruas ou mal cozidas."
+
+            O exemplo possui 2 parágrafos.
     """
     name = 'Number of Paragraphs'
     column_name = 'paragraphs'
@@ -76,6 +148,25 @@ class Paragraphs(base.Metric):
 
 class WordsPerSentence(base.Metric):
     """
+    Palavras por Sentenças:
+
+        Número de palavras dividido pelo número de sentenças.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
+
+            Neste exemplo o número de palavras é 95 e o número de sentenças é
+            4. Portanto,o número de palavras por sentenças é 23,75.
     """
     name = 'Mean words per sentence'
     column_name = 'words_per_sentence'
@@ -86,6 +177,20 @@ class WordsPerSentence(base.Metric):
 
 class SentencesPerParagraph(base.Metric):
     """
+    Sentenças por Parágrafos:
+
+        Número de sentenças dividido pelo número de parágrafos.
+
+        Exemplo:
+
+            "No caso do Jeca Tatu, o verme que o deixou doente foi outro: o
+            Ancylostoma. A larva desse verme vive no solo e penetra diretamente
+            na pele. Só o contrai quem anda descalço na terra contaminada por
+            fezes humanas. Se não se tratar, a pessoa fica fraca, sem ânimo e
+            com a pele amarelada. Daí a doença ser também conhecida como
+            amarelão."
+
+            O parágrafo do exemplo possui 5 sentenças.
     """
     name = 'Mean sentences per paragraph'
     column_name = 'sentences_per_paragraph'
@@ -96,6 +201,17 @@ class SentencesPerParagraph(base.Metric):
 
 class SyllablesPerContentWord(base.Metric):
     """
+    Sílabas por Palavra de Conteúdo:
+
+        Número médio de sílabas por palavras de conteúdo (substantivos, verbos,
+        adjetivos e advérbios).
+
+        Exemplo:
+
+        "Acessório utilizado por adolescentes, o boné é um dos itens que
+        compõem a vestimenta idealizada pela proposta."
+
+        Número de sílabas por palavras de conteúdo do exemplo é 3.
     """
     name = 'Mean syllables per content word'
     column_name = 'syllables_per_content_word'
@@ -118,6 +234,17 @@ class SyllablesPerContentWord(base.Metric):
 
 class VerbIncidence(base.Metric):
     """
+    Incidência de Verbos:
+
+        Incidência de verbos em um texto.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
+
+            Com 4 verbos e 17 palavras, a incidência de verbos é 235,29 (número
+            de verbos/(número de palavras /1000)).
     """
     name = 'Verb incidence'
     column_name = 'verbs'
@@ -129,6 +256,17 @@ class VerbIncidence(base.Metric):
 
 class NounIncidence(base.Metric):
     """
+    Incidência de Substantivos:
+
+        Incidência de substantivos em um texto.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
+
+            Com 6 substantivos e 17 palavras, a incidência de substantivos é
+            352,94 (número de substantivos/(número de palavras /1000)).
     """
     name = 'Noun incidence'
     column_name = 'nouns'
@@ -140,6 +278,22 @@ class NounIncidence(base.Metric):
 
 class AdjectiveIncidence(base.Metric):
     """
+    Incidência de Adjetivos:
+
+        Incidência de adjetivos em um texto.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
     """
     name = 'Adjective incidence'
     column_name = 'adjectives'
@@ -151,6 +305,16 @@ class AdjectiveIncidence(base.Metric):
 
 class AdverbIncidence(base.Metric):
     """
+    Incidência de Advérbios:
+
+        Incidência de advérbios em um texto.
+
+        Exemplo:
+
+            "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
+            Já não temos recursos suficientes para a manutenção das escolas,
+            por exemplo, e também precisamos valorizar o magistério - justifica
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
     """
     name = 'Adverb incidence'
     column_name = 'adverbs'
@@ -162,6 +326,22 @@ class AdverbIncidence(base.Metric):
 
 class PronounIncidence(base.Metric):
     """
+    Incidência de Pronomes:
+
+        Incidência de pronomes em um texto.
+
+        Exemplo:
+
+            "Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."
+
+            Com 2 pronomes e 69 palavras, a incidência de pronomes é 28,98
+            (número de pronomes/(número de palavras/1000)).
     """
     name = 'Pronoun incidence'
     column_name = 'pronouns'
@@ -173,6 +353,10 @@ class PronounIncidence(base.Metric):
 
 class ContentWordIncidence(base.Metric):
     """
+    Incidência de Palavras de Conteúdo:
+
+        Incidência de palavras de conteúdo em um texto. Palavras de conteúdo
+        são substantivos, verbos, adjetivos e advérbios.
     """
     name = 'Content word incidence'
     column_name = 'content_words'
@@ -185,6 +369,23 @@ class ContentWordIncidence(base.Metric):
 
 class FunctionWordIncidence(base.Metric):
     """
+    Incidência de Palavras Funcionais:
+
+        Incidência de palavras funcionais em um texto. Palavras funcionais são
+        artigos, preposições, pronomes, conjunções e interjeições.
+
+        Exemplo:
+
+            "Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."
+
+            Com 26 palavras funcionais e 69 palavras, a incidência de palavras
+            funcionais é 376,81 (número de pronomes/(número de palavras/1000)).
     """
     name = 'Function word incidence'
     column_name = 'function_words'
