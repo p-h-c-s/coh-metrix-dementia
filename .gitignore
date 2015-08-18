@@ -25,6 +25,7 @@ corpora/test
 sql
 test
 models
+utils
 
 .ropeproject
 
