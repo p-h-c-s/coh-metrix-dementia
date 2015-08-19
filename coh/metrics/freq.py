@@ -23,6 +23,17 @@ from itertools import chain
 
 class ContentWordsFrequency(base.Metric):
     """
+    Frequência das palavras de conteúdo:
+
+        Média de todas as frequências das palavras de conteúdo (substantivos,
+        verbos, advérbios e adjetivos) encontradas no texto. O valor da
+        frequência das palavras é retirado da lista de frequências do córpus
+        Banco de Português (BP), compilado por Tony Sardinha da PUC-SP.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
     """
     name = 'Content words frequency'
     column_name = 'cw_freq'
@@ -35,6 +46,12 @@ class ContentWordsFrequency(base.Metric):
 
 class MinimumContentWordsFrequency(base.Metric):
     """
+    Frequência da palavra de conteúdo mais rara:
+
+        Primeiramente identificamos a menor frequência dentre todas as palavras
+        de conteúdo (substantivos, verbos, advérbios e adjetivos) em cada
+        sentença. Depois, calculamos uma média de todas as frequências mínimas.
+        A palavra com a menor frequência é a mais rara da sentença.
     """
     name = 'Minimum among content words frequencies'
     column_name = 'min_cw_freq'
