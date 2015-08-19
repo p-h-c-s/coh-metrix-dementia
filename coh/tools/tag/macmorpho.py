@@ -58,9 +58,12 @@ class MacMorphoTagSet(TagSet):
     denotative_word_tags = ['PDEN']
 
     content_word_tags = verb_tags\
+        + auxiliary_verb_tags\
+        + participle_tags\
         + noun_tags\
         + adjective_tags\
-        + adverb_tags
+        + adverb_tags\
+        + denotative_word_tags
 
     function_word_tags = article_tags\
         + preposition_tags\

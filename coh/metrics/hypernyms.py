@@ -28,7 +28,9 @@ class HypernymsVerbs(base.Metric):
 
     def value_for_text(self, t, rp=default_rp, ignore_pos=False):
         verb_tokens = [token[0] for token in rp.tagged_words(t)
-                       if rp.pos_tagger().tagset.is_verb(token)]
+                       if rp.pos_tagger().tagset.is_verb(token)
+                       or rp.pos_tagger().tagset.is_auxiliary_verb(token)
+                       or rp.pos_tagger().tagset.is_participle(token)]
         verbs = [rp.db_helper().get_delaf_verb(verb) for verb in verb_tokens]
         lemmas = [verb.lemma for verb in verbs if verb is not None]
         hyper = [rp.db_helper().get_hypernyms(lemma) for lemma in lemmas]

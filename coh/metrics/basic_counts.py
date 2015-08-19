@@ -250,8 +250,11 @@ class VerbIncidence(base.Metric):
     column_name = 'verbs'
 
     def value_for_text(self, t, rp=default_rp):
-        verbs = filter(pos_tagger.tagset.is_verb, rp.tagged_words(t))
-        return ilen(verbs) / (ilen(rp.all_words(t)) / 1000)
+        verbs = [t for t in rp.tagged_words(t)
+                 if pos_tagger.tagset.is_verb(t)
+                 or pos_tagger.tagset.is_auxiliary_verb(t)
+                 or pos_tagger.tagset.is_participle(t)]
+        return len(verbs) / (len(rp.all_words(t)) / 1000)
 
 
 class NounIncidence(base.Metric):
@@ -320,7 +323,9 @@ class AdverbIncidence(base.Metric):
     column_name = 'adverbs'
 
     def value_for_text(self, t, rp=default_rp):
-        adverbs = filter(pos_tagger.tagset.is_adverb, rp.tagged_words(t))
+        adverbs = [t for t in rp.tagged_words(t)
+                   if pos_tagger.tagset.is_adverb(t)
+                   or pos_tagger.tagset.is_denotative_word(t)]
         return ilen(adverbs) / (ilen(rp.all_words(t)) / 1000)
 
 
