@@ -23,7 +23,20 @@ from coh.utils import find_subtrees
 
 class NounPhraseIncidence(base.Metric):
 
-    """Docstring for NounPhraseIncidence. """
+    """
+    Incidência de Sintagmas:
+
+        Incidência de sintagmas nominais por 1000 palavras.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
+
+            Como o texto possui 5 sintagmas nominais e 17 palavras a incidência
+            de sintagmas é 294,11 (número de sintagmas/(número de palavras/1000
+            )).
+    """
 
     name = 'Noun Phrase Incidence'
     column_name = 'np_incidence'
@@ -45,7 +58,21 @@ class NounPhraseIncidence(base.Metric):
 
 class ModifiersPerNounPhrase(base.Metric):
 
-    """Docstring for ModifiersPerNounPhrase. """
+    """
+    Modificadores por Sintagmas:
+
+        Média do número de modificadores por sintagmas nominais. Consideramos
+        como modificadores adjetivos, advérbios e artigos que participam de um
+        sintagma.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
+
+            Como o texto possui 6 sintagmas e 3 modificadores, o valor desta
+            métrica é 0,6 para este exemplo.
+    """
 
     name = 'Modifiers per Noun Phrase'
     column_name = 'mod_per_np'
@@ -62,15 +89,31 @@ class ModifiersPerNounPhrase(base.Metric):
                 mods += len([tt for tt in np
                              if tt.label() in ('ART', 'ADJ', 'ADV')])
                 nps += 1
-
-            sent_indices.append(mods / (nps / 1000))
+            print(mods, nps)
+            sent_indices.append(mods / nps)
 
         return sum(sent_indices) / len(sent_indices) if sent_indices else 0
 
 
 class WordsBeforeMainVerb(base.Metric):
 
-    """Docstring for WordsBeforeMainVerb. """
+    """
+    Palavras Antes de Verbos Principais:
+
+        Média de palavras antes de verbos principais na cláusula principal da
+        sentença. Segundo a documentação do Coh-Metrix é um bom índice para
+        avaliar a carga da memória de trabalho.
+
+        Exemplo:
+
+            "Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."
+
+            Como este texto possui uma sentença o valor desta métrica
+            corresponde ao valor de palavras antes do verbo desta única
+            sentença que, neste caso, é 1 (a palavra acessório é a única que
+            antecede o verbo).
+    """
 
     name = 'Words before Main Verb'
     column_name = 'words_before_main_verb'
