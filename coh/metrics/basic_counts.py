@@ -211,7 +211,7 @@ class SyllablesPerContentWord(base.Metric):
         "Acessório utilizado por adolescentes, o boné é um dos itens que
         compõem a vestimenta idealizada pela proposta."
 
-        Número de sílabas por palavras de conteúdo do exemplo é 3.
+        Número de sílabas por palavras de conteúdo do exemplo é 3,5.
     """
     name = 'Mean syllables per content word'
     column_name = 'syllables_per_content_word'
@@ -297,6 +297,9 @@ class AdjectiveIncidence(base.Metric):
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
             calça e camiseta."
+
+            Com 6 adjetivos e 95 palavras, a incidência de adjetivos é 63,157
+            (número de adjetivos/(número de palavras/1000)).
     """
     name = 'Adjective incidence'
     column_name = 'adjectives'
@@ -318,6 +321,9 @@ class AdverbIncidence(base.Metric):
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
             a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
+
+            Com 8 advérbios e 38 palavras, a incidência de adjetivos é 210,526
+            (número de advérbios/(número de palavras/1000)).
     """
     name = 'Adverb incidence'
     column_name = 'adverbs'
@@ -362,6 +368,17 @@ class ContentWordIncidence(base.Metric):
 
         Incidência de palavras de conteúdo em um texto. Palavras de conteúdo
         são substantivos, verbos, adjetivos e advérbios.
+
+        Exemplo:
+
+            "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
+            Já não temos recursos suficientes para a manutenção das escolas,
+            por exemplo, e também precisamos valorizar o magistério - justifica
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
+
+            Com 27 palavras de conteúdo e 38 palavras, a incidência de palavras
+            de conteúdo é 710,526 (número de palavras de conteúdo/(número de
+            palavras/1000)).
     """
     name = 'Content word incidence'
     column_name = 'content_words'
@@ -390,7 +407,8 @@ class FunctionWordIncidence(base.Metric):
             completados por calçado, meias, calça e camiseta."
 
             Com 26 palavras funcionais e 69 palavras, a incidência de palavras
-            funcionais é 376,81 (número de pronomes/(número de palavras/1000)).
+            funcionais é 376,81 (número de palavras funcionais/(número de
+            palavras/1000)).
     """
     name = 'Function word incidence'
     column_name = 'function_words'

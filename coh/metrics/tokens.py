@@ -25,6 +25,27 @@ from math import log
 
 class PersonalPronounsIncidence(base.Metric):
     """
+    Incidência de Pronomes Pessoais:
+
+        Incidência de pronomes pessoais em um texto. Consideramos como pronomes
+        pessoais: eu, tu, ele/ela, nós, nós, eles/elas, você e vocês.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
+
+            Este exemplo possui 1 pronome pessoal. Como este texto possui 95
+            palavras, a incidência de pronomes pessoais é 10,526 (número de
+            pronomes pessoais/(número de palavras/1000)).
     """
     name = 'Personal pronouns incidence'
     column_name = 'personal_pronouns'
@@ -45,6 +66,10 @@ class PersonalPronounsIncidence(base.Metric):
 
 class PronounsPerNounPhrase(base.Metric):
     """
+    Pronomes por Sintagmas:
+
+        Média do número de pronomes que aparecem em um texto pelo número de
+        sintagmas nominais.
     """
     name = 'Mean pronouns per noun phrase'
     column_name = 'pronouns_per_np'
@@ -70,6 +95,35 @@ class PronounsPerNounPhrase(base.Metric):
 
 class TypeTokenRatio(base.Metric):
     """
+    Type/Token:
+
+        Número de palavras únicas dividido pelo número de tokens dessas
+        palavras. Cada palavra única é um tipo. Cada instância desta palavra é
+        um token.
+
+        Por exemplo, se a palavra cachorro aparece 7 vezes em um texto, seu
+        tipo (type) é 1 e seu token é 7.
+        Calculamos esta métrica somente para palavras de conteúdo
+        (substantivos, verbos, advérbios e adjetivos).
+
+        Observação: Não usamos lematização de palavras, ou seja, a palavra
+        cachorro é considerada diferente de cachorros.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
+
+            Com 95 tokens e 78 tipos, o type/token ratio é 0,821
+
     """
     name = 'Type to token ratio'
     column_name = 'ttr'
