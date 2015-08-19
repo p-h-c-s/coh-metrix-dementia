@@ -45,12 +45,11 @@ class IdeaDensity(base.Metric):
                 engine.analyze(relations)
                 # for i, prop in enumerate(engine.props):
                 #     print(str(i + 1) + ' ' + str(prop))
-
-                n_props = len(engine.props)
             except Exception as e:
                 LOGGER.error('{0} in engine.analyze: {1}'.format(
                     e.__class__.__name__, e))
-                n_props = 0
+                
+            n_props = len(engine.props) if hasattr(engine, 'props') else 0
 
             # print(len(sents[index]), n_props / len(sents[index]) )
             id_values.append(n_props / len(sents[index]) if sents[index] else 0)
