@@ -89,7 +89,7 @@ class ModifiersPerNounPhrase(base.Metric):
                 mods += len([tt for tt in np
                              if tt.label() in ('ART', 'ADJ', 'ADV')])
                 nps += 1
-            print(mods, nps)
+
             sent_indices.append(mods / nps)
 
         return sum(sent_indices) / len(sent_indices) if sent_indices else 0
