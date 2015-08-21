@@ -50,6 +50,17 @@ def calculate_ambiguity(rp, t, delaf_tag, tep_tag, checker):
 
 class VerbAmbiguity(base.Metric):
     """
+    Ambiguidade de Verbos:
+
+        Para cada verbo do texto soma-se o número de sentidos apresentados no
+        TEP (Maziero et. al., 2008) e divide o total pelo número de verbos.
+
+        Exemplo:
+
+            "O menino colou na prova, embora soubesse que poderia ser pego."
+
+            O exemplo apresenta 4 verbos (colou, soubesse, poderia e ser) com
+            frequências 4, 7, 2 e 12 no TEP. O resultado da métrica é 6,25.
     """
     name = 'Ambiguity of verbs'
     column_name = 'verbs_ambiguity'
@@ -61,6 +72,18 @@ class VerbAmbiguity(base.Metric):
 
 class NounAmbiguity(base.Metric):
     """
+    Ambiguidade de Substantivos:
+
+        Para cada substantivo do texto soma-se o número de sentidos
+        apresentados no TEP (Maziero et. al., 2008) e divide o total pelo
+        número de substantivos.
+
+        Exemplo:
+
+            "O menino colou na prova, embora soubesse que poderia ser pego."
+
+            O exemplo apresenta 2 substantivos (menino e prova) com
+            frequências 1 e 9 no TEP. O resultado da métrica é 5,0.
     """
     name = 'Ambiguity of nouns'
     column_name = 'nouns_ambiguity'
@@ -72,6 +95,24 @@ class NounAmbiguity(base.Metric):
 
 class AdjectiveAmbiguity(base.Metric):
     """
+    Ambiguidade de Adjetivos:
+
+        Para cada adjetivo do texto soma-se o número de sentidos apresentados
+        no TEP (Maziero et. al., 2008) e divide o total pelo número de
+        adjetivos.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
     """
     name = 'Ambiguity of adjectives'
     column_name = 'adjectives_ambiguity'
@@ -83,6 +124,18 @@ class AdjectiveAmbiguity(base.Metric):
 
 class AdverbAmbiguity(base.Metric):
     """
+    Ambiguidade de Advérbios
+
+         Para cada advérbio do texto soma-se o número de sentidos apresentados
+         no TEP (Maziero et. al., 2008) e divide o total pelo número de
+         advérbios.
+
+         Exemplo:
+
+            "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
+            Já não temos recursos suficientes para a manutenção das escolas,
+            por exemplo, e também precisamos valorizar o magistério - justifica
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
     """
     name = 'Ambiguity of adverbs'
     column_name = 'adverbs_ambiguity'
