@@ -132,13 +132,16 @@ class WordsBeforeMainVerb(base.Metric):
             i_root = [node['rel']
                       for node in tree.nodes.values()].index('ROOT')
 
-            if dep_tagset.is_verb(('', list(tree.nodes.values())[i_root]['tag'])):
+            if dep_tagset.is_verb(
+                    ('', list(tree.nodes.values())[i_root]['tag'])):
                 # If the root of the dep. tree is a verb, use it.
                 i_main_verb = i_root - 1
             else:
-                # Otherwise, use the first verb.
+                # Otherwise, use the first verb that is not in the gerund,
+                #   in the participle, or in the infinitive.
                 for i, token in enumerate(tagged_sent):
-                    if tagset.is_verb(token):
+                    if tagset.is_verb(token) \
+                            and token[0][-2:] not in ('do', 'ar', 'er', 'ir'):
                         i_main_verb = i
                         break
 
