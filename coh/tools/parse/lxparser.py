@@ -21,6 +21,7 @@ from nltk.tree import Tree
 import subprocess
 import tempfile
 import codecs
+import re
 
 
 class LxParser(Parser):
@@ -41,10 +42,34 @@ class LxParser(Parser):
         return ['java', '-Xmx500m', '-cp',
                 config['LX_STANFORD_PATH'] + '/stanford-parser.jar',
                 'edu.stanford.nlp.parser.lexparser.LexicalizedParser',
+                '-escaper', 'edu.stanford.nlp.process.PTBEscapingProcessor'
                 '-tokenized', '-sentences', 'newline', '-outputFormat',
                 'oneline', '-uwModel',
                 'edu.stanford.nlp.parser.lexparser.BaseUnknownWordModel',
                 config['LX_MODEL_PATH'], filename]
+
+    @staticmethod
+    def normalize(sent):
+        """Normalize the sentence to make it suitable for analysis by
+        the parser.
+
+        Required arguments:
+        :sent: a string containing the sentence to normalize.
+        """
+        # This is not currently being used. Instead, we are passing
+        # "-escaper edu.stanford.nlp.process.PTBEscapingProcessor"
+        # to the parser.
+
+        sent = sent.replace('(', ' -LRB- ')
+        sent = sent.replace(')', ' -RRB- ')
+
+        sent = sent.replace('[', ' -LSB- ')
+        sent = sent.replace(']', ' -RSB- ')
+
+        sent = sent.replace('{', ' -LCB- ')
+        sent = sent.replace('}', ' -RCB- ')
+
+        return re.sub(r' +', ' ', sent)
 
     def parse_sents(self, sents):
         """Parse a list of strings.
