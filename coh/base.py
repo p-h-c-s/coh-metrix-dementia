@@ -309,6 +309,10 @@ class Metric(object):
 class MetricsSet(object):
     def __init__(self, categories):
         self.categories = categories
+        self.column_names = []
+        for _category in self.categories:
+            for _metric in _category.metrics:
+                self.column_names.append(_metric.column_name)
 
     def _set_categories_from_module(self, module):
         """Set self.categories as the list of Category subclasses
