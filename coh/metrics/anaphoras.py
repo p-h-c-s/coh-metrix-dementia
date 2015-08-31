@@ -125,7 +125,17 @@ class AnaphoricReferencesBase(base.Metric):
 
 
 class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
+    """
+    Referência Anafórica Adjacente:
 
+        Proporção de referências anafóricas entre sentenças adjacentes.
+
+        Exemplo:
+
+            "Dentro do lago, existem peixes, como a traíra e o dourado, além da
+            palometa, um tipo de piranha. Ela é uma espécie carnívora que se
+            alimenta de peixes."
+    """
     name = 'Adjacent anaphoric references'
     column_name = 'adjacent_refs'
 
@@ -134,7 +144,18 @@ class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
 
 
 class AnaphoricReferences(AnaphoricReferencesBase):
+    """
+    Referência Anafórica:
 
+        Proporção de referências anafóricas que se referem a um constituinte
+        presente em até cinco sentenças anteriores.
+
+        Exemplo:
+
+            "Dentro do lago, existem peixes, como a traíra e o dourado, além da
+            palometa, um tipo de piranha. Ela é uma espécie carnívora que se
+            alimenta de peixes."
+    """
     name = 'Anaphoric references'
     column_name = 'anaphoric_refs'
 
