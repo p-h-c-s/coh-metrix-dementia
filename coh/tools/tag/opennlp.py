@@ -60,10 +60,7 @@ class OpenNLPTagger(Tagger):
 
             result = p.communicate()
 
-        return_value = self._process_output(result[0].decode(self._encoding))
-        os.remove(_input_file_path)
-        
-        return return_value
+        return self._process_output(result[0].decode(self._encoding))
 
     @property
     def _cmd(self):
