@@ -19,7 +19,7 @@ lib
 lib64
 include
 share
-tools
+# tools
 vendor
 corpora/test
 sql

@@ -22,6 +22,7 @@ import subprocess
 import tempfile
 import codecs
 import re
+import os
 
 
 class LxParser(Parser):
@@ -78,11 +79,16 @@ class LxParser(Parser):
         :returns: a list of nltk.tree.Tree objects, one for each tree generated
             by LXParser.
         """
-        _, input_file_path = tempfile.mkstemp(text=True)
+        fdesc, input_file_path = tempfile.mkstemp(text=True)
+        os.close(fdesc)
+        
         with codecs.open(input_file_path, mode='w', encoding='utf-8') as infile:
             infile.write('\n'.join(sents))
 
-        return self.run(input_file_path)
+        return_value = self.run(input_file_path)
+        os.remove(input_file_path)
+        
+        return return_value
 
     def run(self, filename):
         """Runs the parser for a file.
