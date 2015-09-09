@@ -38,17 +38,17 @@ from coh.conf import config
 all_metrics = MetricsSet([BasicCounts(),
                           LogicOperators(),
                           Frequencies(),
-                          Hypernyms(),
+                          # Hypernyms(),
                           Tokens(),
                           Connectives(),
                           Ambiguity(),
-                          SyntacticalComplexity(),
-                          SemanticDensity(),
+                          # SyntacticalComplexity(),
+                          # SemanticDensity(),
                           Constituents(),
                           Anaphoras(),
                           Coreference(),
-                          Lsa(),
-                          Disfluencies(),
+                          # Lsa(),
+                          # Disfluencies(),
                           ])
 
 

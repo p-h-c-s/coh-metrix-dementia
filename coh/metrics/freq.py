@@ -34,6 +34,13 @@ class ContentWordsFrequency(base.Metric):
 
             "Acessório utilizado por adolescentes, o boné é um dos itens que
             compõem a vestimenta idealizada pela proposta."
+
+            O texto possui as palavras de conteúdo: 'Acessório', 'utilizado',
+            'adolescentes', 'boné', 'é', 'itens', 'compõem', 'vestimenta',
+            'idealizada', 'proposta'; com frequências 1616, 78716, 53937, 1615,
+            5325656, 32350, 17961, 773, 1908, 135451.
+
+            O valor da métrica é 564998.3
     """
     name = 'Content words frequency'
     column_name = 'cw_freq'
@@ -52,6 +59,13 @@ class MinimumContentWordsFrequency(base.Metric):
         de conteúdo (substantivos, verbos, advérbios e adjetivos) em cada
         sentença. Depois, calculamos uma média de todas as frequências mínimas.
         A palavra com a menor frequência é a mais rara da sentença.
+
+        O texto possui as palavras de conteúdo: 'Acessório', 'utilizado',
+        'adolescentes', 'boné', 'é', 'itens', 'compõem', 'vestimenta',
+        'idealizada', 'proposta'.
+
+        A menor frequência é de 'vestimenta', 773.
+
     """
     name = 'Minimum among content words frequencies'
     column_name = 'min_cw_freq'

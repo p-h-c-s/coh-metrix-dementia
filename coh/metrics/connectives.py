@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 # Coh-Metrix-Dementia - Automatic text analysis and classification for dementia.
 # Copyright (C) 2014  Andre Luiz Verucci da Cunha
@@ -305,7 +306,7 @@ class CauNegConnectivesIncidence(base.Metric):
 
             "Embora tenha colado na prova, o menino não obteve uma boa nota."
 
-            Como há 1 conectivos causal negativo (Para isso) e
+            Como há 1 conectivos causal negativo (Embora) e
             12 palavras, a incidência de conectivos causais negativos é
             83,333 (número de conectivos causais negativos/(número
             de palavras/1000)).

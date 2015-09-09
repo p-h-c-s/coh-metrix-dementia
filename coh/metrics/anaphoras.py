@@ -135,6 +135,10 @@ class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
             "Dentro do lago, existem peixes, como a traíra e o dourado, além da
             palometa, um tipo de piranha. Ela é uma espécie carnívora que se
             alimenta de peixes."
+
+            Com referências anafóricas "Ela" para "traíra" e "piranha", temos
+            2 candidatos para 1 referência. Logo, a métrica retorna 2.
+            obs: "palometa" não é reconhecida no dicionário UNITEX.
     """
     name = 'Adjacent anaphoric references'
     column_name = 'adjacent_refs'
@@ -155,6 +159,10 @@ class AnaphoricReferences(AnaphoricReferencesBase):
             "Dentro do lago, existem peixes, como a traíra e o dourado, além da
             palometa, um tipo de piranha. Ela é uma espécie carnívora que se
             alimenta de peixes."
+
+            Com referências anafóricas "Ela" para "traíra" e "piranha", temos
+            2 candidatos para 1 referência. Logo, a métrica retorna 2.
+            obs: "palometa" não é reconhecida no dicionário UNITEX.
     """
     name = 'Anaphoric references'
     column_name = 'anaphoric_refs'
