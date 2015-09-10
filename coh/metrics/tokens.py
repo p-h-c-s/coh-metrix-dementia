@@ -70,6 +70,16 @@ class PronounsPerNounPhrase(base.Metric):
 
         Média do número de pronomes que aparecem em um texto pelo número de
         sintagmas nominais.
+
+        Exemplo:
+
+            "Dentro do lago, existem peixes, como a traíra e o dourado, além da
+            palometa, um tipo de piranha. Ela é uma espécie carnívora que se
+            alimenta de peixes."
+
+            Não há pronomes na primeira sentença e há 9 sintagmas nominais. Há
+            1 pronome na segunda sentença e 5 sintagmas nominais. Com 1 pronome
+            em 2 sentenças, o valor da métrica é 0,1.
     """
     name = 'Mean pronouns per noun phrase'
     column_name = 'pronouns_per_np'
@@ -142,7 +152,31 @@ class TypeTokenRatio(base.Metric):
 
 class BrunetIndex(base.Metric):
 
-    """Docstring for BrunetIndex. """
+    """
+    BrunetIndex:
+
+        W = N ** (V ** −0.165)
+
+        N é o número de palavras lexicais, e V é o número total de tokens
+        usados.
+        Os valores de W típicos variam entre 10 e 20, sendo que uma fala mais
+        rica produz valores menores (THOMAS et al., 2005).
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
+
+            Com 95 tokens e 78 types, a métrica vale 9,199.
+    """
 
     name = 'Brunet Index'
     column_name = 'brunet'
@@ -151,14 +185,41 @@ class BrunetIndex(base.Metric):
         tokens = rp.all_words(t)
         types = rp.token_types(t)
 
-        W = len(tokens) ** len(types) ** -0.165
+        brunet_index = len(tokens) ** len(types) ** -0.165
 
-        return W
+        return brunet_index
 
 
 class HoroneStatistic(base.Metric):
 
-    """Docstring for HoroneIndex. """
+    """
+    HoroneIndex:
+
+        A Estatística de Honoré R (HONORÉ, 1979), calculada como
+        (THOMAS et al., 2005):
+
+        R = 100 * logN / (1 - (V_1 / V))
+
+        em que N é o número total de tokens, V_1 é o número de palavras do
+        vocabulário que aparecem uma única vez, e V é o número de palavras
+        lexicais.
+
+        Exemplo:
+
+            "O acessório polêmico entrou no projeto, de autoria do senador
+            Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
+            de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
+            quem sugeriu a inclusão da peça entre os itens do uniforme de
+            alunos dos ensinos Fundamental e Médio nas escolas municipais,
+            estaduais e federais. Ele defende a medida como forma de proteger
+            crianças e adolescentes dos males provocados pelo excesso de
+            exposição aos raios solares. Se a idéia for aprovada, os estudantes
+            receberão dois conjuntos anuais, completados por calçado, meias,
+            calça e camiseta."
+
+            Com 95 tokens, 69 tokens com apenas uma ocorrência e 78 types, o
+            valor da métrica é 1714,027.
+    """
 
     name = 'Honore Statistic'
     column_name = 'honore'
@@ -171,15 +232,30 @@ class HoroneStatistic(base.Metric):
         one_time_tokens = [word for word, count in counter.items()
                            if count == 1]
 
-        R = 100 * log(len(tokens), 10) / (1 - len(one_time_tokens) / len(types))
+        honore_index = 100 * log(len(tokens), 10) /\
+            (1 - len(one_time_tokens) / len(types))
 
-        return R
+        return honore_index
 
 
-class MeanClauseUtterance(base.Metric):
-    """ Docstring for MeanClauseUtterance. """
+class MeanClauseSentence(base.Metric):
+    """
+    MeanClauseSentence:
 
-    name = 'Mean Clauses per Utterance'
+        Calcula o número médio de cláusulas por sentença. Definiu-se que uma
+        cláusula em uma sentença é caracterizada pela presença de um sintagma
+        verbal.
+
+        Exemplo:
+
+            "A mulher que eu vi usava um chapéu vermelho. O seu chapéu era
+            muito bonito."
+
+            A primeira sentença possui 2 cláusulas e a segunda sentença possui
+            uma cláusula. Assim, o valor da métrica é 1,5.
+    """
+
+    name = 'Mean Clauses per Sentence'
     column_name = 'mcu'
 
     def value_for_text(self, t, rp=default_rp):
