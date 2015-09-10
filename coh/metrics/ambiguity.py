@@ -55,6 +55,9 @@ class VerbAmbiguity(base.Metric):
         Para cada verbo do texto soma-se o número de sentidos apresentados no
         TEP (Maziero et. al., 2008) e divide o total pelo número de verbos.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        dicionário do TEP.
+
         Exemplo:
 
             "O menino colou na prova, embora soubesse que poderia ser pego."
@@ -77,6 +80,9 @@ class NounAmbiguity(base.Metric):
         Para cada substantivo do texto soma-se o número de sentidos
         apresentados no TEP (Maziero et. al., 2008) e divide o total pelo
         número de substantivos.
+
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        dicionário do TEP.
 
         Exemplo:
 
@@ -101,6 +107,9 @@ class AdjectiveAmbiguity(base.Metric):
         no TEP (Maziero et. al., 2008) e divide o total pelo número de
         adjetivos.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        dicionário do TEP.
+
         Exemplo:
 
             "O acessório polêmico entrou no projeto, de autoria do senador
@@ -113,6 +122,10 @@ class AdjectiveAmbiguity(base.Metric):
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
             calça e camiseta."
+
+            Dos adjetivos rotulados no texto exemplo ('polêmico', 'municipal',
+            'estadual', 'federal', 'solar', 'anual'), consta apenas 'anual' no
+            TEP. Assim, o valor da métrica é 0,166.
     """
     name = 'Ambiguity of adjectives'
     column_name = 'adjectives_ambiguity'
@@ -130,12 +143,18 @@ class AdverbAmbiguity(base.Metric):
          no TEP (Maziero et. al., 2008) e divide o total pelo número de
          advérbios.
 
+         O desempenho da métrica é diretamente relacionado ao desempenho do
+         dicionário do TEP.
+
          Exemplo:
 
             "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
             a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
+
+            Os advérbios rotulados no texto exemplo são: 'não', 'mais', 'já',
+            'não' com sentidos: 1, 5, 4, 1. Assim, o valor da métrica é 2,2.
     """
     name = 'Ambiguity of adverbs'
     column_name = 'adverbs_ambiguity'

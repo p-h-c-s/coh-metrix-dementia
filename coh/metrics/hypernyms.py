@@ -31,6 +31,9 @@ class HypernymsVerbs(base.Metric):
         de". O verbo sonhar, por exemplo, possui 3 hiperônimos: imaginar,
         conceber e ver na mente.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho da
+        base Wordnet.Br.
+
         Exemplo:
 
             "Ele sonha muito quando está acordado."
