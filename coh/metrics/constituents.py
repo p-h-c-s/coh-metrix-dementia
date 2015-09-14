@@ -22,7 +22,6 @@ from coh.utils import find_subtrees
 
 
 class NounPhraseIncidence(base.Metric):
-
     """
         ## Incidência de Sintagmas:
 
@@ -57,7 +56,6 @@ class NounPhraseIncidence(base.Metric):
 
 
 class ModifiersPerNounPhrase(base.Metric):
-
     """
         ## Modificadores por Sintagmas:
 
@@ -96,7 +94,6 @@ class ModifiersPerNounPhrase(base.Metric):
 
 
 class WordsBeforeMainVerb(base.Metric):
-
     """
         ## Palavras Antes de Verbos Principais:
 
@@ -151,8 +148,8 @@ class WordsBeforeMainVerb(base.Metric):
 
 
 class Constituents(base.Category):
-    """
-    """
+    """"""
+    
     name = 'Constituents'
     table_name = 'constituents'
 

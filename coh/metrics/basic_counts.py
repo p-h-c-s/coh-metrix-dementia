@@ -49,6 +49,7 @@ class Flesch(base.Metric):
             o índice Flesch para o exemplo é 29,316.
 
     """
+    
     name = 'Flesch index'
     column_name = 'flesch'
 
@@ -78,6 +79,7 @@ class Words(base.Metric):
 
         O exemplo possui 17 palavras.
     """
+    
     name = 'Number of Words'
     column_name = 'words'
 
@@ -108,6 +110,7 @@ class Sentences(base.Metric):
 
         O exemplo possui 4 sentenças.
     """
+    
     name = 'Number of Sentences'
     column_name = 'sentences'
 
@@ -139,6 +142,7 @@ class Paragraphs(base.Metric):
 
         O exemplo possui 2 parágrafos.
     """
+    
     name = 'Number of Paragraphs'
     column_name = 'paragraphs'
 
@@ -168,6 +172,7 @@ class WordsPerSentence(base.Metric):
         Neste exemplo o número de palavras é 95 e o número de sentenças é
             4. Portanto,o número de palavras por sentenças é 23,75.
     """
+    
     name = 'Mean words per sentence'
     column_name = 'words_per_sentence'
 
@@ -192,6 +197,7 @@ class SentencesPerParagraph(base.Metric):
 
         O parágrafo do exemplo possui 5 sentenças.
     """
+    
     name = 'Mean sentences per paragraph'
     column_name = 'sentences_per_paragraph'
 
@@ -213,6 +219,7 @@ class SyllablesPerContentWord(base.Metric):
 
         Número de sílabas por palavras de conteúdo do exemplo é 3,5.
     """
+    
     name = 'Mean syllables per content word'
     column_name = 'syllables_per_content_word'
 
@@ -246,6 +253,7 @@ class VerbIncidence(base.Metric):
         Com 4 verbos e 17 palavras, a incidência de verbos é 235,29 (número
             de verbos/(número de palavras /1000)).
     """
+    
     name = 'Verb incidence'
     column_name = 'verbs'
 
@@ -271,6 +279,7 @@ class NounIncidence(base.Metric):
         Com 6 substantivos e 17 palavras, a incidência de substantivos é
             352,94 (número de substantivos/(número de palavras /1000)).
     """
+    
     name = 'Noun incidence'
     column_name = 'nouns'
 
@@ -301,6 +310,7 @@ class AdjectiveIncidence(base.Metric):
         Com 6 adjetivos e 95 palavras, a incidência de adjetivos é 63,157
         (número de adjetivos/(número de palavras/1000)).
     """
+    
     name = 'Adjective incidence'
     column_name = 'adjectives'
 
@@ -325,6 +335,7 @@ class AdverbIncidence(base.Metric):
         Com 8 advérbios e 38 palavras, a incidência de adjetivos é 210,526
             (número de advérbios/(número de palavras/1000)).
     """
+    
     name = 'Adverb incidence'
     column_name = 'adverbs'
 
@@ -354,6 +365,7 @@ class PronounIncidence(base.Metric):
         Com 2 pronomes e 69 palavras, a incidência de pronomes é 28,98
             (número de pronomes/(número de palavras/1000)).
     """
+    
     name = 'Pronoun incidence'
     column_name = 'pronouns'
 
@@ -380,6 +392,7 @@ class ContentWordIncidence(base.Metric):
             de conteúdo é 710,526 (número de palavras de conteúdo/(número de
             palavras/1000)).
     """
+    
     name = 'Content word incidence'
     column_name = 'content_words'
 
@@ -410,6 +423,7 @@ class FunctionWordIncidence(base.Metric):
             funcionais é 376,81 (número de palavras funcionais/(número de
             palavras/1000)).
     """
+    
     name = 'Function word incidence'
     column_name = 'function_words'
 

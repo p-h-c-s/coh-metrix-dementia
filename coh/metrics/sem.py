@@ -57,7 +57,6 @@ class IdeaDensity(base.Metric):
         return sum(id_values) / len(id_values) if id_values else 0
 
 class ContentDensity(base.Metric):
-
     """Docstring for HoroneIndex. """
 
     name = 'Content density'

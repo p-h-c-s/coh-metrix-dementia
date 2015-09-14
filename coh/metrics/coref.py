@@ -24,7 +24,6 @@ from coh.resource_pool import rp as default_rp
 
 
 class CoreferenceBase(base.Metric):
-
     """Docstring for CoreferenceBase. """
 
     def get_sentences(self, text, rp):
@@ -76,7 +75,6 @@ class CoreferenceBase(base.Metric):
 
 
 class AdjacentOverlapBase(CoreferenceBase):
-
     """Docstring for AdjacentOverlapBase. """
 
     def sentence_pairs(self, text, rp):
@@ -87,7 +85,6 @@ class AdjacentOverlapBase(CoreferenceBase):
 
 
 class OverlapBase(CoreferenceBase):
-
     """Docstring for OverlapBase. """
 
     def sentence_pairs(self, text, rp):
@@ -136,6 +133,7 @@ class AdjacentArgumentOverlap(AdjacentOverlapBase, ArgumentBase):
              adjacentes ((1) com (2) e (2) com (3)), o valor final da métrica
              é 1/2 = 0,5.
     """
+    
     name = 'Adjacent argument overlap'
     column_name = 'adj_arg_ovl'
 
@@ -160,6 +158,7 @@ class ArgumentOverlap(OverlapBase, ArgumentBase):
              com (3) e (2) com (3). Como somente o par (1) com (2) compartilham
              um substantivo (peixes) o valor final da métrica é 1/3 = 0,333.
     """
+    
     name = 'Argument overlap'
     column_name = 'arg_ovl'
 
@@ -184,6 +183,7 @@ class AdjacentStemOverlap(AdjacentOverlapBase):
              adjacentes e somente um compartilha um radical, então o
              resultado da métrica é 1/2 = 0,5.
     """
+    
     name = 'Adjacent stem overlap'
     column_name = 'adj_stem_ovl'
 
@@ -211,6 +211,7 @@ class StemOverlap(OverlapBase):
              um radical (piranh). Então, como são três os possíveis pares, o
              valor final da métrica é 2/3 = 0,667.
     """
+    
     name = 'Stem overlap'
     column_name = 'stem_ovl'
 
@@ -239,6 +240,7 @@ class AdjacentContentWordOverlap(AdjacentOverlapBase):
              um radical (piranh). Então, como são três os possíveis pares, o
              valor final da métrica é 2/3 = 0,667.
     """
+    
     name = 'Adjacent content word overlap'
     column_name = 'adj_cw_ovl'
 
@@ -247,8 +249,8 @@ class AdjacentContentWordOverlap(AdjacentOverlapBase):
 
 
 class Coreference(base.Category):
-    """
-    """
+    """"""
+    
     name = 'Coreference'
     table_name = 'coreference'
 

@@ -39,6 +39,7 @@ class LogicOperatorsIncidence(base.Metric):
             operadores lógicos é 105,26 (número de operadores lógicos/(número
             de palavras/1000)).
     """
+    
     name = 'Logic operators incidence'
     column_name = 'logic_operators'
 
@@ -68,6 +69,7 @@ class AndIncidence(base.Metric):
             operadores lógico E é 26,315 (frequência do operador lógico E /
             (número de palavras/1000)).
     """
+    
     name = 'Incidence of ANDs.'
     column_name = 'and_incidence'
 
@@ -97,6 +99,7 @@ class OrIncidence(base.Metric):
             operadores lógico OU é 22,222 (frequência do operador lógico OU /
             (número de palavras/1000)).
     """
+    
     name = 'Incidence of ORs.'
     column_name = 'or_incidence'
 
@@ -132,6 +135,7 @@ class IfIncidence(base.Metric):
             operadores lógico SE é 10,526 (frequência do operador lógico SE /
             (número de palavras/1000)).
     """
+    
     name = 'Incidence of IFs.'
     column_name = 'if_incidence'
 
@@ -167,6 +171,7 @@ class NegationIncidence(base.Metric):
             incidência de negações é 78,947 (número de negações/(número de
             palavras/1000)).
     """
+    
     name = 'Incidence of negations'
     column_name = 'negation_incidence'
 
@@ -180,8 +185,8 @@ class NegationIncidence(base.Metric):
 
 
 class LogicOperators(base.Category):
-    """
-    """
+    """"""
+    
     name = 'Logic operators'
     table_name = 'logic_operators'
 

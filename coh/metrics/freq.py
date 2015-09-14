@@ -42,6 +42,7 @@ class ContentWordsFrequency(base.Metric):
 
         O valor da métrica é 564998.3
     """
+    
     name = 'Content words frequency'
     column_name = 'cw_freq'
 
@@ -66,6 +67,7 @@ class MinimumContentWordsFrequency(base.Metric):
 
         A menor frequência é de __vestimenta__, 773.
     """
+    
     name = 'Minimum among content words frequencies'
     column_name = 'min_cw_freq'
 
@@ -78,8 +80,8 @@ class MinimumContentWordsFrequency(base.Metric):
 
 
 class Frequencies(base.Category):
-    """
-    """
+    """"""
+    
     name = 'Content word frequencies'
     table_name = 'cw_frequencies'
 

@@ -29,6 +29,7 @@ def convert(conn_list):
     """Converts a list of connectives into the format that is accepted by
     utils.count_occurrences and utils.count_occurrences_for_all.
     """
+    
     def conn_to_list(conn):
         return [(word, 'NO_POS') for word in conn.connective.split(' ')]
 
@@ -130,6 +131,7 @@ class ConnectivesIncidence(base.Metric):
         Como há 6 conectivos e 95 palavras, a incidência de conectivos é
             63,157 (número de conectivos/(número de palavras/1000)).
     """
+    
     name = 'Connectives incidence'
     column_name = 'conn_incidence'
 
@@ -166,6 +168,7 @@ class AddPosConnectivesIncidence(base.Metric):
             conectivos positivos é 52,631 (número de conectivos positivos/
             (número de palavras/1000)).
     """
+    
     name = 'Incidence of additive positive connectives'
     column_name = 'add_pos_conn_incidence'
 
@@ -193,6 +196,7 @@ class AddNegConnectivesIncidence(base.Metric):
             incidência de conectivos negativos é 166,666 (número de conectivos
             positivos/(número de palavras/1000)).
     """
+    
     name = 'Incidence of additive negative connectives'
     column_name = 'add_neg_conn_incidence'
 
@@ -223,6 +227,7 @@ class TmpPosConnectivesIncidence(base.Metric):
             117,647 (número de conectivos temporais positivos/(número
             de palavras/1000)).
     """
+    
     name = 'Incidence of temporal positive connectives'
     column_name = 'tmp_pos_conn_incidence'
 
@@ -253,6 +258,7 @@ class TmpNegConnectivesIncidence(base.Metric):
             83,333 (número de conectivos temporais negativos/(número
             de palavras/1000)).
     """
+    
     name = 'Incidence of temporal negative connectives'
     column_name = 'tmp_neg_conn_incidence'
 
@@ -282,6 +288,7 @@ class CauPosConnectivesIncidence(base.Metric):
             83,333 (número de conectivos causais positivos/(número
             de palavras/1000)).
     """
+    
     name = 'Incidence of causal positive connectives'
     column_name = 'cau_pos_conn_incidence'
 
@@ -311,6 +318,7 @@ class CauNegConnectivesIncidence(base.Metric):
             83,333 (número de conectivos causais negativos/(número
             de palavras/1000)).
     """
+    
     name = 'Incidence of causal negative connectives'
     column_name = 'cau_neg_conn_incidence'
 
@@ -341,6 +349,7 @@ class LogPosConnectivesIncidence(base.Metric):
             76,923 (número de conectivos lógicos positivos/(número
             de palavras/1000)).
     """
+    
     name = 'Incidence of logical positive connectives'
     column_name = 'log_pos_conn_incidence'
 
@@ -370,6 +379,7 @@ class LogNegConnectivesIncidence(base.Metric):
             90,909 (número de conectivos lógicos negativos/(número
             de palavras/1000)).
     """
+    
     name = 'Incidence of logical negative connectives'
     column_name = 'log_neg_conn_incidence'
 
@@ -384,8 +394,8 @@ class LogNegConnectivesIncidence(base.Metric):
 
 
 class Connectives(base.Category):
-    """
-    """
+    """"""
+    
     name = 'Connectives'
     table_name = 'connectives'
 

@@ -47,6 +47,7 @@ class PersonalPronounsIncidence(base.Metric):
             palavras, a incidência de pronomes pessoais é 10,526 (número de
             pronomes pessoais/(número de palavras/1000)).
     """
+    
     name = 'Personal pronouns incidence'
     column_name = 'personal_pronouns'
 
@@ -81,6 +82,7 @@ class PronounsPerNounPhrase(base.Metric):
             1 pronome na segunda sentença e 5 sintagmas nominais. Com 1 pronome
             em 2 sentenças, o valor da métrica é 0,1.
     """
+    
     name = 'Mean pronouns per noun phrase'
     column_name = 'pronouns_per_np'
 
@@ -132,9 +134,9 @@ class TypeTokenRatio(base.Metric):
             receberão dois conjuntos anuais, completados por calçado, meias,
             calça e camiseta."*  
 
-        Com 95 tokens e 78 tipos, o type/token ratio é 0,821
-
+        Com 95 tokens e 78 tipos, a relação tipo por token é 0,821.
     """
+    
     name = 'Type to token ratio'
     column_name = 'ttr'
 
@@ -151,7 +153,6 @@ class TypeTokenRatio(base.Metric):
 
 
 class BrunetIndex(base.Metric):
-
     """
         # Índice de Brunet:
 
@@ -175,7 +176,7 @@ class BrunetIndex(base.Metric):
             receberão dois conjuntos anuais, completados por calçado, meias,
             calça e camiseta."*  
 
-        Com 95 tokens e 78 types, a métrica vale 9,199.
+        Com 95 tokens e 78 tipos, a métrica vale 9,199.
     """
 
     name = 'Brunet Index'
@@ -191,7 +192,6 @@ class BrunetIndex(base.Metric):
 
 
 class HoroneStatistic(base.Metric):
-
     """
         ## Estatística de Horoné:
 
@@ -217,7 +217,7 @@ class HoroneStatistic(base.Metric):
             receberão dois conjuntos anuais, completados por calçado, meias,
             calça e camiseta."*  
 
-        Com 95 tokens, 69 tokens com apenas uma ocorrência e 78 types, o
+        Com 95 tokens, 69 tokens com apenas uma ocorrência e 78 tipos, o
             valor da métrica é 1714,027.
     """
 

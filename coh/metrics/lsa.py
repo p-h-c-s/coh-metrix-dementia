@@ -55,6 +55,7 @@ class LsaBase(base.Metric):
 
 class LsaSentenceAdjacentMean(LsaBase):
     """."""
+    
     name = 'LSA sentence adjacent mean'
     column_name = 'adj_mean'
 
@@ -70,6 +71,7 @@ class LsaSentenceAdjacentMean(LsaBase):
 
 class LsaSentenceAdjacentStd(LsaBase):
     """."""
+    
     name = 'LSA sentence adjacent std'
     column_name = 'adj_std'
 
@@ -85,6 +87,7 @@ class LsaSentenceAdjacentStd(LsaBase):
 
 class LsaSentenceAllMean(LsaBase):
     """."""
+    
     name = 'LSA sentence all mean'
     column_name = 'all_mean'
 
@@ -100,6 +103,7 @@ class LsaSentenceAllMean(LsaBase):
 
 class LsaSentenceAllStd(LsaBase):
     """."""
+    
     name = 'LSA sentence all (within paragraph) std'
     column_name = 'all_std'
 
@@ -126,6 +130,7 @@ def all_tokens(paragraph):
 
 class LsaParagraphAdjacentMean(LsaBase):
     """."""
+    
     name = 'LSA paragraph adjacent mean'
     column_name = 'paragraph_mean'
 
@@ -139,6 +144,7 @@ class LsaParagraphAdjacentMean(LsaBase):
 
 class LsaParagraphAdjacentStd(LsaBase):
     """."""
+    
     name = 'LSA paragraph adjacent std'
     column_name = 'paragraph_std'
 

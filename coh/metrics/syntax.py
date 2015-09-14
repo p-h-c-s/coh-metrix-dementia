@@ -23,7 +23,6 @@ from nltk.util import trigrams
 
 
 class YngveComplexity(base.Metric):
-
     """Docstring for YngveComplexity. """
 
     name = 'Yngve Complexity'
@@ -51,7 +50,6 @@ class YngveComplexity(base.Metric):
 
 
 class FrazierComplexity(base.Metric):
-
     """Docstring for FrazierComplexity. """
 
     name = 'Frazier Complexity'
@@ -99,7 +97,6 @@ class FrazierComplexity(base.Metric):
 
 
 class DependencyDistance(base.Metric):
-
     """Docstring for DependencyDistance. """
 
     name = 'Dependency Distance'
@@ -121,7 +118,6 @@ class DependencyDistance(base.Metric):
 
 
 class CrossEntropy(base.Metric):
-
     """Docstring for CrossEntropy. """
 
     name = 'Cross Entropy'
@@ -137,7 +133,6 @@ class CrossEntropy(base.Metric):
 	
 
 class SyntacticalComplexity(base.Category):
-
     """Docstring for SyntacticalComplexity. """
 
     name = 'Syntactical Complexity'

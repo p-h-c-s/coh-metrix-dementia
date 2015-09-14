@@ -35,6 +35,7 @@ def calculate_ambiguity(rp, t, delaf_tag, tep_tag, checker):
     number of words for a given category.
 
     """
+    
     words = [word.lower() for (word, tag) in rp.tagged_words(t)
              if checker((word, tag))]
 
@@ -65,6 +66,7 @@ class VerbAmbiguity(base.Metric):
         O exemplo apresenta 4 verbos (colou, soubesse, poderia e ser) com
             frequências 4, 7, 2 e 12 no TEP. O resultado da métrica é 6,25.
     """
+    
     name = 'Ambiguity of verbs'
     column_name = 'verbs_ambiguity'
 
@@ -91,6 +93,7 @@ class NounAmbiguity(base.Metric):
         O exemplo apresenta 2 substantivos (menino e prova) com
             frequências 1 e 9 no TEP. O resultado da métrica é 5,0.
     """
+    
     name = 'Ambiguity of nouns'
     column_name = 'nouns_ambiguity'
 
@@ -127,6 +130,7 @@ class AdjectiveAmbiguity(base.Metric):
             __estadual__, __federal__, __solar__, __anual__), consta apenas
             __anual__ no TEP. Assim, o valor da métrica é 0,166.
     """
+    
     name = 'Ambiguity of adjectives'
     column_name = 'adjectives_ambiguity'
 
@@ -156,6 +160,7 @@ class AdverbAmbiguity(base.Metric):
         Os advérbios rotulados no texto exemplo são: __não__, __mais__, __já__,
             __não__ com sentidos: 1, 5, 4, 1. Assim, o valor da métrica é 2,2.
     """
+    
     name = 'Ambiguity of adverbs'
     column_name = 'adverbs_ambiguity'
 

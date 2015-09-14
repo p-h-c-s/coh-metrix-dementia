@@ -22,7 +22,6 @@ from coh.resource_pool import rp as default_rp
 
 
 class AnaphoricReferencesBase(base.Metric):
-
     """Docstring for AnaphoricReferencesBase. """
 
     referents = {r'^elas$': 'fp',
@@ -59,6 +58,7 @@ class AnaphoricReferencesBase(base.Metric):
         :nsentences: the number of sentences to look back for anaphoric
             references.
         """
+        
         super(AnaphoricReferencesBase, self).__init__()
         
         self.nsentences = nsentences
@@ -76,6 +76,7 @@ class AnaphoricReferencesBase(base.Metric):
         :rp: the resource pool to use.
         :returns: a list of nouns matching the category.
         """
+        
         db = rp.db_helper()
 
         candidates = []
@@ -142,6 +143,7 @@ class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
             2 candidatos para 1 referência. Logo, a métrica retorna 2.
             obs: "palometa" não é reconhecida no dicionário UNITEX.
     """
+    
     name = 'Adjacent anaphoric references'
     column_name = 'adjacent_refs'
 
@@ -166,6 +168,7 @@ class AnaphoricReferences(AnaphoricReferencesBase):
             temos 2 candidatos para 1 referência. Logo, a métrica retorna 2.
             Obs: __palometa__ não é reconhecida no dicionário UNITEX.
     """
+    
     name = 'Anaphoric references'
     column_name = 'anaphoric_refs'
 
@@ -174,8 +177,8 @@ class AnaphoricReferences(AnaphoricReferencesBase):
 
 
 class Anaphoras(base.Category):
-    """
-    """
+    """"""
+    
     name = 'Anaphoras'
     table_name = 'anaphoras'
 

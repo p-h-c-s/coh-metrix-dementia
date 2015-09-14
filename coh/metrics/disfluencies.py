@@ -59,6 +59,7 @@ class MeanShortPauses(base.Metric):
 
 class MeanVowelStretchings(base.Metric):
     """ """
+    
     name = 'Mean # of vowel stretchings'
     column_name = 'mean_vowel'
 

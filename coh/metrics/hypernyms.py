@@ -41,6 +41,7 @@ class HypernymsVerbs(base.Metric):
         O verbo sonhar possui 3 hiperônimos e o verbo acordar nenhum.
             Assim, temos o valor de 1,5.
     """
+    
     name = 'Mean hypernyms per verb'
     column_name = 'hypernyms_verbs'
 
