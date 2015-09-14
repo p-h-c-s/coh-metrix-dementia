@@ -23,19 +23,19 @@ from coh.utils import base_path, count_occurrences, count_occurrences_for_all
 
 class LogicOperatorsIncidence(base.Metric):
     """
-    Incidência de Operadores Lógicos:
+        ## Incidência de Operadores Lógicos:
 
         Incidência de operadores lógicos em um texto. Consideramos como
         operadores lógicos: e, ou, se, negações e um número de condições.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
+        *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
 
-            Como há 4 operadores lógicos e 38 palavras a incidência de
+        Como há 4 operadores lógicos e 38 palavras a incidência de
             operadores lógicos é 105,26 (número de operadores lógicos/(número
             de palavras/1000)).
     """
@@ -53,18 +53,18 @@ class LogicOperatorsIncidence(base.Metric):
 
 class AndIncidence(base.Metric):
     """
-    Incidência do operador lógico E:
+        ## Incidência do operador lógico E:
 
         Incidência do operador lógico E em um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
+        *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
 
-            Como há 1 operadores lógicos E e 38 palavras a incidência do
+        Como há 1 operadores lógicos E e 38 palavras a incidência do
             operadores lógico E é 26,315 (frequência do operador lógico E /
             (número de palavras/1000)).
     """
@@ -81,19 +81,19 @@ class AndIncidence(base.Metric):
 
 class OrIncidence(base.Metric):
     """
-    Incidência do operador lógico OU:
+        ## Incidência do operador lógico OU:
 
         Incidência do operador lógico OU em um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Os vermes – também chamados de helmintos – são parasitos, animais
+        *"Os vermes – também chamados de helmintos – são parasitos, animais
             que, em geral, dependem da relação com outros seres para viver.
             Eles podem se hospedar no organismo de diversos animais, como bois,
             aves e peixes. Por isso, podemos também contraí-los comendo carnes
-            cruas ou mal cozidas."
+            cruas ou mal cozidas."*  
 
-            Como há 1 operadores lógicos OU e 45 palavras a incidência do
+        Como há 1 operadores lógicos OU e 45 palavras a incidência do
             operadores lógico OU é 22,222 (frequência do operador lógico OU /
             (número de palavras/1000)).
     """
@@ -110,14 +110,14 @@ class OrIncidence(base.Metric):
 
 class IfIncidence(base.Metric):
     """
-    Incidência do operador lógico SE:
+        ## Incidência do operador lógico SE:
 
         Incidência do operador lógico SE em um texto (desconsidera quando o SE
         é um pronome).
 
-        Exemplo:
+        ### Exemplo:
 
-            "O acessório polêmico entrou no projeto, de autoria do senador
+        *"O acessório polêmico entrou no projeto, de autoria do senador
             Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
             de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
             quem sugeriu a inclusão da peça entre os itens do uniforme de
@@ -126,9 +126,9 @@ class IfIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."
+            calça e camiseta."*  
 
-            Como há 1 operadores lógicos SE e 95 palavras a incidência do
+        Como há 1 operadores lógicos SE e 95 palavras a incidência do
             operadores lógico SE é 10,526 (frequência do operador lógico SE /
             (número de palavras/1000)).
     """
@@ -145,14 +145,14 @@ class IfIncidence(base.Metric):
 
 class NegationIncidence(base.Metric):
     """
-    Incidência de negação:
+        ## Incidência de negação:
 
         Incidência de Negações. Consideramos como negações: não, nem, nenhum,
         nenhuma, nada, nunca e jamais.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O acessório polêmico entrou no projeto, de autoria do senador
+        *"O acessório polêmico entrou no projeto, de autoria do senador
             Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
             de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
             quem sugeriu a inclusão da peça entre os itens do uniforme de
@@ -161,9 +161,9 @@ class NegationIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."
+            calça e camiseta."*  
 
-            No exemplo aparecem 3 negações. Como o mesmo possui 38 palavras a
+        No exemplo aparecem 3 negações. Como o mesmo possui 38 palavras a
             incidência de negações é 78,947 (número de negações/(número de
             palavras/1000)).
     """

@@ -104,7 +104,7 @@ def get_log_neg_conn(rp):
 
 class ConnectivesIncidence(base.Metric):
     """
-    Incidência de Conectivos:
+        ## Incidência de Conectivos:
 
         Incidência de todos os conectivos que aparecem em um texto. Para esta
         métrica (e as demais que contam conectivos) compilamos listas de
@@ -114,9 +114,9 @@ class ConnectivesIncidence(base.Metric):
         dimensão divide os conectivos de acordo com o tipo de coesão: aditivos,
         temporais, lógicos e causais.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O acessório polêmico entrou no projeto, de autoria do senador
+        *"O acessório polêmico entrou no projeto, de autoria do senador
             Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
             de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
             quem sugeriu a inclusão da peça entre os itens do uniforme de
@@ -125,9 +125,9 @@ class ConnectivesIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."
+            calça e camiseta."*  
 
-            Como há 6 conectivos e 95 palavras, a incidência de conectivos é
+        Como há 6 conectivos e 95 palavras, a incidência de conectivos é
             63,157 (número de conectivos/(número de palavras/1000)).
     """
     name = 'Connectives incidence'
@@ -145,13 +145,13 @@ class ConnectivesIncidence(base.Metric):
 
 class AddPosConnectivesIncidence(base.Metric):
     """
-    Incidência de conectivos classificados como aditivos positivos.
+        ## Incidência de conectivos classificados como aditivos positivos.
 
         Incidência de todos os conectivos positivos que aparecem em um texto.
 
-        Exemplo:
+        ## Exemplo:
 
-            "O acessório polêmico entrou no projeto, de autoria do senador
+        *"O acessório polêmico entrou no projeto, de autoria do senador
             Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
             de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
             quem sugeriu a inclusão da peça entre os itens do uniforme de
@@ -160,9 +160,9 @@ class AddPosConnectivesIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."
+            calça e camiseta."* 
 
-            Como há 5 conectivos positivos e 95 palavras, a incidência de
+        Como há 5 conectivos positivos e 95 palavras, a incidência de
             conectivos positivos é 52,631 (número de conectivos positivos/
             (número de palavras/1000)).
     """
@@ -181,15 +181,15 @@ class AddPosConnectivesIncidence(base.Metric):
 
 class AddNegConnectivesIncidence(base.Metric):
     """
-    Incidência de conectivos classificados como aditivos negativos.
+        ## Incidência de conectivos classificados como aditivos negativos.
 
         Incidência de todos os conectivos negativos que aparecem em um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Entretanto, foram encontrados vários problemas clássicos."
+        *"Entretanto, foram encontrados vários problemas clássicos."*  
 
-            Como há 1 conectivos negativos (entretanto) e 6 palavras, a
+        Como há 1 conectivos negativos (entretanto) e 6 palavras, a
             incidência de conectivos negativos é 166,666 (número de conectivos
             positivos/(número de palavras/1000)).
     """
@@ -208,17 +208,17 @@ class AddNegConnectivesIncidence(base.Metric):
 
 class TmpPosConnectivesIncidence(base.Metric):
     """
-    Incidência de conectivos classificados como temporais positivos.
+        ## Incidência de conectivos classificados como temporais positivos.
 
         Incidência de todos os conectivos temporais positivos que aparecem em
         um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Enquanto isso, mais de 100 pessoas tentam resolver o problema, o
-            que finalmente resultou em bons resultados."
+        *"Enquanto isso, mais de 100 pessoas tentam resolver o problema, o
+            que finalmente resultou em bons resultados."*  
 
-            Como há 2 conectivos temporais positivos (enquanto e finalmente) e
+        Como há 2 conectivos temporais positivos (enquanto e finalmente) e
             6 palavras, a incidência de conectivos temporais positivos é
             117,647 (número de conectivos temporais positivos/(número
             de palavras/1000)).
@@ -238,17 +238,17 @@ class TmpPosConnectivesIncidence(base.Metric):
 
 class TmpNegConnectivesIncidence(base.Metric):
     """
-    Incidência de conectivos classificados como temporais negativos.
+        ## Incidência de conectivos classificados como temporais negativos.
 
         Incidência de todos os conectivos temporais negativos que aparecem em
         um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O menino colou na prova até que a professora descobriu sua
-            artimanha."
+        *"O menino colou na prova até que a professora descobriu sua
+            artimanha."*  
 
-            Como há 1 conectivos temporais negativo (até) e
+        Como há 1 conectivos temporais negativo (até) e
             12 palavras, a incidência de conectivos temporais negativos é
             83,333 (número de conectivos temporais negativos/(número
             de palavras/1000)).
@@ -268,16 +268,16 @@ class TmpNegConnectivesIncidence(base.Metric):
 
 class CauPosConnectivesIncidence(base.Metric):
     """
-    Incidência de conectivos classificados como causais positivos
+        ## Incidência de conectivos classificados como causais positivos
 
         Incidência de todos os conectivos causais positivos que aparecem em
         um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O menino queria ir bem na prova. Para isso, ele resolveu colar."
+        *"O menino queria ir bem na prova. Para isso, ele resolveu colar."*  
 
-            Como há 1 conectivos causal positivo (Para isso) e
+        Como há 1 conectivos causal positivo (Para isso) e
             12 palavras, a incidência de conectivos causais positivos é
             83,333 (número de conectivos causais positivos/(número
             de palavras/1000)).
@@ -297,16 +297,16 @@ class CauPosConnectivesIncidence(base.Metric):
 
 class CauNegConnectivesIncidence(base.Metric):
     """
-    Incidência de conectivos classificados como causais negativos
+        ## Incidência de conectivos classificados como causais negativos
 
         Incidência de todos os conectivos causais negativos que aparecem em
         um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Embora tenha colado na prova, o menino não obteve uma boa nota."
+        *"Embora tenha colado na prova, o menino não obteve uma boa nota."*  
 
-            Como há 1 conectivos causal negativo (Embora) e
+        Como há 1 conectivos causal negativo (Embora) e
             12 palavras, a incidência de conectivos causais negativos é
             83,333 (número de conectivos causais negativos/(número
             de palavras/1000)).
@@ -326,17 +326,17 @@ class CauNegConnectivesIncidence(base.Metric):
 
 class LogPosConnectivesIncidence(base.Metric):
     """
-    Conectivos Lógicos Positivos
+        ## Conectivos Lógicos Positivos
 
         Incidência de todos os conectivos lógicos positivos que aparecem em
         um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Desde que o menino começou a colar nas provas, ele não estuda
-            mais."
+        *"Desde que o menino começou a colar nas provas, ele não estuda
+            mais."*  
 
-            Como há 1 conectivos lógico positivo (Desde que) e
+        Como há 1 conectivos lógico positivo (Desde que) e
             13 palavras, a incidência de conectivos lógicos positivos é
             76,923 (número de conectivos lógicos positivos/(número
             de palavras/1000)).
@@ -356,16 +356,16 @@ class LogPosConnectivesIncidence(base.Metric):
 
 class LogNegConnectivesIncidence(base.Metric):
     """
-    Conectivos Lógicos Negativos
+        ## Conectivos Lógicos Negativos
 
         Incidência de todos os conectivos lógicos negativos que aparecem em
         um texto.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O menino colou na prova, embora soubesse que poderia ser pego."
+        *"O menino colou na prova, embora soubesse que poderia ser pego."*  
 
-            Como há 1 conectivos lógico negativo (Desde que) e
+        Como há 1 conectivos lógico negativo (Desde que) e
             11 palavras, a incidência de conectivos lógicos negativos é
             90,909 (número de conectivos lógicos negativos/(número
             de palavras/1000)).

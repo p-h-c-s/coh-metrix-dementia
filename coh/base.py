@@ -165,9 +165,6 @@ class Category(object):
         if table_name is None and hasattr(self.__class__, 'table_name'):
             table_name = self.__class__.table_name
 
-        if desc is None and hasattr(self.__class__, 'desc'):
-            desc = self.__class__.desc
-
         if name is None:
             name = self.__class__.__name__
         self.name = name
@@ -276,9 +273,6 @@ class Metric(object):
         if column_name is None and hasattr(self.__class__, 'column_name'):
             column_name = self.__class__.column_name
 
-        if desc is None and hasattr(self.__class__, 'desc'):
-            desc = self.__class__.desc
-
         if name is None:
             name = self.__class__.__name__
         self.name = name
@@ -290,6 +284,9 @@ class Metric(object):
                 raise ValueError('No valid column name provided.')
         self.column_name = column_name
 
+        if desc is None:
+            desc = self.__doc__
+        
         self.desc = desc
 
     def value_for_text(self, text, rp=default_rp):

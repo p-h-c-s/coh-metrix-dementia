@@ -50,19 +50,19 @@ def calculate_ambiguity(rp, t, delaf_tag, tep_tag, checker):
 
 class VerbAmbiguity(base.Metric):
     """
-    Ambiguidade de Verbos:
+        ## Ambiguidade de Verbos:
 
         Para cada verbo do texto soma-se o número de sentidos apresentados no
-        TEP (Maziero et. al., 2008) e divide o total pelo número de verbos.
+        TEP (Maziero et. al., 2008) e divide o total pelo número de verbos.  
 
         O desempenho da métrica é diretamente relacionado ao desempenho do
         dicionário do TEP.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O menino colou na prova, embora soubesse que poderia ser pego."
+        *"O menino colou na prova, embora soubesse que poderia ser pego."*  
 
-            O exemplo apresenta 4 verbos (colou, soubesse, poderia e ser) com
+        O exemplo apresenta 4 verbos (colou, soubesse, poderia e ser) com
             frequências 4, 7, 2 e 12 no TEP. O resultado da métrica é 6,25.
     """
     name = 'Ambiguity of verbs'
@@ -75,20 +75,20 @@ class VerbAmbiguity(base.Metric):
 
 class NounAmbiguity(base.Metric):
     """
-    Ambiguidade de Substantivos:
+        ## Ambiguidade de Substantivos:
 
         Para cada substantivo do texto soma-se o número de sentidos
         apresentados no TEP (Maziero et. al., 2008) e divide o total pelo
-        número de substantivos.
+        número de substantivos.  
 
         O desempenho da métrica é diretamente relacionado ao desempenho do
         dicionário do TEP.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O menino colou na prova, embora soubesse que poderia ser pego."
+        *"O menino colou na prova, embora soubesse que poderia ser pego."*  
 
-            O exemplo apresenta 2 substantivos (menino e prova) com
+        O exemplo apresenta 2 substantivos (menino e prova) com
             frequências 1 e 9 no TEP. O resultado da métrica é 5,0.
     """
     name = 'Ambiguity of nouns'
@@ -101,18 +101,18 @@ class NounAmbiguity(base.Metric):
 
 class AdjectiveAmbiguity(base.Metric):
     """
-    Ambiguidade de Adjetivos:
+        ## Ambiguidade de Adjetivos:
 
         Para cada adjetivo do texto soma-se o número de sentidos apresentados
         no TEP (Maziero et. al., 2008) e divide o total pelo número de
-        adjetivos.
+        adjetivos.  
 
         O desempenho da métrica é diretamente relacionado ao desempenho do
         dicionário do TEP.
 
-        Exemplo:
+        ### Exemplo:
 
-            "O acessório polêmico entrou no projeto, de autoria do senador
+        *"O acessório polêmico entrou no projeto, de autoria do senador
             Cícero Lucena (PSDB-PB), graças a uma emenda aprovada na Comissão
             de Educação do Senado em outubro. Foi o senador Flávio Arns (PT-PR)
             quem sugeriu a inclusão da peça entre os itens do uniforme de
@@ -121,11 +121,11 @@ class AdjectiveAmbiguity(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."
+            calça e camiseta."*  
 
-            Dos adjetivos rotulados no texto exemplo ('polêmico', 'municipal',
-            'estadual', 'federal', 'solar', 'anual'), consta apenas 'anual' no
-            TEP. Assim, o valor da métrica é 0,166.
+        Dos adjetivos rotulados no texto exemplo (__polêmico__, __municipal__,
+            __estadual__, __federal__, __solar__, __anual__), consta apenas
+            __anual__ no TEP. Assim, o valor da métrica é 0,166.
     """
     name = 'Ambiguity of adjectives'
     column_name = 'adjectives_ambiguity'
@@ -137,24 +137,24 @@ class AdjectiveAmbiguity(base.Metric):
 
 class AdverbAmbiguity(base.Metric):
     """
-    Ambiguidade de Advérbios
+        ## Ambiguidade de Advérbios
 
-         Para cada advérbio do texto soma-se o número de sentidos apresentados
-         no TEP (Maziero et. al., 2008) e divide o total pelo número de
-         advérbios.
+        Para cada advérbio do texto soma-se o número de sentidos apresentados
+        no TEP (Maziero et. al., 2008) e divide o total pelo número de
+        advérbios.  
 
-         O desempenho da métrica é diretamente relacionado ao desempenho do
-         dicionário do TEP.
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        dicionário do TEP.
 
-         Exemplo:
+        ### Exemplo:
 
-            "Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
+        *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
 
-            Os advérbios rotulados no texto exemplo são: 'não', 'mais', 'já',
-            'não' com sentidos: 1, 5, 4, 1. Assim, o valor da métrica é 2,2.
+        Os advérbios rotulados no texto exemplo são: __não__, __mais__, __já__,
+            __não__ com sentidos: 1, 5, 4, 1. Assim, o valor da métrica é 2,2.
     """
     name = 'Ambiguity of adverbs'
     column_name = 'adverbs_ambiguity'

@@ -59,6 +59,8 @@ class AnaphoricReferencesBase(base.Metric):
         :nsentences: the number of sentences to look back for anaphoric
             references.
         """
+        super(AnaphoricReferencesBase, self).__init__()
+        
         self.nsentences = nsentences
 
         self.compiled_referents = {}
@@ -126,17 +128,17 @@ class AnaphoricReferencesBase(base.Metric):
 
 class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
     """
-    Referência Anafórica Adjacente:
+        ## Referência Anafórica Adjacente:
 
         Proporção de referências anafóricas entre sentenças adjacentes.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Dentro do lago, existem peixes, como a traíra e o dourado, além da
+        *"Dentro do lago, existem peixes, como a traíra e o dourado, além da
             palometa, um tipo de piranha. Ela é uma espécie carnívora que se
-            alimenta de peixes."
+            alimenta de peixes."*  
 
-            Com referências anafóricas "Ela" para "traíra" e "piranha", temos
+        Com referências anafóricas "Ela" para "traíra" e "piranha", temos
             2 candidatos para 1 referência. Logo, a métrica retorna 2.
             obs: "palometa" não é reconhecida no dicionário UNITEX.
     """
@@ -149,20 +151,20 @@ class AdjacentAnaphoricReferences(AnaphoricReferencesBase):
 
 class AnaphoricReferences(AnaphoricReferencesBase):
     """
-    Referência Anafórica:
+        ## Referência Anafórica:
 
         Proporção de referências anafóricas que se referem a um constituinte
         presente em até cinco sentenças anteriores.
 
-        Exemplo:
+        ### Exemplo:
 
-            "Dentro do lago, existem peixes, como a traíra e o dourado, além da
+        *"Dentro do lago, existem peixes, como a traíra e o dourado, além da
             palometa, um tipo de piranha. Ela é uma espécie carnívora que se
-            alimenta de peixes."
+            alimenta de peixes."*  
 
-            Com referências anafóricas "Ela" para "traíra" e "piranha", temos
-            2 candidatos para 1 referência. Logo, a métrica retorna 2.
-            obs: "palometa" não é reconhecida no dicionário UNITEX.
+        Com referências anafóricas __Ela__ para __traíra__ e __piranha__,
+            temos 2 candidatos para 1 referência. Logo, a métrica retorna 2.
+            Obs: __palometa__ não é reconhecida no dicionário UNITEX.
     """
     name = 'Anaphoric references'
     column_name = 'anaphoric_refs'

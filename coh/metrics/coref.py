@@ -116,21 +116,21 @@ class ArgumentBase(CoreferenceBase):
 
 class AdjacentArgumentOverlap(AdjacentOverlapBase, ArgumentBase):
     """
-    Sobreposição de Argumentos Adjacentes:
+        ## Sobreposição de Argumentos Adjacentes:
 
         Proporção de sentenças adjacentes que compartilham um ou mais
         argumentos (substantivos, pronomes ou sintagmas nominais).
 
-        Exemplo:
+        ### Exemplo:
 
-            "(1) Dentro do lago, existem peixes, como a traíra e o dourado,
-             além da palometa, um tipo de piranha.
-             (2) Ela é uma espécie carnívora que se alimenta de peixes.
-             (3) No verão, elas ficam mais próximas das margens da barragem,
+        1. *Dentro do lago, existem peixes, como a traíra e o dourado,
+             além da palometa, um tipo de piranha.*  
+        2. *Ela é uma espécie carnívora que se alimenta de peixes.*  
+        3. *No verão, elas ficam mais próximas das margens da barragem,
              atraídas pela movimentação das pessoas e por restos de comida que
-             alguns turistas deixam na água quando lavam os pratos."
+             alguns turistas deixam na água quando lavam os pratos.*  
 
-             Para este exemplo temos que as sentenças (1) e (2) compartilham
+        Para este exemplo temos que as sentenças (1) e (2) compartilham
              um substantivo (peixes) e, portanto, este par incrementa 1 no
              valor de correferência. Como também há dois pares de sentenças
              adjacentes ((1) com (2) e (2) com (3)), o valor final da métrica
@@ -142,21 +142,21 @@ class AdjacentArgumentOverlap(AdjacentOverlapBase, ArgumentBase):
 
 class ArgumentOverlap(OverlapBase, ArgumentBase):
     """
-    Sobreposição de Argumentos:
+        ## Sobreposição de Argumentos:
 
         Proporção de todos os pares de sentenças que compartilham um ou mais
         argumentos.
 
-        Exemplo:
+        ### Exemplo:
 
-            "(1) Dentro do lago, existem peixes, como a traíra e o dourado,
-             além da palometa, um tipo de piranha.
-             (2) Ela é uma espécie carnívora que se alimenta de peixes.
-             (3) No verão, elas ficam mais próximas das margens da barragem,
+        1. *Dentro do lago, existem peixes, como a traíra e o dourado,
+             além da palometa, um tipo de piranha.*  
+        2. *Ela é uma espécie carnívora que se alimenta de peixes.*  
+        3. *No verão, elas ficam mais próximas das margens da barragem,
              atraídas pela movimentação das pessoas e por restos de comida que
-             alguns turistas deixam na água quando lavam os pratos."
+             alguns turistas deixam na água quando lavam os pratos.*  
 
-             Para este exemplo temos os pares de sentenças (1) com (2), (1)
+        Para este exemplo temos os pares de sentenças (1) com (2), (1)
              com (3) e (2) com (3). Como somente o par (1) com (2) compartilham
              um substantivo (peixes) o valor final da métrica é 1/3 = 0,333.
     """
@@ -166,20 +166,20 @@ class ArgumentOverlap(OverlapBase, ArgumentBase):
 
 class AdjacentStemOverlap(AdjacentOverlapBase):
     """
-    Sobreposição de Radicais de palavras Adjacentes:
+        ## Sobreposição de Radicais de palavras Adjacentes:
 
         Proporção de sentenças adjacentes que compartilham radicais.
 
-        Exemplo:
+        ### Exemplo:
 
-            "(1) Dentro do lago, existem peixes, como a traíra e o dourado,
-             além da palometa, um tipo de piranha.
-             (2) Ela é uma espécie carnívora que se alimenta de peixes.
-             (3) No verão, elas ficam mais próximas das margens da barragem,
+        1. *Dentro do lago, existem peixes, como a traíra e o dourado,
+             além da palometa, um tipo de piranha.*  
+        2. *Ela é uma espécie carnívora que se alimenta de peixes.*  
+        3. *No verão, elas ficam mais próximas das margens da barragem,
              atraídas pela movimentação das pessoas e por restos de comida que
-             alguns turistas deixam na água quando lavam os pratos."
+             alguns turistas deixam na água quando lavam os pratos.*  
 
-             Neste exemplo, para sentenças adjacentes, temos que (1) e (2)
+        Neste exemplo, para sentenças adjacentes, temos que (1) e (2)
              compartilham o radical "peix". Como há dois pares de sentenças
              adjacentes e somente um compartilha um radical, então o
              resultado da métrica é 1/2 = 0,5.
@@ -193,20 +193,21 @@ class AdjacentStemOverlap(AdjacentOverlapBase):
 
 class StemOverlap(OverlapBase):
     """
-    Sobreposição de Radicais de palavras:
+        ## Sobreposição de Radicais de palavras:
 
         Proporção de todos os pares de sentenças que compartilham radicais.
 
-        Exemplo:
+        ### Exemplo:
 
-            "(1) Dentro do lago, existem peixes, como a traíra e o dourado,
-             além da palometa, um tipo de piranha.
-             (2) Ela é uma espécie carnívora que se alimenta de peixes.
-             (3) No verão, as piranhas ficam mais próximas das margens da
+        1. *Dentro do lago, existem peixes, como a traíra e o dourado,
+             além da palometa, um tipo de piranha.*  
+        2. *Ela é uma espécie carnívora que se alimenta de peixes.*  
+        3. *No verão, as piranhas ficam mais próximas das margens da
              barragem, atraídas pela movimentação das pessoas e por restos de
-             comida que alguns turistas deixam na água quando lavam os pratos."
+             comida que alguns turistas deixam na água quando lavam os
+             pratos.*  
 
-             Neste exemplo, além de (1) e (2), (1) e (3) também compartilham
+        Neste exemplo, além de (1) e (2), (1) e (3) também compartilham
              um radical (piranh). Então, como são três os possíveis pares, o
              valor final da métrica é 2/3 = 0,667.
     """
@@ -219,21 +220,22 @@ class StemOverlap(OverlapBase):
 
 class AdjacentContentWordOverlap(AdjacentOverlapBase):
     """
-    Sobreposição de Palavras de conteúdo em sentenças adjacentes:
+        ## Sobreposição de Palavras de conteúdo em sentenças adjacentes:
 
         Proporção de sentenças adjacentes que compartilham palavras de
         conteúdo.
 
-        Exemplo:
+        ### Exemplo:
 
-            "(1) Dentro do lago, existem peixes, como a traíra e o dourado,
-             além da palometa, um tipo de piranha.
-             (2) Ela é uma espécie carnívora que se alimenta de peixes.
-             (3) No verão, as piranhas ficam mais próximas das margens da
+        1. *Dentro do lago, existem peixes, como a traíra e o dourado,
+             além da palometa, um tipo de piranha.*  
+        2. *Ela é uma espécie carnívora que se alimenta de peixes.*  
+        3. *No verão, as piranhas ficam mais próximas das margens da
              barragem, atraídas pela movimentação das pessoas e por restos de
-             comida que alguns turistas deixam na água quando lavam os pratos."
+             comida que alguns turistas deixam na água quando lavam os
+             pratos.*  
 
-             Neste exemplo, além de (1) e (2), (1) e (3) também compartilham
+        Neste exemplo, além de (1) e (2), (1) e (3) também compartilham
              um radical (piranh). Então, como são três os possíveis pares, o
              valor final da métrica é 2/3 = 0,667.
     """
