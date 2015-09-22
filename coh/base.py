@@ -543,6 +543,35 @@ class ResultSet(collections.OrderedDict):
 
         return '\n'.join(lines)
 
+    def as_csv(self, text_key='title', class_attr='class'):
+        """Return a string representation in CSV format."""
+
+        if isinstance(list(self.keys())[0], Text):
+            attrs, data = self._get_multi_text_arff_data(text_key)
+
+            # Add class information.
+
+            _texts = list(self.keys())
+
+            # Attribute
+            class_values = set()
+            for _text in _texts:
+                class_values.add(_text.meta[class_attr])
+            attrs.append((class_attr, '{%s}' % ','.join(class_values)))
+
+            # Values
+            for i, datum in enumerate(data):
+                datum.append((class_attr, _texts[i].meta[class_attr]))
+        else:
+            attrs, data = self._get_single_text_arff_data(text_key)
+
+        lines = [','.join(attr_name for attr_name, _ in attrs)]
+
+        for datum in data:
+            lines.append(','.join([str(v) for _, v in datum]))
+
+        return '\n'.join(lines)
+
     def as_array(self, text_key='title'):
         """Return a numpy.ndarray representing the data."""
 
