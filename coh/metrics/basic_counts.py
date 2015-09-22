@@ -30,9 +30,15 @@ class Flesch(base.Metric):
         O Índice de Legibilidade de Flesch busca uma correlação entre tamanhos
         médios de palavras e sentenças e a facilidade de leitura.
 
+        A adaptação do Índice Flesch da língua inglesa para a portuguesa foi
+        realizada por Martins, Teresa B. F., Claudete M. Ghiraldelo, Maria das
+        Graças Volpe Nunes e Osvaldo Novais de Oliveira Junior (1996).
+        Readability formulas applied to textbooks in brazilian
+portuguese. Notas do ICMC, N. 28, 11p.
+
         ### Fórmula:
 
-        *ILF = 164.835 - [1.015 x (Número de palavras por sentença)] -
+        *ILF = 248.835 - [1.015 x (Número de palavras por sentença)] -
             [84.6 x (Número de sílabas do texto / Número de palavras do texto)]*
 
         ### Exemplo:
@@ -43,13 +49,13 @@ class Flesch(base.Metric):
             medida como forma de proteger crianças e adolescentes dos males
             provocados pelo excesso de exposição aos raios solares. Se a idéia
             for aprovada, os estudantes receberão dois conjuntos anuais,
-            completados por calçado, meias, calça e camiseta."*  
+            completados por calçado, meias, calça e camiseta."*
 
         Com média de 23 palavras por sentença e 2,31 sílabas por palavra,
             o índice Flesch para o exemplo é 29,316.
 
     """
-    
+
     name = 'Flesch index'
     column_name = 'flesch'
 
@@ -75,11 +81,11 @@ class Words(base.Metric):
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         O exemplo possui 17 palavras.
     """
-    
+
     name = 'Number of Words'
     column_name = 'words'
 
@@ -106,11 +112,11 @@ class Sentences(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         O exemplo possui 4 sentenças.
     """
-    
+
     name = 'Number of Sentences'
     column_name = 'sentences'
 
@@ -132,17 +138,17 @@ class Paragraphs(base.Metric):
             na pele. Só o contrai quem anda descalço na terra contaminada por
             fezes humanas. Se não se tratar, a pessoa fica fraca, sem ânimo e
             com a pele amarelada. Daí a doença ser também conhecida como
-            amarelão.*  
+            amarelão.*
 
         *Os vermes – também chamados de helmintos – são parasitos, animais
             que, em geral, dependem da relação com outros seres para viver.
             Eles podem se hospedar no organismo de diversos animais, como bois,
             aves e peixes. Por isso, podemos também contraí-los comendo carnes
-            cruas ou mal cozidas."*  
+            cruas ou mal cozidas."*
 
         O exemplo possui 2 parágrafos.
     """
-    
+
     name = 'Number of Paragraphs'
     column_name = 'paragraphs'
 
@@ -167,12 +173,12 @@ class WordsPerSentence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Neste exemplo o número de palavras é 95 e o número de sentenças é
             4. Portanto,o número de palavras por sentenças é 23,75.
     """
-    
+
     name = 'Mean words per sentence'
     column_name = 'words_per_sentence'
 
@@ -193,11 +199,11 @@ class SentencesPerParagraph(base.Metric):
             na pele. Só o contrai quem anda descalço na terra contaminada por
             fezes humanas. Se não se tratar, a pessoa fica fraca, sem ânimo e
             com a pele amarelada. Daí a doença ser também conhecida como
-            amarelão."*  
+            amarelão."*
 
         O parágrafo do exemplo possui 5 sentenças.
     """
-    
+
     name = 'Mean sentences per paragraph'
     column_name = 'sentences_per_paragraph'
 
@@ -215,11 +221,11 @@ class SyllablesPerContentWord(base.Metric):
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         Número de sílabas por palavras de conteúdo do exemplo é 3,5.
     """
-    
+
     name = 'Mean syllables per content word'
     column_name = 'syllables_per_content_word'
 
@@ -248,12 +254,12 @@ class VerbIncidence(base.Metric):
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         Com 4 verbos e 17 palavras, a incidência de verbos é 235,29 (número
             de verbos/(número de palavras /1000)).
     """
-    
+
     name = 'Verb incidence'
     column_name = 'verbs'
 
@@ -274,12 +280,12 @@ class NounIncidence(base.Metric):
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         Com 6 substantivos e 17 palavras, a incidência de substantivos é
             352,94 (número de substantivos/(número de palavras /1000)).
     """
-    
+
     name = 'Noun incidence'
     column_name = 'nouns'
 
@@ -305,12 +311,12 @@ class AdjectiveIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Com 6 adjetivos e 95 palavras, a incidência de adjetivos é 63,157
         (número de adjetivos/(número de palavras/1000)).
     """
-    
+
     name = 'Adjective incidence'
     column_name = 'adjectives'
 
@@ -330,12 +336,12 @@ class AdverbIncidence(base.Metric):
         *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*
 
         Com 8 advérbios e 38 palavras, a incidência de adjetivos é 210,526
             (número de advérbios/(número de palavras/1000)).
     """
-    
+
     name = 'Adverb incidence'
     column_name = 'adverbs'
 
@@ -360,12 +366,12 @@ class PronounIncidence(base.Metric):
             medida como forma de proteger crianças e adolescentes dos males
             provocados pelo excesso de exposição aos raios solares. Se a idéia
             for aprovada, os estudantes receberão dois conjuntos anuais,
-            completados por calçado, meias, calça e camiseta."*  
+            completados por calçado, meias, calça e camiseta."*
 
         Com 2 pronomes e 69 palavras, a incidência de pronomes é 28,98
             (número de pronomes/(número de palavras/1000)).
     """
-    
+
     name = 'Pronoun incidence'
     column_name = 'pronouns'
 
@@ -386,13 +392,13 @@ class ContentWordIncidence(base.Metric):
         *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*
 
         Com 27 palavras de conteúdo e 38 palavras, a incidência de palavras
             de conteúdo é 710,526 (número de palavras de conteúdo/(número de
             palavras/1000)).
     """
-    
+
     name = 'Content word incidence'
     column_name = 'content_words'
 
@@ -417,13 +423,13 @@ class FunctionWordIncidence(base.Metric):
             medida como forma de proteger crianças e adolescentes dos males
             provocados pelo excesso de exposição aos raios solares. Se a idéia
             for aprovada, os estudantes receberão dois conjuntos anuais,
-            completados por calçado, meias, calça e camiseta."*  
+            completados por calçado, meias, calça e camiseta."*
 
         Com 26 palavras funcionais e 69 palavras, a incidência de palavras
             funcionais é 376,81 (número de palavras funcionais/(número de
             palavras/1000)).
     """
-    
+
     name = 'Function word incidence'
     column_name = 'function_words'
 
