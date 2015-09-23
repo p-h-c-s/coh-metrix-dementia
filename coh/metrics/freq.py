@@ -30,19 +30,22 @@ class ContentWordsFrequency(base.Metric):
         frequência das palavras é retirado da lista de frequências do córpus
         Banco de Português (BP), compilado por Tony Sardinha da PUC-SP.
 
+        O desempenho da métrica é diretamente relacionado a lista de
+        frequências compilada do córpus BP.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         O texto possui as palavras de conteúdo: __Acessório__, __utilizado__,
-            __adolescentes__, __boné__, __é__, __itens__, __compõem__, __vestimenta__,
-            __idealizada__, __proposta__; com frequências 1616, 78716, 53937, 1615,
-            5325656, 32350, 17961, 773, 1908, 135451.  
+            __adolescentes__, __boné__, __é__, __itens__, __compõem__,
+            __vestimenta__, __idealizada__, __proposta__; com frequências 1616,
+            78716, 53937, 1615, 5325656, 32350, 17961, 773, 1908, 135451.
 
         O valor da métrica é 564998.3
     """
-    
+
     name = 'Content words frequency'
     column_name = 'cw_freq'
 
@@ -59,15 +62,23 @@ class MinimumContentWordsFrequency(base.Metric):
         Primeiramente identificamos a menor frequência dentre todas as palavras
         de conteúdo (substantivos, verbos, advérbios e adjetivos) em cada
         sentença. Depois, calculamos uma média de todas as frequências mínimas.
-        A palavra com a menor frequência é a mais rara da sentença.  
+        A palavra com a menor frequência é a mais rara da sentença.
+
+        O desempenho da métrica é diretamente relacionado a lista de
+        frequências compilada do córpus BP.
+
+        ### Exemplo:
+
+        *"Acessório utilizado por adolescentes, o boné é um dos itens que
+            compõem a vestimenta idealizada pela proposta."*
 
         O texto possui as palavras de conteúdo: __Acessório__, __utilizado__,
-        __adolescentes__, __boné__, __é__, __itens__, __compõem__, __vestimenta__,
-        __idealizada__, __proposta__.  
+        __adolescentes__, __boné__, __é__, __itens__, __compõem__,
+        __vestimenta__, __idealizada__, __proposta__.
 
         A menor frequência é de __vestimenta__, 773.
     """
-    
+
     name = 'Minimum among content words frequencies'
     column_name = 'min_cw_freq'
 
@@ -81,7 +92,7 @@ class MinimumContentWordsFrequency(base.Metric):
 
 class Frequencies(base.Category):
     """"""
-    
+
     name = 'Content word frequencies'
     table_name = 'cw_frequencies'
 

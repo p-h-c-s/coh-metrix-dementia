@@ -34,7 +34,7 @@ class Flesch(base.Metric):
         realizada por Martins, Teresa B. F., Claudete M. Ghiraldelo, Maria das
         Graças Volpe Nunes e Osvaldo Novais de Oliveira Junior (1996).
         Readability formulas applied to textbooks in brazilian
-portuguese. Notas do ICMC, N. 28, 11p.
+        portuguese. Notas do ICMC, N. 28, 11p.
 
         ### Fórmula:
 
@@ -218,6 +218,9 @@ class SyllablesPerContentWord(base.Metric):
         Número médio de sílabas por palavras de conteúdo (substantivos, verbos,
         adjetivos e advérbios).
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
@@ -251,13 +254,17 @@ class VerbIncidence(base.Metric):
 
         Incidência de verbos em um texto.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
             compõem a vestimenta idealizada pela proposta."*
 
-        Com 4 verbos e 17 palavras, a incidência de verbos é 235,29 (número
-            de verbos/(número de palavras /1000)).
+        Com 4 verbos (__utilizado__, __é__, __compõem__ e __idealizada__)e 17
+        palavras, a incidência de verbos é 235,29 (número de verbos/(número de
+        palavras /1000)).
     """
 
     name = 'Verb incidence'
@@ -277,13 +284,18 @@ class NounIncidence(base.Metric):
 
         Incidência de substantivos em um texto.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
             compõem a vestimenta idealizada pela proposta."*
 
-        Com 6 substantivos e 17 palavras, a incidência de substantivos é
-            352,94 (número de substantivos/(número de palavras /1000)).
+        Com 6 substantivos (__acessório__, __adolescentes__, __boné__,
+        __itens__, __vestimenta__ e __proposta__) e 17 palavras, a incidência
+        de substantivos __é__352,94 (número de substantivos/(número de palavras
+        /1000)).
     """
 
     name = 'Noun incidence'
@@ -300,6 +312,9 @@ class AdjectiveIncidence(base.Metric):
 
         Incidência de adjetivos em um texto.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"O acessório polêmico entrou no projeto, de autoria do senador
@@ -313,8 +328,9 @@ class AdjectiveIncidence(base.Metric):
             receberão dois conjuntos anuais, completados por calçado, meias,
             calça e camiseta."*
 
-        Com 6 adjetivos e 95 palavras, a incidência de adjetivos é 63,157
-        (número de adjetivos/(número de palavras/1000)).
+        Com 6 adjetivos (__polêmico__, __municipais__, __estaduais__,
+        __federais__, __solares__ e __anuais__) e 95 palavras, a incidência de
+        adjetivos é 63,157 (número de adjetivos/(número de palavras/1000)).
     """
 
     name = 'Adjective incidence'
@@ -331,6 +347,9 @@ class AdverbIncidence(base.Metric):
 
         Incidência de advérbios em um texto.
 
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
@@ -338,8 +357,9 @@ class AdverbIncidence(base.Metric):
             por exemplo, e também precisamos valorizar o magistério - justifica
             a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*
 
-        Com 8 advérbios e 38 palavras, a incidência de adjetivos é 210,526
-            (número de advérbios/(número de palavras/1000)).
+        Com 8 advérbios (__não__, __a__, __mais__, __já__, __não__, __por__,
+        __exemplo__, __também__) e 38 palavras, a incidência de adjetivos é
+        210,526 (número de advérbios/(número de palavras/1000)).
     """
 
     name = 'Adverb incidence'
@@ -368,8 +388,8 @@ class PronounIncidence(base.Metric):
             for aprovada, os estudantes receberão dois conjuntos anuais,
             completados por calçado, meias, calça e camiseta."*
 
-        Com 2 pronomes e 69 palavras, a incidência de pronomes é 28,98
-            (número de pronomes/(número de palavras/1000)).
+        Com 2 pronomes (__quem__ e __ele__) e 69 palavras, a incidência de
+        pronomes é 28,98 (número de pronomes/(número de palavras/1000)).
     """
 
     name = 'Pronoun incidence'
@@ -386,6 +406,9 @@ class ContentWordIncidence(base.Metric):
 
         Incidência de palavras de conteúdo em um texto. Palavras de conteúdo
         são substantivos, verbos, adjetivos e advérbios.
+
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnet.
 
         ### Exemplo:
 
@@ -414,6 +437,9 @@ class FunctionWordIncidence(base.Metric):
 
         Incidência de palavras funcionais em um texto. Palavras funcionais são
         artigos, preposições, pronomes, conjunções e interjeições.
+
+        O desempenho da métrica é diretamente relacionado ao desempenho do
+        POS tagger do nlpnetself.
 
         ### Exemplo:
 

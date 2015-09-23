@@ -41,13 +41,13 @@ class PersonalPronounsIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Este exemplo possui 1 pronome pessoal. Como este texto possui 95
             palavras, a incidência de pronomes pessoais é 10,526 (número de
             pronomes pessoais/(número de palavras/1000)).
     """
-    
+
     name = 'Personal pronouns incidence'
     column_name = 'personal_pronouns'
 
@@ -72,17 +72,20 @@ class PronounsPerNounPhrase(base.Metric):
         Média do número de pronomes que aparecem em um texto pelo número de
         sintagmas nominais.
 
+        O desempenho dessa métrica é diretamente relacionado ao desempenho das
+        árvores sintáticas de constituintes geradas pelo LX-Parser.
+
         ### Exemplo:
 
         *"Dentro do lago, existem peixes, como a traíra e o dourado, além da
             palometa, um tipo de piranha. Ela é uma espécie carnívora que se
-            alimenta de peixes."*  
+            alimenta de peixes."*
 
         Não há pronomes na primeira sentença e há 9 sintagmas nominais. Há
             1 pronome na segunda sentença e 5 sintagmas nominais. Com 1 pronome
             em 2 sentenças, o valor da métrica é 0,1.
     """
-    
+
     name = 'Mean pronouns per noun phrase'
     column_name = 'pronouns_per_np'
 
@@ -111,12 +114,12 @@ class TypeTokenRatio(base.Metric):
 
         Número de palavras únicas dividido pelo número de tokens dessas
         palavras. Cada palavra única é um tipo. Cada instância desta palavra é
-        um token.  
+        um token.
 
         Por exemplo, se a palavra cachorro aparece 7 vezes em um texto, seu
         tipo (type) é 1 e seu token é 7.
         Calculamos esta métrica somente para palavras de conteúdo
-        (substantivos, verbos, advérbios e adjetivos).  
+        (substantivos, verbos, advérbios e adjetivos).
 
         Observação: Não usamos lematização de palavras, ou seja, a palavra
         cachorro é considerada diferente de cachorros.
@@ -132,11 +135,11 @@ class TypeTokenRatio(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Com 95 tokens e 78 tipos, a relação tipo por token é 0,821.
     """
-    
+
     name = 'Type to token ratio'
     column_name = 'ttr'
 
@@ -174,7 +177,7 @@ class BrunetIndex(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Com 95 tokens e 78 tipos, a métrica vale 9,199.
     """
@@ -215,7 +218,7 @@ class HoroneStatistic(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Com 95 tokens, 69 tokens com apenas uma ocorrência e 78 tipos, o
             valor da métrica é 1714,027.
@@ -249,7 +252,7 @@ class MeanClauseSentence(base.Metric):
         ### Exemplo:
 
         *"A mulher que eu vi usava um chapéu vermelho. O seu chapéu era
-            muito bonito."*  
+            muito bonito."*
 
         A primeira sentença possui 2 cláusulas e a segunda sentença possui
             uma cláusula. Assim, o valor da métrica é 1,5.

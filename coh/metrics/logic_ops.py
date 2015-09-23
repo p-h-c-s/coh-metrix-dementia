@@ -33,13 +33,13 @@ class LogicOperatorsIncidence(base.Metric):
         *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*
 
         Como há 4 operadores lógicos e 38 palavras a incidência de
             operadores lógicos é 105,26 (número de operadores lógicos/(número
             de palavras/1000)).
     """
-    
+
     name = 'Logic operators incidence'
     column_name = 'logic_operators'
 
@@ -63,13 +63,13 @@ class AndIncidence(base.Metric):
         *"Não podemos acrescentar nenhuma despesa a mais no nosso orçamento.
             Já não temos recursos suficientes para a manutenção das escolas,
             por exemplo, e também precisamos valorizar o magistério - justifica
-            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*  
+            a diretora do Departamento Pedagógico da SEC, Sonia Balzano."*
 
         Como há 1 operadores lógicos E e 38 palavras a incidência do
             operadores lógico E é 26,315 (frequência do operador lógico E /
             (número de palavras/1000)).
     """
-    
+
     name = 'Incidence of ANDs.'
     column_name = 'and_incidence'
 
@@ -93,13 +93,13 @@ class OrIncidence(base.Metric):
             que, em geral, dependem da relação com outros seres para viver.
             Eles podem se hospedar no organismo de diversos animais, como bois,
             aves e peixes. Por isso, podemos também contraí-los comendo carnes
-            cruas ou mal cozidas."*  
+            cruas ou mal cozidas."*
 
         Como há 1 operadores lógicos OU e 45 palavras a incidência do
             operadores lógico OU é 22,222 (frequência do operador lógico OU /
             (número de palavras/1000)).
     """
-    
+
     name = 'Incidence of ORs.'
     column_name = 'or_incidence'
 
@@ -129,13 +129,13 @@ class IfIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         Como há 1 operadores lógicos SE e 95 palavras a incidência do
             operadores lógico SE é 10,526 (frequência do operador lógico SE /
             (número de palavras/1000)).
     """
-    
+
     name = 'Incidence of IFs.'
     column_name = 'if_incidence'
 
@@ -165,13 +165,13 @@ class NegationIncidence(base.Metric):
             crianças e adolescentes dos males provocados pelo excesso de
             exposição aos raios solares. Se a idéia for aprovada, os estudantes
             receberão dois conjuntos anuais, completados por calçado, meias,
-            calça e camiseta."*  
+            calça e camiseta."*
 
         No exemplo aparecem 3 negações. Como o mesmo possui 38 palavras a
             incidência de negações é 78,947 (número de negações/(número de
             palavras/1000)).
     """
-    
+
     name = 'Incidence of negations'
     column_name = 'negation_incidence'
 
@@ -186,7 +186,7 @@ class NegationIncidence(base.Metric):
 
 class LogicOperators(base.Category):
     """"""
-    
+
     name = 'Logic operators'
     table_name = 'logic_operators'
 

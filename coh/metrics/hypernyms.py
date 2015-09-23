@@ -29,19 +29,19 @@ class HypernymsVerbs(base.Metric):
         (Dias-da-Silva et. al., 2002; Dias-da-Silva, 2003; Dias-da-Silva, 2005;
         Dias-da-Silva et. al., 2008 e Scarton e Aluísio, 2009), de "super tipo
         de". O verbo sonhar, por exemplo, possui 3 hiperônimos: imaginar,
-        conceber e ver na mente.  
+        conceber e ver na mente.
 
         O desempenho da métrica é diretamente relacionado ao desempenho da
         base Wordnet.Br.
 
         ### Exemplo:
 
-        *"Ele sonha muito quando está acordado."*  
+        *"Ele sonha muito quando está acordado."*
 
         O verbo sonhar possui 3 hiperônimos e o verbo acordar nenhum.
             Assim, temos o valor de 1,5.
     """
-    
+
     name = 'Mean hypernyms per verb'
     column_name = 'hypernyms_verbs'
 

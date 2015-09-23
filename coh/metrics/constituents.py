@@ -27,10 +27,13 @@ class NounPhraseIncidence(base.Metric):
 
         Incidência de sintagmas nominais por 1000 palavras.
 
+        O desempenho da métrica é diretamente relacionada as árvores sintáticas
+        de constituintes geradas pelo LX-Parser.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         Como o texto possui 5 sintagmas nominais e 17 palavras a incidência
             de sintagmas é 294,11 (número de sintagmas/(número de palavras/1000
@@ -63,10 +66,13 @@ class ModifiersPerNounPhrase(base.Metric):
         como modificadores adjetivos, advérbios e artigos que participam de um
         sintagma.
 
+        O desempenho da métrica é diretamente relacionada as árvores sintáticas
+        de constituintes geradas pelo LX-Parser e ao POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         Como o texto possui 6 sintagmas e 3 modificadores, o valor desta
             métrica é 0,6 para este exemplo.
@@ -101,10 +107,13 @@ class WordsBeforeMainVerb(base.Metric):
         sentença. Segundo a documentação do Coh-Metrix é um bom índice para
         avaliar a carga da memória de trabalho.
 
+        O desempenho da métrica é diretamente relacionada as árvores sintáticas
+        de dependência geradas pelo MaltParser e ao POS tagger do nlpnet.
+
         ### Exemplo:
 
         *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*  
+            compõem a vestimenta idealizada pela proposta."*
 
         Como este texto possui uma sentença o valor desta métrica
             corresponde ao valor de palavras antes do verbo desta única
@@ -149,7 +158,7 @@ class WordsBeforeMainVerb(base.Metric):
 
 class Constituents(base.Category):
     """"""
-    
+
     name = 'Constituents'
     table_name = 'constituents'
 
