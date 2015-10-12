@@ -35,6 +35,8 @@ from coh.metrics import *
 from coh.tools import *
 from coh.conf import config
 
+# XXX: this is obsolete. It will be removed in future versions.
+# It's here only for back compatibility.
 all_metrics = MetricsSet([BasicCounts(),
                           LogicOperators(),
                           Frequencies(),
@@ -50,6 +52,57 @@ all_metrics = MetricsSet([BasicCounts(),
                           # Lsa(),
                           # Disfluencies(),
                           ])
+
+
+ALL_METRICS = MetricsSet([BasicCounts(),
+                          LogicOperators(),
+                          Frequencies(),
+                          Hypernyms(),
+                          Tokens(),
+                          Connectives(),
+                          Ambiguity(),
+                          SyntacticalComplexity(),
+                          Category([ContentDensity(),],
+                                   name='SemanticDensity',
+                                   table_name='semantic_density'),
+                          Constituents(),
+                          Anaphoras(),
+                          Coreference(),
+                          Lsa(),
+                          Disfluencies(),
+                         ])
+
+
+CMP_METRICS = MetricsSet([BasicCounts(),
+                          LogicOperators(),
+                          Frequencies(),
+                          Hypernyms(),
+                          Category([PersonalPronounsIncidence(),
+                                    PronounsPerNounPhrase(),
+                                    TypeTokenRatio()],
+                                   name='Tokens',
+                                   table_name="tokens"),
+                          Constituents(),
+                          Connectives(),
+                          Ambiguity(),
+                          Coreference(),
+                          Anaphoras(),
+                         ])
+
+
+NEW_METRICS = MetricsSet([Category([BrunetIndex(),
+                                    HoroneStatistic(),
+                                    MeanClauseSentence(),
+                                   ],
+                                   name='Tokens',
+                                   table_name="tokens"),
+                          SyntacticalComplexity(),
+                          Category([ContentDensity(),],
+                                   name='Semantic Density',
+                                   table_name='semantic_density'),
+                          Lsa(),
+                          Disfluencies(),
+                         ])
 
 
 rp = DefaultResourcePool()
