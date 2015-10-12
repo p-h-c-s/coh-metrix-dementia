@@ -23,7 +23,23 @@ from coh.resource_pool import rp as default_rp
 
 
 class MeanPauseDuration(base.Metric):
-    """ """
+    """
+        ## Duração média das pausas
+        
+        Duração total das pausas dividida pelo número total de palavras.
+        Pausas são marcadas como ((pausa XX segundos)).
+        
+        ### Exemplo:
+        
+        *uma moça está agradando um cavalo ... ((pausa 14 segundos)) essa
+        moça vai à festa ((pausa 8 segundos)) a mocinha está limpando a
+        parede ... ((pausa 12 segundos)) ... ela ficou brava .. ((pausa
+        5 segundos))*  
+        
+        Nesse caso, há um total de 14 + 8 + 12 + 5 = 39s de pausa, e 20
+        palavras, correspondendo a uma duração média de pausas de 39/20 = 
+        1,95.
+    """
 
     name = 'Mean pause duration'
     column_name = 'mean_pause'
@@ -41,9 +57,24 @@ class MeanPauseDuration(base.Metric):
 
 
 class MeanShortPauses(base.Metric):
-    """"""
+    """
+        ## Duração média das pausas curtas
+        
+        Número de pausas curtas dividido pelo número total de palavras.
+        Pausas curtas são indicadas por três pontos (...).
+        
+        ### Exemplo:
+        
+        *uma moça está agradando um cavalo ... ((pausa 14 segundos)) essa
+        moça vai à festa ((pausa 8 segundos)) a mocinha está limpando a
+        parede ... ((pausa 12 segundos)) ... ela ficou brava .. ((pausa
+        5 segundos))*  
+        
+        No exemplo, há 4 pausas curtas e 20 palavras, resultando num valor
+        de 4/20 = 0,2.
+    """
 
-    name = "Mean # of short pauses"
+    name = "Mean number of short pauses"
     column_name = 'mean_short_pauses'
 
     short_pause_pattern = re.compile(r'\.\.\.')
@@ -58,9 +89,27 @@ class MeanShortPauses(base.Metric):
 
 
 class MeanVowelStretchings(base.Metric):
-    """ """
+    """
+        ## Número médio de prolongamentos de vogais
+        
+        Número de prolongamentos de vogais dividido pelo
+        total de palavras. Prolongamentos de vogais são
+        marcados com dois dois-pontos (::).
+        
+        ### Exemplo:
+        
+        *É:: colocou-a:: trancada no quarto...((pausa 5 segundos))
+        então aquele moço que::...fez uma festa trouxe o sapato
+        para acertar no pé pé de outro não deu certo ... ((pausa 17
+        segundos)) e:: ... ((pausa 8 segundos)) esse moço trouxe
+        um sapato para ela serviu...((pausa 4 segundos))*  
+        
+        O fragmento de exemplo possui 4 marcações de prolongamentos
+        de vogais, e 34 palavras, produzindo um valor de métrica de
+        4/34 = 0,12.
+    """
     
-    name = 'Mean # of vowel stretchings'
+    name = 'Mean number of vowel stretchings'
     column_name = 'mean_vowel'
 
     stretching_pattern = re.compile(r'::+')
@@ -75,9 +124,26 @@ class MeanVowelStretchings(base.Metric):
 
 
 class MeanEmpty(base.Metric):
-    """ """
+    """
+        ## Número médio de palavras vazias
+        
+        Número de palavras em emissões vazias dividido pelo total de palavras
+        (inclusas as emissões vazias). Emissões vazias são marcadas com <empty>
+        e </empty>.
+        
+        ### Exemplo:
+        
+        *uma moça está agradando um cavalo ... <empty>mais?</empty> ... 
+        essa moça vai à festa ((pausa 8 segundos)) a mocinha está limpando a
+        parede ... <empty>como que fala esse</empty> ... filha do:: ...
+        <empty>como que é</empty> ... ((pausa 5 segundos)) sogro e fala
+        <empty>será?</empty> ficou brava*  
 
-    name = "Mean # of empty words"
+        No exemplo, há 1 + 4 + 3 + 1 = 9 palavras em emissões vazias, e um total
+        de 33 palavras, correspondendo a um valor de métrica de 9/33 = 0,27.
+    """
+
+    name = "Mean number of empty words"
     column_name = 'mean_empty'
 
     def value_for_text(self, t, rp=default_rp):
@@ -95,9 +161,25 @@ class MeanEmpty(base.Metric):
 
 
 class MeanDisf(base.Metric):
-    """ """
+    """
+        ## Número médio de disfluências
+        
+        Número de palavras em emissões disfluentes dividido pelo total de
+        palavras (inclusas as disfluências). Disfluências são marcadas com
+        <disf> e </disf>.
+        
+        ### Exemplo:
+        
+        *aí ela ficou triste foi no jardim e <disf>a:: a::</disf> estava
+        triste ... ((pausa 8 segundos)) ai ... ficou na rua encontrou ...
+        e mediu mediu a:: ... <disf>fa</disf> fez o vestido novo esse aqui*  
+        
+        No fragmento, há 2 + 1 = 3 palavras em emissões disfluentes, e um
+        total de 28 palavras, e o valor correspondente da métrica é 3/28 = 
+        0,11.
+    """
 
-    name = "Mean # of disfluent words"
+    name = "Mean number of disfluent words"
     column_name = 'mean_disf'
 
     def value_for_text(self, t, rp=default_rp):
@@ -116,7 +198,27 @@ class MeanDisf(base.Metric):
 
 
 class Repetition(base.Metric):
-    """ """
+    """
+        ## Número médio de palavras repetidas
+        
+        Número de palavras repetidas dividido pelo total de palavras
+        (incluindo-se as repetidas). Palavras são consideradas repetidas
+        apenas quando aparecem em sequência. Por exemplo, em *Maria foi foi
+        ao mercado*, é contada uma repetição da palavra __foi__, mas em *Maria
+        foi ao mercado, e então foi à padaria*, não é contada repetição de
+        __foi__, pois ambas não ocorrem em sequência.
+        
+        Não são contadas repetições no interior de emissões disfluentes.
+        
+        ### Exemplo:
+        
+        *aí ela ficou triste foi no jardim e <disf>a:: a::</disf> estava
+        triste ... ((pausa 8 segundos)) ai ... ficou na rua encontrou ...
+        e mediu mediu a:: ... <disf>fa</disf> fez o vestido novo esse aqui*  
+        
+        No exemplo, houve 1 repetição da palavra __mediu__, e 28 palavras,
+        correspondendo a um valor de métrica de 1/28 = 0,036.
+    """
 
     name = "Ratio of repeated words"
     column_name = 'repetition'
@@ -141,6 +243,33 @@ class Repetition(base.Metric):
 
 
 class TotalIdeaDensity(base.Metric):
+    """
+        ## Densidade de ideias total
+        
+        Número de proposições presentes no texto, para cada dez palavras.
+        Para o cálculo das proposições, não são levadas em conta proposições
+        vazias ou disfluentes, e o cálculo é feito sobre o texto revisado,
+        para melhor desempenho da ferramenta de extração.
+        
+        ### Exemplo:
+        
+        *uma moça está agradando um cavalo ... ((pausa 14 segundos)) essa
+        moça vai à festa ((pausa 8 segundos)) a mocinha está limpando a
+        parede ... ((pausa 12 segundos)) ... ela ficou brava .. ((pausa
+        5 segundos))*  
+        
+        No texto, as proposições presentes são:
+        
+        1. está agradando, uma moça, um cavalo
+        2. vai, essa moça
+        3. à festa
+        4. está limpando, a mocinha, a parede
+        5. ficou brava, ela
+        
+        Portanto, há 5 proposições para 20 palavras, totalizando um valor
+        de densidade de ideias de 4 / 20 * 10 = 2,0.
+    """
+
     name = 'Total Idea Density'
     column_name = 'total_id'
 
