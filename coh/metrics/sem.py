@@ -57,7 +57,22 @@ class IdeaDensity(base.Metric):
         return sum(id_values) / len(id_values) if id_values else 0
 
 class ContentDensity(base.Metric):
-    """Docstring for HoroneIndex. """
+    """
+        ## Densidade de Conteúdo
+        
+        A densidade de conteúdo de um texto é calculada como o número de
+        palavras de __classe aberta__ (também denominadas __palavras de
+        conteúdo__) dividido pelo número de palavras de __classe fechada__
+        (ou __palavras funcionais__).
+        
+        ## Exemplo:
+        
+        *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
+        
+        No exemplo, há 7 palavras de conteúdo (Maria, foi, mercado, mercado,
+        comprou, ovos, pão), e 3 palavras funcionais (ao, no, e), o que
+        resulta num valor de 7/3 = 2,33.
+    """
 
     name = 'Content density'
     column_name = 'content_density'
