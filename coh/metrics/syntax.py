@@ -23,7 +23,26 @@ from nltk.util import trigrams
 
 
 class YngveComplexity(base.Metric):
-    """Docstring for YngveComplexity. """
+    """
+        ## Complexidade de Yngve
+        
+        Média da complexidade sintática de Yngve, descrita em:
+        
+        YNGVE, V. H. A Model and an Hypothesis for Language Structure.
+        __Proceedings of the American Philosophical Society__, v. 104,
+        p. 444–466, 1960.
+        
+        Para um dado texto, calcula-se a complexidade sintática de cada
+        sentença, e então calcula-se a média desses valores. No cálculo
+        da complexidade, utiliza-se a __média__ dos escores das palavras.
+        
+        ### Exemplo:
+        
+        *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
+        
+        No exemplo, a primeira sentença possui complexidade de Yngve 1,4,
+        e a segunda, 2,0, para um valor total de (1,4 + 2,0) / 2 = 1,7.
+    """
 
     name = 'Yngve Complexity'
     column_name = 'yngve'
@@ -50,7 +69,28 @@ class YngveComplexity(base.Metric):
 
 
 class FrazierComplexity(base.Metric):
-    """Docstring for FrazierComplexity. """
+    """
+        ## Complexidade de Frazier
+        
+        Média da complexidade sintática de Frazier, descrita em:
+        
+        FRAZIER, L. Syntactic Complexity. In: DOWTY, D. R.; KARTTUNEN,
+        L.; ZWICKY, A. M. (Ed.). __Natural Language Parsing: Psychological,
+        Computational, and Theoretical Perspectives__. Cambridge: Cambridge
+        University Press, 1985. p. 129–189.
+        
+        Para um dado texto, calcula-se a complexidade sintática de cada
+        sentença, e então calcula-se a média desses valores. No cálculo
+        da complexidade, utiliza-se o __máximo da soma de trigramas__ dos
+        escores das palavras.
+        
+        ### Exemplo:
+        
+        *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
+        
+        No exemplo, a primeira sentença possui complexidade de Frazier 6,0,
+        e a segunda, 5,0, para um valor total de (6,0 + 5,0) / 2 = 5,5.
+    """
 
     name = 'Frazier Complexity'
     column_name = 'frazier'
@@ -97,7 +137,37 @@ class FrazierComplexity(base.Metric):
 
 
 class DependencyDistance(base.Metric):
-    """Docstring for DependencyDistance. """
+    """
+        ## Distância de dependência
+        
+        Média da distância de dependência das sentenças de um texto. Para cada
+        sentença do texto, a distância de dependência é calculada como a soma
+        da distância entre as palavras associadas a cada relação de
+        dependência.
+        
+        ### Exemplo:
+        
+        *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
+        
+        Para a primeira sentença do exemplo, as relações de dependência e suas
+        respectivas distâncias associadas são:
+        
+        1. nsubj(foi, Maria), 1
+        2. adpmod(foi, ao), 1
+        3. adpobj(ao, mercado), 1
+        
+        Para esta sentença, a distância de dependência é 3. Para a segunda
+        sentença, as relações de dependência são:
+        
+        1. adpmod(comprou, No), 2
+        2. adpobj(No, mercado), 1
+        3. dobj(comprou, ovos), 1
+        4. cc(ovos, e), 1
+        5. conj(ovos, pão), 2
+        
+        Para esta sentença, a distância de dependência é 7. Portanto, para o
+        exemplo todo, o valor da métrica será (3 + 7) / 2 = 5,0.
+    """
 
     name = 'Dependency Distance'
     column_name = 'dep_distance'
@@ -118,7 +188,25 @@ class DependencyDistance(base.Metric):
 
 
 class CrossEntropy(base.Metric):
-    """Docstring for CrossEntropy. """
+    """
+        ## Entropia Cruzada
+        
+        Média da entropia cruzadas das sentenças do texto. A entropia
+        cruzada mede o nível de "surpresa" do modelo de língua diante
+        da sentença. Valores maiores de entropia cruzada significam que
+        a sentença possui combinações não usuais de palavras. Tipicamente,
+        portanto, quanto maior a entropia cruzada de uma sentença, maior sua
+        complexidade esperada. Na versão atual do sistema, a entropia é
+        calculada com base em um modelo de trigramas.
+        
+        ## Exemplo:
+        
+        *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
+        
+        Para o exemplo, a entropia cruzada da primeira sentença, segundo
+        o modelo, é 0,90, e a da segunda sentença, 0,91. Portanto, o valor
+        da métrica para o texto é (0,90 + 0,91) / 2 = 0,905.
+    """
 
     name = 'Cross Entropy'
     column_name = 'cross_entropy'
@@ -130,7 +218,7 @@ class CrossEntropy(base.Metric):
         scores = [-1/len(sent) * lm.score(sent) for sent in sents]
 
         return sum(scores) / len(scores) if scores else 0
-	
+
 
 class SyntacticalComplexity(base.Category):
     """Docstring for SyntacticalComplexity. """
