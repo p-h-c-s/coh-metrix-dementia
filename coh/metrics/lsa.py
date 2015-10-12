@@ -54,7 +54,27 @@ class LsaBase(base.Metric):
 
 
 class LsaSentenceAdjacentMean(LsaBase):
-    """."""
+    """
+        ## LSA: média entre sentenças adjacentes
+        
+        Média de similaridade entre pares de sentenças adjacentes no texto.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+        
+        O exemplo possui 3 sentenças, e, portanto, 2 pares de sentenças
+        adjacentes. A similaridade LSA entre a primeira e a segunda sentenças,
+        segundo o modelo utilizado na versão atual do Coh-Metrix-Dementia,
+        é 0,084, e a similaridade entre a segunda e a terceira sentenças é
+        0,063. Nesse caso, a média entre esses valores é de 0,0735.
+    """
     
     name = 'LSA sentence adjacent mean'
     column_name = 'adj_mean'
@@ -70,7 +90,27 @@ class LsaSentenceAdjacentMean(LsaBase):
 
 
 class LsaSentenceAdjacentStd(LsaBase):
-    """."""
+    """
+        ## LSA: desvio padrão entre sentenças adjacentes
+        
+        Desvio padrão de similaridade entre pares de sentenças adjacentes no
+        texto.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+        
+        O exemplo possui 3 sentenças, e, portanto, 2 pares de sentenças
+        adjacentes. A similaridade LSA entre a primeira e a segunda sentenças
+        é 0,084, e a similaridade entre a segunda e a terceira sentenças é
+        0,063. O desvio padrão entre esses valores é de 0,0105.
+    """
     
     name = 'LSA sentence adjacent std'
     column_name = 'adj_std'
@@ -86,7 +126,27 @@ class LsaSentenceAdjacentStd(LsaBase):
 
 
 class LsaSentenceAllMean(LsaBase):
-    """."""
+    """
+        ## LSA: média entre sentenças todos os pares de sentenças
+        
+        Média de similaridade entre todos os pares de sentenças no texto.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+        
+        O exemplo possui 3 sentenças, e, portanto, 3 pares de sentenças.
+        A similaridade LSA entre a primeira e a segunda sentenças
+        é 0,084, a similaridade entre a segunda e a terceira sentenças é
+        0,063, e a similaridade entre a primeira e a terceira é 0,362.
+        A média entre esses valores é 0,17.
+    """
     
     name = 'LSA sentence all mean'
     column_name = 'all_mean'
@@ -102,7 +162,28 @@ class LsaSentenceAllMean(LsaBase):
 
 
 class LsaSentenceAllStd(LsaBase):
-    """."""
+    """
+        ## LSA: desvio padrão entre sentenças todos os pares de sentenças
+        
+        Desvio padrão de similaridade entre todos os pares de sentenças no
+        texto.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+        
+        O exemplo possui 3 sentenças, e, portanto, 3 pares de sentenças.
+        A similaridade LSA entre a primeira e a segunda sentenças
+        é 0,084, a similaridade entre a segunda e a terceira sentenças é
+        0,063, e a similaridade entre a primeira e a terceira é 0,362.
+        O desvio padrão entre esses valores é 0,14.
+    """
     
     name = 'LSA sentence all (within paragraph) std'
     column_name = 'all_std'
@@ -129,7 +210,14 @@ def all_tokens(paragraph):
 
 
 class LsaParagraphAdjacentMean(LsaBase):
-    """."""
+    """
+        ## LSA: média entre parágrafos adjacentes
+        
+        Média de similaridade entre pares de parágrafos adjacentes no texto.
+        Esta métrica é calculada do mesmo modo que a média entre sentenças
+        adjacentes, mas utilizando-se parágrafos, ao invés de sentenças, como
+        unidades.
+    """
     
     name = 'LSA paragraph adjacent mean'
     column_name = 'paragraph_mean'
@@ -143,7 +231,14 @@ class LsaParagraphAdjacentMean(LsaBase):
 
 
 class LsaParagraphAdjacentStd(LsaBase):
-    """."""
+    """
+        ## LSA: desvio padrão entre parágrafos adjacentes
+        
+        Desvio padrão de similaridade entre pares de parágrafos adjacentes no
+        texto. Esta métrica é calculada do mesmo modo que o desvio padrão entre
+        sentenças adjacentes, mas utilizando-se parágrafos, ao invés de
+        sentenças, como unidades.
+    """
     
     name = 'LSA paragraph adjacent std'
     column_name = 'paragraph_std'
@@ -170,7 +265,29 @@ class LsaGivennessBase(LsaBase):
 
 
 class LsaGivennessMean(LsaGivennessBase):
-    """Docstring for LsaGivennessMean. """
+    """
+        ## LSA: média de *givenness* das sentenças
+        
+        Média do *givenness* da cada sentença do texto, a partir da segunda.
+        Se o texto possui apenas uma sentença, define-se a métrica como 0,0.
+        Define-se o *givenness* de uma sentença como a similaridade LSA entre
+        a sentença e todo o texto que a precede.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+            
+        O exemplo possui 3 sentenças. A similaridade LSA entre a primeira e a
+        segunda sentenças é 0,084, e a similaridade entre a terceira e o
+        conjunto formado pela primeira e a segunda é 0,286. A média entre esses
+        valores é 0,185.
+    """
 
     name = 'LSA sentence givenness mean'
     column_name = 'givenness_mean'
@@ -180,7 +297,29 @@ class LsaGivennessMean(LsaGivennessBase):
 
 
 class LsaGivennessStd(LsaGivennessBase):
-    """Docstring for LsaGivennessStd. """
+    """
+        ## LSA: desvio padrão de *givenness* das sentenças
+        
+        Desvio padrão do *givenness* da cada sentença do texto, a partir da
+        segunda. Se o texto possui apenas uma sentença, define-se a métrica
+        como 0,0. Define-se o *givenness* de uma sentença como a similaridade
+        LSA entre a sentença e todo o texto que a precede.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+            
+        O exemplo possui 3 sentenças. A similaridade LSA entre a primeira e a
+        segunda sentenças é 0,084, e a similaridade entre a terceira e o
+        conjunto formado pela primeira e a segunda é 0,286. O desvio padrão
+        entre esses valores é 0,101.
+    """
 
     name = 'LSA sentence givenness std'
     column_name = 'givenness_std'
@@ -243,7 +382,34 @@ class LsaSpanBase(base.Metric):
 
 
 class LsaSpanMean(LsaSpanBase):
-    """Docstring for LsaSpanMean. """
+    """
+        ## LSA: média do *span* das sentenças
+        
+        Média do *span* da cada sentença do texto, a partir da segunda.
+        Se o texto possui apenas uma sentença, define-se a métrica como 0,0.
+        O *span* de uma sentença, assim como o *givenness*, é uma forma de
+        medir a proximidade entre uma sentença e o contexto que a precede.
+        A diferença, em termos simples, consiste no fato de que o *span*
+        procura capturar a similaridade não apenas com o conteúdo explícito
+        apresentado anteriormente no texto, mas também com tudo o que se pode
+        inferir com base nesse conteúdo.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+            
+        O exemplo possui 3 sentenças. O *span* LSA entre a primeira e a
+        segunda sentenças, segundo o modelo utilizado na versão atual do
+        Coh-Metrix-Dementia, é 0,084, e o *span* entre a terceira e o
+        conjunto formado pela primeira e a segunda é 0,223. A média desses
+        valores é 0,1535.
+    """
 
     name = 'LSA sentence span mean'
     column_name = 'span_mean'
@@ -253,7 +419,27 @@ class LsaSpanMean(LsaSpanBase):
 
 
 class LsaSpanStd(LsaSpanBase):
-    """Docstring for LsaSpanStd. """
+    """
+        ## LSA: desvio padrão do *span* das sentenças
+        
+        Desvio padrão do *span* da cada sentença do texto, a partir da segunda.
+        Se o texto possui apenas uma sentença, define-se a métrica como 0,0.
+        
+        ### Exemplo:
+        
+        *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça
+            entre os itens do uniforme de alunos dos ensinos Fundamental e
+            Médio nas escolas municipais, estaduais e federais. Ele defende a
+            medida como forma de proteger crianças e adolescentes dos males
+            provocados pelo excesso de exposição aos raios solares. Se a idéia
+            for aprovada, os estudantes receberão dois conjuntos anuais,
+            completados por calçado, meias, calça e camiseta."*
+            
+        O exemplo possui 3 sentenças. O *span* LSA entre a primeira e a
+        segunda sentenças é 0,084, e o *span* entre a terceira e o
+        conjunto formado pela primeira e a segunda é 0,223. O desvio padrão
+        desses valores é 0,070.
+    """
 
     name = 'LSA sentence span std'
     column_name = 'span_std'
