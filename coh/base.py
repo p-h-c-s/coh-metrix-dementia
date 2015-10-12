@@ -32,7 +32,8 @@ class Text(object):
     """Represents a text: its content and metadata."""
 
     def __init__(self, content='', revised_content='',
-             filepath='', revised_filepath='', encoding='utf-8', **meta):
+                 filepath='', revised_filepath='', encoding='utf-8',
+                 raw_as_xml=False, **meta):
         """Form a text. The text's content can be informed via a string or a
         file path to be read. A text can also be revised.
 
@@ -95,6 +96,22 @@ class Text(object):
                     as revised_file:
                 self.revised_content = revised_file.read()
             revised = True
+
+        if revised and raw_as_xml:
+            # We need to reinterpret the raw content as XML.
+            tree = etree.fromstring("<raw-content>{}</raw-content>"
+                                    .format(self.raw_content))
+
+            empty_utterances = tree.findall('empty')
+            disf_utterances = tree.findall('disf')
+
+            self.meta['empty'] = empty_utterances
+            self.meta['disf'] = disf_utterances
+
+            raw_content = ' '.join([phrase.strip()
+                                    for phrase in tree.itertext()]).strip()
+
+            self.raw_content = raw_content
 
         _content = self.revised_content if revised else self.raw_content
 
