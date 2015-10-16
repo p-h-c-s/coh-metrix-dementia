@@ -73,7 +73,12 @@ class PronounsPerNounPhrase(base.Metric):
         sintagmas nominais.
 
         O desempenho dessa métrica é diretamente relacionado ao desempenho das
-        árvores sintáticas de constituintes geradas pelo LX-Parser.
+        árvores sintáticas de constituintes geradas pelo LX-Parser [1].
+        
+        [1] Silva, João, António Branco, Sérgio Castro e Ruben Reis.
+        Out-of-the-Box Robust Parsing of Portuguese. In *Proceedings of the 9th
+        International Conference on the Computational Processing of Portuguese
+        (PROPOR'10)*, pp. 75–85.
 
         ### Exemplo:
 

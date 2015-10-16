@@ -59,6 +59,12 @@ class LsaSentenceAdjacentMean(LsaBase):
         
         Média de similaridade entre pares de sentenças adjacentes no texto.
         
+        O espaço LSA utilizado na versão atual do sistema foi gerado a partir
+        do mesmo corpus empregado na geração do modelo de língua utilizado
+        pela métrica de entropia cruzada: um corpus de 120.813.620
+        *tokens*, que consiste na união dos corpora Wikipedia, PLN-BR,
+        LácioWeb, e Revista Pesquisa FAPESP.
+        
         ### Exemplo:
         
         *"Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça

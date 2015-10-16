@@ -36,6 +36,13 @@ class YngveComplexity(base.Metric):
         sentença, e então calcula-se a média desses valores. No cálculo
         da complexidade, utiliza-se a __média__ dos escores das palavras.
         
+        As árvores sintáticas utilizadas são geradas pelo LX-Parser [1].
+        
+        [1] Silva, João, António Branco, Sérgio Castro e Ruben Reis.
+        Out-of-the-Box Robust Parsing of Portuguese. In *Proceedings of the 9th
+        International Conference on the Computational Processing of Portuguese
+        (PROPOR'10)*, pp. 75–85.
+        
         ### Exemplo:
         
         *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
@@ -83,6 +90,13 @@ class FrazierComplexity(base.Metric):
         sentença, e então calcula-se a média desses valores. No cálculo
         da complexidade, utiliza-se o __máximo da soma de trigramas__ dos
         escores das palavras.
+        
+        As árvores sintáticas utilizadas são geradas pelo LX-Parser [1].
+        
+        [1] Silva, João, António Branco, Sérgio Castro e Ruben Reis.
+        Out-of-the-Box Robust Parsing of Portuguese. In *Proceedings of the 9th
+        International Conference on the Computational Processing of Portuguese
+        (PROPOR'10)*, pp. 75–85.
         
         ### Exemplo:
         
@@ -145,6 +159,9 @@ class DependencyDistance(base.Metric):
         da distância entre as palavras associadas a cada relação de
         dependência.
         
+        As árvores de dependência são extraídas pelo
+        [MaltParser](http://www.maltparser.org/)
+        
         ### Exemplo:
         
         *Maria foi ao mercado. No mercado, comprou ovos e pão.* 
@@ -196,8 +213,12 @@ class CrossEntropy(base.Metric):
         da sentença. Valores maiores de entropia cruzada significam que
         a sentença possui combinações não usuais de palavras. Tipicamente,
         portanto, quanto maior a entropia cruzada de uma sentença, maior sua
-        complexidade esperada. Na versão atual do sistema, a entropia é
-        calculada com base em um modelo de trigramas.
+        complexidade esperada.
+        
+        Na versão atual do sistema, a entropia é calculada com base em um
+        modelo de trigramas, treinado sobre um corpus de 120.813.620
+        *tokens*, que consiste na união dos corpora: Wikipedia, PLN-BR,
+        LácioWeb, e Revista Pesquisa FAPESP.
         
         ## Exemplo:
         
