@@ -128,8 +128,8 @@ class MeanEmpty(base.Metric):
         ## Número médio de palavras vazias
         
         Número de palavras em emissões vazias dividido pelo total de palavras
-        (inclusas as emissões vazias). Emissões vazias são marcadas com <empty>
-        e </empty>.
+        (inclusas as emissões vazias). Emissões vazias são marcadas com
+        <empty> e </empty>.
         
         ### Exemplo:
         
@@ -147,6 +147,9 @@ class MeanEmpty(base.Metric):
     column_name = 'mean_empty'
 
     def value_for_text(self, t, rp=default_rp):
+        if 'empty' not in t.meta:
+            return 0
+
         words = rp.raw_words(t)
 
         empty_length = []
@@ -183,6 +186,9 @@ class MeanDisf(base.Metric):
     column_name = 'mean_disf'
 
     def value_for_text(self, t, rp=default_rp):
+        if 'disf' not in t.meta:
+            return 0
+        
         words = rp.raw_words(t)
 
         disf_length = []
@@ -250,6 +256,14 @@ class TotalIdeaDensity(base.Metric):
         Para o cálculo das proposições, não são levadas em conta proposições
         vazias ou disfluentes, e o cálculo é feito sobre o texto revisado,
         para melhor desempenho da ferramenta de extração.
+        
+        A extração de proposições encontra-se descrita em:
+        
+        CUNHA, A.; SOUSA, L. Bender de; MANSUR, L.; ALUISIO, S. Automatic
+        proposition extraction from dependency trees: Helping early prediction
+        of alzheimer’s disease from narratives. In: __Computer-Based Medical
+        Systems (CBMS), 2015 IEEE 28th International Symposium on
+        Computer-Based Medical Systems__, 2015. p. 127–130.
         
         ### Exemplo:
         
