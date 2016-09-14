@@ -107,7 +107,8 @@ class PronounsPerNounPhrase(base.Metric):
                               if tt.label() in ('PRS')])
                 nps += 1
 
-            sent_indices.append(prons / nps)
+            if nps != 0:
+                sent_indices.append(prons / nps)
 
         return sum(sent_indices) / len(sent_indices) \
             if sent_indices else 0
