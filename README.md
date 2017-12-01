@@ -16,7 +16,9 @@ Scarton, C., Gasperin, C., & Aluisio, S. (2010). Revisiting the Readability Asse
 Dependencies
 ============
 
-For Coh-Metrix-Port to run properly, you must first install these Python libraries:
+For Coh-Metrix-Port to run properly, you must first install the Python dependencies (optionally in a [virtualenv](https://virtualenv.pypa.io/en/stable/)):
+
+	$ pip install -r requirements.txt
 
 License
 =======
