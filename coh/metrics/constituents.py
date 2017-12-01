@@ -18,7 +18,22 @@
 from __future__ import unicode_literals, print_function, division
 from coh import base
 from coh.resource_pool import rp as default_rp
-from coh.utils import find_subtrees
+from coh.utils import find_subtrees, ilen
+
+import nltk
+
+
+def toplevel_NPs(tree):
+    """
+    Generator over the NPs that are not contained in any other NP in the
+    parse tree.
+    """
+    if tree.label() == 'NP':
+        yield tree
+    else:
+        for child in tree:
+            if isinstance(child, nltk.Tree):
+                yield from toplevel_NPs(child)
 
 
 class NounPhraseIncidence(base.Metric):
@@ -83,16 +98,14 @@ class ModifiersPerNounPhrase(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         parse_trees = rp.parse_trees(t)
-
         sent_indices = []
-        for i, tree in enumerate(parse_trees):
+
+        for tree in parse_trees:
             nps = 0
             mods = 0
-
-            for np in find_subtrees(tree, 'NP'):
-                mods += len([tt for tt in np
-                             if tt.label() in ('ART', 'ADJ', 'ADV')])
+            for np in toplevel_NPs(tree):
                 nps += 1
+                mods += ilen(np.subtrees(lambda s: s.label() in ('ART', 'A', 'ADV')))
             if nps != 0:
                 sent_indices.append(mods / nps)
 
