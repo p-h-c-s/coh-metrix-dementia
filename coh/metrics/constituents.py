@@ -105,7 +105,7 @@ class ModifiersPerNounPhrase(base.Metric):
             mods = 0
             for np in toplevel_NPs(tree):
                 nps += 1
-                mods += ilen(np.subtrees(lambda s: s.label() in ('ART', 'A', 'ADV')))
+                mods += ilen(np.subtrees(lambda s: s.label() in ('A')))
             if nps != 0:
                 sent_indices.append(mods / nps)
 
