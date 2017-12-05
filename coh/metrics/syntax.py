@@ -195,9 +195,12 @@ class DependencyDistance(base.Metric):
         dep_distances = []
         for graph in graphs:
             dep_distance = 0
-            for dep in list(graph.nodes.values())[1:]:
-                if dep['rel'] not in ('TOP', 'root', 'punct'):
+            for dep in graph.nodes.values():
+                if dep['rel'] not in ('TOP', 'ROOT', 'p', 'root', 'punct'):
                     dep_distance += abs(dep['address'] - dep['head'])
+                    # The 'ROOT' and 'p' tags are the ones returned by
+                    # MaltParser, not 'root' and 'punct', but they stay to
+                    # avoid breaking anything
             dep_distances.append(dep_distance)
 
         return sum(dep_distances) / len(dep_distances) \
