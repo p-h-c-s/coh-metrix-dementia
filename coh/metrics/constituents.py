@@ -20,20 +20,7 @@ from coh import base
 from coh.resource_pool import rp as default_rp
 from coh.utils import find_subtrees, ilen
 
-import nltk
-
-
-def toplevel_NPs(tree):
-    """
-    Generator over the NPs that are not contained in any other NP in the
-    parse tree.
-    """
-    if tree.label() == 'NP':
-        yield tree
-    else:
-        for child in tree:
-            if isinstance(child, nltk.Tree):
-                yield from toplevel_NPs(child)
+import numpy as np
 
 
 class NounPhraseIncidence(base.Metric):
@@ -73,43 +60,59 @@ class NounPhraseIncidence(base.Metric):
         return sum(sent_indices) / len(sent_indices) if sent_indices else 0
 
 
-class ModifiersPerNounPhrase(base.Metric):
+class MeanNounPhrase(base.Metric):
     """
-        ## Modificadores por Sintagmas:
-
-        Média do número de modificadores por sintagmas nominais. Consideramos
-        como modificadores adjetivos, advérbios e artigos que participam de um
-        sintagma.
-
-        O desempenho da métrica é diretamente relacionada as árvores sintáticas
-        de constituintes geradas pelo LX-Parser e ao POS tagger do nlpnet.
-
-        ### Exemplo:
-
-        *"Acessório utilizado por adolescentes, o boné é um dos itens que
-            compõem a vestimenta idealizada pela proposta."*
-
-        Como o texto possui 6 sintagmas e 3 modificadores, o valor desta
-            métrica é 0,6 para este exemplo.
+    ## Média dos tamanhos médios dos sintagmas nominais nas sentenças
     """
-
-    name = 'Modifiers per Noun Phrase'
-    column_name = 'mod_per_np'
+    name = 'Mean Noun Phrase'
+    column_name = 'mean_noun_phrase'
 
     def value_for_text(self, t, rp=default_rp):
-        parse_trees = rp.parse_trees(t)
-        sent_indices = []
+        all_leaves = rp.leaves_in_toplevel_nps(t)
+        mean_sizes = [np.mean([len(toplevel) for toplevel in sent]) for sent in all_leaves]
+        return np.mean(mean_sizes)
 
-        for tree in parse_trees:
-            nps = 0
-            mods = 0
-            for np in toplevel_NPs(tree):
-                nps += 1
-                mods += ilen(np.subtrees(lambda s: s.label() in ('A')))
-            if nps != 0:
-                sent_indices.append(mods / nps)
 
-        return sum(sent_indices) / len(sent_indices) if sent_indices else 0
+class MaxNounPhrase(base.Metric):
+    """
+    ## Máximo dos tamanhos dos sintagmas nominais no texto
+    """
+    name = 'Maximum Noun Phrase'
+    column_name = 'max_noun_phrase'
+
+    def value_for_text(self, t, rp=default_rp):
+        np_sizes = [len(toplevel)
+                    for leaves in rp.leaves_in_toplevel_nps(t)
+                    for toplevel in leaves]
+        return max(np_sizes)
+
+
+class MinNounPhrase(base.Metric):
+    """
+    ## Mínimo dos tamanhos dos sintagmas nominais no texto
+    """
+    name = 'Minimum Noun Phrase'
+    column_name = 'min_noun_phrase'
+
+    def value_for_text(self, t, rp=default_rp):
+        np_sizes = [len(toplevel)
+                    for leaves in rp.leaves_in_toplevel_nps(t)
+                    for toplevel in leaves]
+        return min(np_sizes)
+
+
+class StdNounPhrase(base.Metric):
+    """
+    ## Desvio padrão dos tamanhos dos sintagmas nominais no texto
+    """
+    name = 'Std Noun Phrase'
+    column_name = 'std_noun_phrase'
+
+    def value_for_text(self, t, rp=default_rp):
+        np_sizes = [len(toplevel)
+                    for leaves in rp.leaves_in_toplevel_nps(t)
+                    for toplevel in leaves]
+        return np.std(np_sizes)
 
 
 class WordsBeforeMainVerb(base.Metric):
