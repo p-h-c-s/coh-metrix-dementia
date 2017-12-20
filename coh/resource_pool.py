@@ -27,6 +27,8 @@ from coh.utils import is_valid_id
 from coh.database import create_engine, create_session, Helper
 from coh.conf import config
 
+import nltk
+
 
 logger = logging.getLogger(__name__)
 
@@ -166,6 +168,9 @@ class DefaultResourcePool(ResourcePool):
         # Parse structures.
         self.register('parse_trees', self._parse_trees)
         self.register('dep_trees', self._dep_trees)
+
+        self.register('toplevel_nps_per_sentence', self._toplevel_nps_per_sentence)
+        self.register('leaves_in_toplevel_nps', self._leaves_in_toplevel_nps)
 
         # LSA spaces
         self.register('lsa_space', self._lsa_space, pinned=True)
@@ -372,6 +377,43 @@ class DefaultResourcePool(ResourcePool):
         """
         sents = self.get('tokens', text)
         return self.get('dep_parser').parse_sents(sents)
+
+    def _toplevel_nps_per_sentence(self, text):
+        """
+        Returns the NPs that are not contained in any other NP
+        in the parse tree for each sentence.
+
+        This depends on the LX-Parser syntax tree.
+        
+        :rtype: List[List[nltk.Tree]].
+        """
+        def toplevel_nps(tree):
+            """
+            Generator over the NPs that are not contained in any
+            other NP in the parse tree.
+            """
+            if tree.label() == 'NP':
+                yield tree
+            else:
+                for child in tree:
+                    if isinstance(child, nltk.Tree):
+                        yield from toplevel_nps(child)
+        parse_trees = self.get('parse_trees', text)
+        return [list(toplevel_nps(tree)) for tree in parse_trees]
+
+    def _leaves_in_toplevel_nps(self, text):
+        """
+        Get the leaves of the toplevel NPs, ignoring all punctuation, for each
+        sentence.
+
+        :rtype: List[List[List[str]]].
+        """
+        def extract_leaves(toplevel):
+            """Given a toplevel NP, extract the leaves that are not punctuation"""
+            leaves = toplevel.subtrees(lambda t: t.label() != 'PNT' and t.height() == 2)
+            return [l[0] for l in leaves]
+        return [[extract_leaves(toplevel) for toplevel in toplevels_in_sentence]
+                for toplevels_in_sentence in self.get('toplevel_nps_per_sentence', text)]
 
     def _lsa_space(self):
         """Return the default LSA space.
