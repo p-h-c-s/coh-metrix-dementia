@@ -1,6 +1,5 @@
 SQLAlchemy==0.9.9
 gensim==0.10.3
-ipython==3.2.0
 lxml==3.4.4
 nltk==3.0.2
 prettytable==0.7.2
