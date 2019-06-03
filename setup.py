@@ -42,5 +42,5 @@ setup(
         "Programming Language :: Python :: 3.4",
     ],
     install_requires = [str(ir.req)
-                        for ir in parse_requirements('requirements.txt')]
+                        for ir in parse_requirements('requirements.txt',session=False)]
 )
