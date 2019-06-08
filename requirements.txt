@@ -1,5 +1,5 @@
 SQLAlchemy==0.9.9
 gensim==3.7.3
-nltk==3.0.2
+nltk==3.4.3
 prettytable==0.7.2
 psycopg2==2.7.5
