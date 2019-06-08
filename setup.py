@@ -17,7 +17,7 @@ def read(filename):
 
 
 setup(
-    name="Coh-Metrix-Dementia",
+    name="coh-Metrix-Dementia",
     version="0.0.1",
     author="Andre Cunha",
     author_email="andre.lv.cunha@gmail.com",
