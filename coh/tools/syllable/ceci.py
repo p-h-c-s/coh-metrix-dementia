@@ -32,8 +32,8 @@ from sys import argv
 class CECISyllableSeparator(SyllableSeparator):
     def _get(self, la, le):
         letters = self.tab_ceci[0]
-        line = letters.index(la)
-        column = letters.index(le)
+        line = letters.startswith(la)
+        column = letters.startswith(le)
         return self.tab_ceci[line][column]
 
     def _get_action(self, la, le):
