@@ -33,7 +33,7 @@ class NLPNetTagger(Tagger):
 
     def load_tagger(self):
         if not self._data_dir:
-            self._data_dir = "C:\\Users\PedroHC\\Documents\\ICOMP-SSD\\NLP-DATA\\pos-pt"
+            self._data_dir = "/home/pedro/Documents/Documents/ICOMP-SSD/NLP-DATA\pos-pt"
 
         nlpnet.set_data_dir(self._data_dir)
         self._tagger = nlpnet.POSTagger()
